@@ -1,0 +1,21 @@
+{
+  "name": "etes_api",
+  "version": "1.0.0",
+  "description": "ETES API",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^1.0.2",
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "ibm_db": "^2.0.0",
+    "jsonwebtoken": "^7.3.0",
+    "nodemon": "^1.11.0",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0"
+  }
+}
