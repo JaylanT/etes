@@ -1,5 +1,5 @@
 module.exports = {
-	checkStatus: res => {
+	checkStatus(res) {
 	  if (res.status >= 200 && res.status < 300) {
 		return res;
 	  } else {
@@ -8,7 +8,8 @@ module.exports = {
 		throw error;
 	  }
 	},
-	parseJSON: res => {
+
+	parseJSON(res) {
 		return res.json();
 	}
 }
