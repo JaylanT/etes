@@ -1,4 +1,4 @@
-const config = {
+module.exports = {
 	DATABASE: 'test',
 	HOSTNAME: 'localhost',
 	UID: 'db2admin',
@@ -7,4 +7,3 @@ const config = {
 	PROTOCOL: 'TCPIP'
 }
 
-module.exports = config;

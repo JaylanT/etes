@@ -2,17 +2,14 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import config from './config';
+import utils from './fetch-utils';
 import 'whatwg-fetch';
 
 class App extends Component {
   render() {
 	  fetch(config.apiUrl + '/test')
-	  .then(res => {
-		  if (res.status !== 200) {  
-			throw Error(res.status + ' (' + res.statusText + ')');
-		  }
-		  return res.json();
-	  })
+	  .then(utils.checkStatus)
+	  .then(utils.parseJSON)
 	  .then(data => {
 		  console.log(data);
 	  })
