@@ -5,7 +5,7 @@ router.get('/', (req, res) => {
 });
 
 router.use('/test', require('./testRoutes'));
-router.use('/', require('./user'));
+router.use('/auth', require('./auth'));
 
 router.use((err, req, res, next) => {
 	res.status(500).send(err.message);

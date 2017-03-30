@@ -5,6 +5,23 @@ const ibmdb = Promise.promisifyAll(require('ibm_db'));
 const config = require('../config');
 
 
+function createUser(conn, userData) {
+	return conn.prepare('INSERT INTO USERS (EMAIL, PASSWORD, NAME) VALUES (?, ?, ?)')
+		.then(stmt => {
+			return new Promise((resolve, reject) => {
+				stmt.execute([userData.email, userData.password, userData.name], (err, result) => {
+					if (err) {
+						reject(Error(err));
+					} else {
+						result.closeSync();
+						resolve(result);
+					}
+					stmt.closeSync();
+				});
+			});
+		});
+}
+
 module.exports = new LocalStrategy (
 	{
 		usernameField: 'email',
@@ -21,27 +38,10 @@ module.exports = new LocalStrategy (
 		};
 
 		ibmdb.open(config)
-			.catch(err => done(err))
 			.then(conn => { 
-				return conn.prepare('INSERT INTO USERS (EMAIL, PASSWORD, NAME) VALUES (?, ?, ?)')
-							.then(stmt => {
-								return new Promise((resolve, reject) => {
-									stmt.execute([userData.email, userData.password, userData.name], (err, result) => {
-										if (err) {
-											console.log('here');
-											reject(Error(err));
-										} else {
-											result.closeSync();
-											resolve(result);
-										}
-										stmt.closeSync();
-									});
-								});
-							})
-							.then(() => done(null))
-							.finally(() => {
-								conn.close();
-							});
+				return createUser(conn, userData)
+					.then(() => done(null))
+					.finally(() => conn.close());
 			})
 			.catch(err => done(err));
 	}

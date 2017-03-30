@@ -5,7 +5,7 @@ const config = require('../config');
 const passport = require('passport');
 
 
-router.route('/signup')
+router.route('/register')
 	.post((req, res, next) => {
 		const data = req.body;
 		const validation = validateSignupForm(data);
@@ -21,34 +21,6 @@ router.route('/signup')
 				res.send('success');
 			}
 		})(req, res, next);
-
-//		ibmdb.open(config)
-//			.catch(err => res.status(500).send(err.message))
-//			.then(conn => { 
-//				return conn.prepare('INSERT INTO USERS (EMAIL, PASSWORD, NAME) VALUES (?, ?, ?)')
-//							.then(stmt => {
-//								const email = data.email,
-//									  password = data.password,
-//									  name = data.name.trim();
-//
-//								return new Promise((resolve, reject) => {
-//									stmt.execute([email, password, name], (err, result) => {
-//										if (err) {
-//											reject(Error(err));
-//										} else {
-//											result.closeSync();
-//											resolve(result);
-//										}
-//										stmt.closeSync();
-//									});
-//								});
-//							})
-//							.then(result => res.send(result))
-//							.finally(() => {
-//								conn.close();
-//							});
-//			})
-//			.catch(err => res.status(400).send(err.message));
 	});
 
 router.route('/login')
