@@ -1,10 +1,11 @@
 const express = require('express');
-const app = express();
-const api = require('./routes/routes');
+const api = require('./routes/index');
 const bodyParser = require('body-parser');
+const passport = require('passport');
+const app = express();
 
-app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // CORS
 app.use((req, res, next) => {
@@ -12,6 +13,10 @@ app.use((req, res, next) => {
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
+
+const localSignupStrategy = require('./passport/local-signup');
+passport.use('local-signup', localSignupStrategy);
+app.use(passport.initialize());
 
 app.use('/api', api);
 
