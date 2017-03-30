@@ -9,11 +9,11 @@ module.exports = new LocalStrategy (
 	{
 		usernameField: 'email',
 		passwordField: 'password',
-		passReqToCallback: true,
-		session: false
+		session: false,
+		passReqToCallback: true
+
 	},
 	(req, email, password, done) => {
-		console.log('asdf')
 		const userData = {
 			email: email.trim(),
 			password: password,
@@ -28,6 +28,7 @@ module.exports = new LocalStrategy (
 								return new Promise((resolve, reject) => {
 									stmt.execute([userData.email, userData.password, userData.name], (err, result) => {
 										if (err) {
+											console.log('here');
 											reject(Error(err));
 										} else {
 											result.closeSync();
@@ -37,7 +38,7 @@ module.exports = new LocalStrategy (
 									});
 								});
 							})
-							.then(done(null))
+							.then(() => done(null))
 							.finally(() => {
 								conn.close();
 							});
