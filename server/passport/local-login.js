@@ -35,7 +35,6 @@ module.exports = new LocalStrategy(
 		passwordField: 'password',
 		session: false,
 		passReqToCallback: true
-
 	},
 	(req, email, password, done) => {
 		email = email.trim();
