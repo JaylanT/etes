@@ -17,7 +17,9 @@ app.use((req, res, next) => {
 app.use(passport.initialize());
 
 const localSignupStrategy = require('./passport/local-signup');
+const localLoginStrategy = require('./passport/local-login');
 passport.use('local-signup', localSignupStrategy);
+passport.use('local-login', localLoginStrategy);
 
 app.use('/api', api);
 

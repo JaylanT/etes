@@ -30,7 +30,7 @@ function hashPassword(password) {
 	return bcrypt.hash(password, saltRounds);
 }
 
-module.exports = new LocalStrategy (
+module.exports = new LocalStrategy(
 	{
 		usernameField: 'email',
 		passwordField: 'password',
