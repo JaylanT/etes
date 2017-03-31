@@ -2,7 +2,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 const Promise = require('bluebird');
 const ibmdb = Promise.promisifyAll(require('ibm_db'));
-const config = require('../config');
+const dbConfig = require('../config/db-config');
 
 
 function createUser(conn, userData) {
@@ -45,7 +45,7 @@ module.exports = new LocalStrategy(
 			name: req.body.name.trim()
 		};
 
-		ibmdb.open(config)
+		ibmdb.open(dbConfig)
 			.then(conn => { 
 				return createUser(conn, userData)
 					.then(() => done(null))

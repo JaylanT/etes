@@ -1,7 +1,6 @@
 const router = require('express').Router();
 const Promise = require('bluebird');
 const ibmdb = Promise.promisifyAll(require('ibm_db'));
-const config = require('../config');
 const passport = require('passport');
 
 
@@ -15,7 +14,7 @@ router.route('/register')
 		}
 		passport.authenticate('local-signup', { session: false }, err => {
 			if (err) {
-				res.status(400).send('failed');
+				res.status(400).send(err.message);
 			} else {
 				res.send('success');
 			}
@@ -34,9 +33,9 @@ router.route('/login')
 			if (err) {
 				res.status(400).send(err.message);
 			} else if (!user) {
-				res.status(400).send(info);
+				res.status(422).send(info);
 			} else {
-				res.send('success');
+				res.send(user);
 			}
 		})(req, res, next);
 	});

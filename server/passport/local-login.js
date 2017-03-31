@@ -2,11 +2,13 @@ const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 const Promise = require('bluebird');
 const ibmdb = Promise.promisifyAll(require('ibm_db'));
-const config = require('../config');
+const jwt = require('jsonwebtoken');
+const dbConfig = require('../config/db-config');
+const jwtConfig = require('../config/jwt-config');
 
 
 function findUser(conn, email) {
-	return conn.prepare('SELECT NAME, PASSWORD FROM USERS WHERE EMAIL = ?')
+	return conn.prepare('SELECT NAME, PASSWORD, EMAIL FROM USERS WHERE EMAIL = ?')
 		.then(stmt => {
 			return new Promise((resolve, reject) => {
 				stmt.execute([email], (err, result) => {
@@ -38,7 +40,7 @@ module.exports = new LocalStrategy(
 	(req, email, password, done) => {
 		email = email.trim();
 		
-		ibmdb.open(config)
+		ibmdb.open(dbConfig)
 			.then(conn => {
 				return findUser(conn, email)
 					.then(data => {
@@ -53,8 +55,17 @@ module.exports = new LocalStrategy(
 								if (!match) {
 									return done(null, false, { message: 'Incorrect username or password.' });
 								}
+
+								const payload = {
+									sub: foundUser.EMAIL
+								};
+								const token = jwt.sign(payload, jwtConfig.secret);
 								
-								done(null, foundUser.NAME);
+								done(null, {
+									name: foundUser.NAME,
+									email: foundUser.EMAIL,
+									token: token
+								});
 							});
 					})
 					.finally(() => conn.close());
