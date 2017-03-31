@@ -8,18 +8,26 @@ const config = require('../config');
 function createUser(conn, userData) {
 	return conn.prepare('INSERT INTO USERS (EMAIL, PASSWORD, NAME) VALUES (?, ?, ?)')
 		.then(stmt => {
-			return new Promise((resolve, reject) => {
-				stmt.execute([userData.email, userData.password, userData.name], (err, result) => {
-					if (err) {
-						reject(Error(err));
-					} else {
-						result.closeSync();
-						resolve(result);
-					}
-					stmt.closeSync();
-				});
+			return hashPassword(userData.password)
+					.then(hash => { 
+						return new Promise((resolve, reject) => {
+							stmt.execute([userData.email, hash, userData.name], (err, result) => {
+								if (err) {
+									reject(Error(err));
+								} else {
+									result.closeSync();
+									resolve(result);
+								}
+								stmt.closeSync();
+						});
+					});
 			});
 		});
+}
+
+function hashPassword(password) {
+	const saltRounds = 10;
+	return bcrypt.hash(password, saltRounds);
 }
 
 module.exports = new LocalStrategy (
