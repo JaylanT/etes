@@ -29,7 +29,6 @@ router.route('/register')
 					message
 				});
 			} else {
-				//res.send('success');
 				// login after successful registration
 				passport.authenticate('local-login', (err, user, info) => handleLogin(err, user, info, res))(req, res, next);
 			}

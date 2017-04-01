@@ -39,6 +39,9 @@ module.exports = (req, res, next) => {
 					})
 					.finally(() => conn.close())
 			})
-			.catch(err => res.status(400).send(err));
+			.catch(err => res.status(400).send({
+				status: 400,
+				message: err.message
+			}));
 	});
 };
