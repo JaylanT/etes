@@ -37,7 +37,7 @@ module.exports = new LocalStrategy(
 	},
 	(email, password, done) => {
 		email = email.trim();
-		
+
 		ibmdb.open(dbConfig)
 			.then(conn => {
 				return findUser(conn, email)
@@ -58,7 +58,7 @@ module.exports = new LocalStrategy(
 									sub: foundUser.EMAIL
 								};
 								const token = jwt.sign(payload, jwtConfig.secret);
-								
+
 								done(null, {
 									name: foundUser.NAME,
 									email: foundUser.EMAIL,

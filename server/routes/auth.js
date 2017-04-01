@@ -1,6 +1,4 @@
 const router = require('express').Router();
-const Promise = require('bluebird');
-const ibmdb = Promise.promisifyAll(require('ibm_db'));
 const passport = require('passport');
 
 
@@ -13,7 +11,7 @@ router.route('/register')
 			delete validation.success;
 			return res.status(400).json(validation);
 		}
-		passport.authenticate('local-signup', err => {
+		passport.authenticate('local-signup', (err, ret) => {
 			if (err) {
 				const errorCode = err.message.split(' ')[3];
 				let status = 400;
@@ -27,6 +25,11 @@ router.route('/register')
 				res.status(status).send({
 					status,
 					message
+				});
+			} else if (ret !== 1) {
+				res.status(400).send({
+					status: 400,
+					message: 'Registration failed.'
 				});
 			} else {
 				// login after successful registration
