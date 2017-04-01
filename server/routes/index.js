@@ -6,7 +6,7 @@ router.get('/', (req, res) => {
 });
 
 const authCheckMiddleware = require('../middleware/auth-check');
-router.use('/test', authCheckMiddleware);
+router.use('/tickets', authCheckMiddleware);
 router.use('/tickets', require('./tickets'));
 router.use('/auth', require('./auth'));
 
