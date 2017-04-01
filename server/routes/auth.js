@@ -1,6 +1,4 @@
 const router = require('express').Router();
-const Promise = require('bluebird');
-const ibmdb = Promise.promisifyAll(require('ibm_db'));
 const passport = require('passport');
 
 
