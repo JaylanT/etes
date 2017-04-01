@@ -12,6 +12,9 @@ router.route('/')
 		const limit = req.query.limit || 50,
 				start = req.query.start || 0;
 
+		// limit max of 50
+		if (limit > 50) limit = 50;
+
 		ibmdb.open(config)
 			.then(conn => {
 				return conn.prepare('SELECT * FROM TICKETS ORDER BY DATE_CREATED LIMIT ? OFFSET ?')
