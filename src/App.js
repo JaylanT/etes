@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import config from './config';
-import utils from './fetch-utils';
+import utils from './utils/fetch-utils';
 import 'whatwg-fetch';
 
 class App extends Component {
