@@ -10,13 +10,28 @@ router.route('/register')
 		const validation = validateSignupForm(data);
 
 		if (!validation.success) {
+			delete validation.success;
 			return res.status(400).json(validation);
 		}
-		passport.authenticate('local-signup', { session: false }, err => {
+		passport.authenticate('local-signup', err => {
 			if (err) {
-				res.status(400).send(err.message);
+				const errorCode = err.message.split(' ')[3];
+				let status = 400;
+				let message = '';
+				if (errorCode === 'SQL0803N') {
+					status = 409;
+					message = 'An account with that email already exists.';
+				} else {
+					message = err.message;
+				}
+				res.status(status).send({
+					status,
+					message
+				});
 			} else {
-				res.send('success');
+				//res.send('success');
+				// login after successful registration
+				passport.authenticate('local-login', (err, user, info) => handleLogin(err, user, info, res))(req, res, next);
 			}
 		})(req, res, next);
 	});
@@ -27,18 +42,27 @@ router.route('/login')
 		const validation = validateLoginForm(data);
 
 		if (!validation.success) {
+			delete validation.success;
 			return res.status(400).json(validation);
 		}
-		passport.authenticate('local-login', { session: false }, (err, user, info) => {
-			if (err) {
-				res.status(400).send(err.message);
-			} else if (!user) {
-				res.status(422).send(info);
-			} else {
-				res.send(user);
-			}
-		})(req, res, next);
+		passport.authenticate('local-login', (err, user, info) => handleLogin(err, user, info, res))(req, res, next);
 	});
+
+function handleLogin(err, user, info, res) {
+	if (err) {
+		res.status(400).send({
+			status: 400,
+			message: err.message
+		});
+	} else if (!user) {
+		res.status(422).send({
+			status: 422,
+			message: info.message
+		});
+	} else {
+		res.send(user);
+	}
+}
 
 
 function validateSignupForm(payload) {
