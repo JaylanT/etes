@@ -13,7 +13,7 @@ router.route('/register')
 		}
 		passport.authenticate('local-signup', (err, ret) => {
 			if (err) {
-				const errorCode = err.message.split(' ')[3];
+				const errorCode = err.message.split(' ')[2];
 				let status = 400;
 				let message = '';
 				if (errorCode === 'SQL0803N') {
