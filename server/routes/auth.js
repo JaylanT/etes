@@ -42,45 +42,50 @@ router.route('/login')
 
 
 function validateSignupForm(payload) {
-	let isFormValid = payload ? true : false;
-	let error = '';
+	let isFormValid = true;
+	const errors = {};
 	
-	if (isFormValid) {
-		if (typeof payload.email !== 'string' || !validateEmail(payload.email)) {
-			isFormValid = false;
-			error = 'Invalid email.';
-		} else if (typeof payload.password !== 'string' || payload.password.length < 8) {
-			isFormValid = false;
-			error = 'Password must be at least 8 characters long.';
-		} else if (typeof payload.name !== 'string' || payload.name.trim().legnth === 0) {
-			isFormValid = false;
-			error = 'Please provide your name.';
-		}
+	if (!payload || typeof payload.email !== 'string' || !validateEmail(payload.email)) {
+		isFormValid = false;
+		errors.email = 'Invalid email.';
 	}
+	if (!payload || typeof payload.password !== 'string' || payload.password.length < 8) {
+		isFormValid = false;
+		errors.password = 'Password must be at least 8 characters long.';
+	}
+	if (!payload || typeof payload.name !== 'string' || payload.name.trim().legnth === 0) {
+		isFormValid = false;
+		errors.name = 'Please provide your name.';
+	}
+
+	const message = isFormValid ? '' : 'Form validation failed.';
 
 	return {
 		success: isFormValid,
-		error
+		message,
+		errors
 	};
 }
 
 function validateLoginForm(payload) {
-	let isFormValid = payload ? true : false;
-	let error = '';
+	let isFormValid = true;
+	const errors = {};
 	
-	if (isFormValid) {
-		if (typeof payload.email !== 'string' || !validateEmail(payload.email)) {
-			isFormValid = false;
-			error = 'Invalid email.';
-		} else if (typeof payload.password !== 'string' || payload.password.length < 8) {
-			isFormValid = false;
-			error = 'Password must be at least 8 characters long.';
-		}
+	if (!payload || typeof payload.email !== 'string' || !validateEmail(payload.email)) {
+		isFormValid = false;
+		errors.email = 'Invalid email.';
 	}
+	if (!payload || typeof payload.password !== 'string' || payload.password.length < 8) {
+		isFormValid = false;
+		errors.password = 'Password must be at least 8 characters long.';
+	}
+
+	const message = isFormValid ? '' : 'Form validation failed.';
 
 	return {
 		success: isFormValid,
-		error
+		message,
+		errors
 	};
 }
 

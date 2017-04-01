@@ -33,10 +33,9 @@ module.exports = new LocalStrategy(
 	{
 		usernameField: 'email',
 		passwordField: 'password',
-		session: false,
-		passReqToCallback: true
+		session: false
 	},
-	(req, email, password, done) => {
+	(email, password, done) => {
 		email = email.trim();
 		
 		ibmdb.open(dbConfig)
@@ -44,7 +43,7 @@ module.exports = new LocalStrategy(
 				return findUser(conn, email)
 					.then(data => {
 						if (data.length === 0) {
-							return done(null, false, { message: 'Incorrect username or password.' });
+							return done(null, false, { message: 'Incorrect email or password.' });
 						}
 
 						// user with email found, check password hash
@@ -52,7 +51,7 @@ module.exports = new LocalStrategy(
 						return comparePassword(foundUser, password)
 							.then(match => {
 								if (!match) {
-									return done(null, false, { message: 'Incorrect username or password.' });
+									return done(null, false, { message: 'Incorrect email or password.' });
 								}
 
 								const payload = {
