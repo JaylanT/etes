@@ -11,12 +11,11 @@ function createUser(conn, userData) {
 			return hashPassword(userData.password)
 					.then(hash => { 
 						return new Promise((resolve, reject) => {
-							stmt.execute([userData.email, hash, userData.name], (err, result) => {
+							stmt.executeNonQuery([userData.email, hash, userData.name], (err, ret) => {
 								if (err) {
 									reject(Error(err));
 								} else {
-									result.closeSync();
-									resolve(result);
+									resolve(ret);
 								}
 								stmt.closeSync();
 						});
@@ -48,7 +47,7 @@ module.exports = new LocalStrategy(
 		ibmdb.open(dbConfig)
 			.then(conn => { 
 				return createUser(conn, userData)
-					.then(() => done(null))
+					.then(ret => done(null, ret))
 					.finally(() => conn.close());
 			})
 			.catch(err => done(err));
