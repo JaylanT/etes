@@ -2,7 +2,7 @@ const router = require('express').Router();
 const Promise = require('bluebird');
 const ibmdb = Promise.promisifyAll(require('ibm_db'));
 //const ibmdb = require('ibm_db');
-const config = require('../config');
+const config = require('../config/db-config');
 
 router.route('/')
 .get((req, res, next) => {
