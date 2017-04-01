@@ -17,7 +17,10 @@ router.route('/')
 
 		ibmdb.open(config)
 			.then(conn => {
-				return conn.prepare('SELECT * FROM TICKETS ORDER BY DATE_CREATED LIMIT ? OFFSET ?')
+				const sql = 'SELECT T.*, U.NAME AS SELLER FROM TICKETS T, USERS U ' +
+								'WHERE T.SELLER_ID = U.USER_ID ' +
+								'ORDER BY CREATED_AT DESC LIMIT ? OFFSET ?'
+				return conn.prepare(sql)
 					.then(stmt => {
 						return new Promise((resolve, reject) => {
 							stmt.execute([limit, start], (err, result) => {
