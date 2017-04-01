@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const db2 = require('../modules/db2');
+const ibmdb = require('../modules/ibmdb');
 
 
 router.route('/')
@@ -19,9 +19,12 @@ router.route('/')
 						'WHERE T.SELLER_ID = U.USER_ID ' +
 						'ORDER BY ' + orderByIdentifier + ' LIMIT ? OFFSET ?'
 
-		db2.executeSql(sql, [limit, start])
+		ibmdb.execute(sql, [limit, start])
 			.then(data => res.send(data))
-			.catch(err => res.status(400).send(err));
+			.catch(err => res.status(400).send({
+				status: 400,
+				message: err.message
+			}));
 	});
 
 router.route('/:id')
@@ -32,9 +35,12 @@ router.route('/:id')
 						'WHERE T.TICKET_ID = ? ' +
 						'AND T.SELLER_ID = U.USER_ID';
 
-		db2.executeSql(sql, [ticketId])
+		ibmdb.execute(sql, [ticketId])
 			.then(data => res.send(data))
-			.catch(err => res.status(400).send(err));
+			.catch(err => res.status(400).send({
+				status: 400,
+				message: err.message
+			}));
 	});
 
 function getOrderByIdentifier(orderBy) {
