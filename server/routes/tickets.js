@@ -1,7 +1,5 @@
 const router = require('express').Router();
-const Promise = require('bluebird');
-const ibmdb = Promise.promisifyAll(require('ibm_db'));
-const config = require('../config/db-config');
+const db2 = require('../modules/db2');
 
 
 router.route('/')
@@ -17,67 +15,26 @@ router.route('/')
 		if (limit > 50) limit = 50;
 
 		const orderByIdentifier = getOrderByIdentifier(orderBy);
+		const sql = 'SELECT T.*, U.NAME AS SELLER FROM TICKETS T, USERS U ' +
+						'WHERE T.SELLER_ID = U.USER_ID ' +
+						'ORDER BY ' + orderByIdentifier + ' LIMIT ? OFFSET ?'
 
-		ibmdb.open(config)
-			.then(conn => {
-				const sql = 'SELECT T.*, U.NAME AS SELLER FROM TICKETS T, USERS U ' +
-								'WHERE T.SELLER_ID = U.USER_ID ' +
-								'ORDER BY ' + orderByIdentifier + ' LIMIT ? OFFSET ?'
-				return conn.prepare(sql)
-					.then(stmt => {
-						return new Promise((resolve, reject) => {
-							stmt.execute([limit, start], (err, result) => {
-								if (err) {
-									reject(Error(err));
-								} else {
-									const data = result.fetchAllSync();
-									result.closeSync();
-									resolve(data);
-								}
-								stmt.closeSync();
-							});
-						});
-					})
-					.then(data => res.send(data))
-					.finally(() => conn.close());
-			})
-			.catch(err => res.status(400).send({
-				status: 400,
-				message: err.message
-			}));
+		db2.executeSql(sql, [limit, start])
+			.then(data => res.send(data))
+			.catch(err => res.status(400).send(err));
 	});
 
 router.route('/:id')
 	.get((req, res, next) => {
 		const ticketId = req.params.id;
 
-		ibmdb.open(config)
-			.then(conn => {
-				const sql = 'SELECT T.*, U.NAME AS SELLER FROM TICKETS T, USERS U ' +
-								'WHERE T.TICKET_ID = ? ' +
-								'AND T.SELLER_ID = U.USER_ID';
-				return conn.prepare(sql)
-					.then(stmt => {
-						return new Promise((resolve, reject) => {
-							stmt.execute([ticketId], (err, result) => {
-								if (err) {
-									reject(Error(err));
-								} else {
-									const data = result.fetchAllSync();
-									result.closeSync();
-									resolve(data);
-								}
-								stmt.closeSync();
-							});
-						});
-					})
-					.then(data => res.send(data))
-					.finally(() => conn.close());
-			})
-			.catch(err => res.status(400).send({
-				status: 400,
-				message: err.message
-			}));
+		const sql = 'SELECT T.*, U.NAME AS SELLER FROM TICKETS T, USERS U ' +
+						'WHERE T.TICKET_ID = ? ' +
+						'AND T.SELLER_ID = U.USER_ID';
+
+		db2.executeSql(sql, [ticketId])
+			.then(data => res.send(data))
+			.catch(err => res.status(400).send(err));
 	});
 
 function getOrderByIdentifier(orderBy) {
