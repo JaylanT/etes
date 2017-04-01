@@ -1,29 +1,7 @@
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
-const Promise = require('bluebird');
-const ibmdb = Promise.promisifyAll(require('ibm_db'));
-const dbConfig = require('../config/db-config');
+const ibmdb = require('../modules/ibmdb');
 
-
-function createUser(conn, userData) {
-	return conn.prepare('INSERT INTO USERS (EMAIL, PASSWORD, NAME) VALUES (?, ?, ?)')
-		.then(stmt => {
-			return hashPassword(userData.password)
-					.then(hash => { 
-						return new Promise((resolve, reject) => {
-							stmt.execute([userData.email, hash, userData.name], (err, result) => {
-								if (err) {
-									reject(Error(err));
-								} else {
-									result.closeSync();
-									resolve(result);
-								}
-								stmt.closeSync();
-						});
-					});
-			});
-		});
-}
 
 function hashPassword(password) {
 	const saltRounds = 10;
@@ -36,21 +14,17 @@ module.exports = new LocalStrategy(
 		passwordField: 'password',
 		session: false,
 		passReqToCallback: true
-
 	},
 	(req, email, password, done) => {
-		const userData = {
-			email: email.trim(),
-			password: password,
-			name: req.body.name.trim()
-		};
+		email = email.trim();
+		name = req.body.name.trim();
 
-		ibmdb.open(dbConfig)
-			.then(conn => { 
-				return createUser(conn, userData)
-					.then(() => done(null))
-					.finally(() => conn.close());
+		hashPassword(password)
+			.then(hash => {
+				const sql = 'INSERT INTO USERS (EMAIL, PASSWORD, NAME) VALUES (?, ?, ?)';
+				return ibmdb.executeNonQuery(sql, [email, hash, name]);
 			})
+			.then(ret => done(null, ret))
 			.catch(err => done(err));
 	}
 );
