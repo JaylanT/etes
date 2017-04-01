@@ -1,6 +1,6 @@
 const Promise = require('bluebird');
-const Pool = require('ibm_db').Pool;
-const pool = new Pool();
+const ibmdb = Promise.promisifyAll(require('ibm_db'));
+const pool = new ibmdb.Pool();
 const config = require('../config/db-config');
 
 
@@ -19,34 +19,20 @@ function executeSql(sql, executeStmt) {
 module.exports = {
 	execute(sql, bindingParameters) {
 		function executeStmt(stmt) {
-			return new Promise((resolve, reject) => {
-				stmt.execute(bindingParameters, (err, result) => {
-					if (err) {
-						reject(Error(err));
-					} else {
-						const data = result.fetchAllSync();
-						result.closeSync();
-						resolve(data);
-					}
-					stmt.closeSync();
-				});
-			});
+			return stmt.executeAsync(bindingParameters)
+					.then(result => {
+						return result.fetchAllAsync()
+							.finally(() => result.closeSync());
+					})
+					.finally(() => stmt.closeSync());
 		}
 		return executeSql(sql, executeStmt);
 	},
 
 	executeNonQuery(sql, bindingParameters) {
 		function executeStmt(stmt) {
-			return new Promise((resolve, reject) => {
-				stmt.executeNonQuery(bindingParameters, (err, ret) => {
-					if (err) {
-						reject(Error(err));
-					} else {
-						resolve(ret);
-					}
-					stmt.closeSync();
-				});
-			});
+			return stmt.executeNonQueryAsync(bindingParameters)
+				.finally(() => stmt.closeSync());
 		}
 		return executeSql(sql, executeStmt);
 	}
