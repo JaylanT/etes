@@ -17,7 +17,13 @@ router.route('/')
 						'ORDER BY ' + orderByIdentifier + ' LIMIT ? OFFSET ?'
 
 		ibmdb.execute(sql, [limit, start])
-			.then(data => res.send(data))
+			.then(data => {
+				if (data.length === 0) {
+					res.send('No tickets available.');
+				} else {
+					res.send(data);
+				}
+			})
 			.catch(err => res.status(400).send({
 				status: 400,
 				message: err.message
@@ -33,7 +39,13 @@ router.route('/:id')
 						'AND T.SELLER_ID = U.USER_ID';
 
 		ibmdb.execute(sql, [ticketId])
-			.then(data => res.send(data))
+			.then(data => {
+				if (data.length === 0) {
+					res.status(404).send('Ticket not found.');
+				} else {
+					res.send(data);
+				}
+			})
 			.catch(err => res.status(400).send({
 				status: 400,
 				message: err.message
