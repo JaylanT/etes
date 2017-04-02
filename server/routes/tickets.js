@@ -43,7 +43,7 @@ router.route('/:id')
 				if (data.length === 0) {
 					res.status(404).send('Ticket not found.');
 				} else {
-					res.send(data);
+					res.send(data[0]);
 				}
 			})
 			.catch(err => res.status(400).send({
