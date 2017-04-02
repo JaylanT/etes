@@ -10,17 +10,17 @@ module.exports = (req, res, next) => {
 	return jwt.verify(token, jwtConfig.secret, (err, decoded) => {
 		if (err) return res.status(401).end();
 
-		const email = decoded.sub;
-		const sql = 'SELECT * FROM USERS WHERE EMAIL = ?';
+		const userId = decoded.sub;
+		const sql = 'SELECT * FROM USERS WHERE USER_ID = ?';
 
-		ibmdb.execute(sql, [email])
+		ibmdb.execute(sql, [userId])
 			.then(data => {
 				if (data.length === 0) {
 					return res.status(401).end();
 				}
 				return next();
 			})
-			.catch(err => res.status(400).end({
+			.catch(err => res.status(400).send({
 				status: 400,
 				message: err.message
 			}));

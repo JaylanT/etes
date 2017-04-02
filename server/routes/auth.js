@@ -66,7 +66,6 @@ function handleLogin(err, user, info, res) {
 	}
 }
 
-
 function validateSignupForm(payload) {
 	let isFormValid = true;
 	const errors = {};
