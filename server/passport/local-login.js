@@ -17,7 +17,7 @@ module.exports = new LocalStrategy(
 	},
 	(email, password, done) => {
 		email = email.trim();
-		const sql = 'SELECT NAME, PASSWORD, EMAIL FROM USERS WHERE EMAIL = ?';
+		const sql = 'SELECT * FROM USERS WHERE EMAIL = ?';
 
 		ibmdb.execute(sql, [email])
 			.then(data => {
@@ -34,7 +34,7 @@ module.exports = new LocalStrategy(
 						}
 
 						const payload = {
-							sub: foundUser.EMAIL
+							sub: foundUser.USER_ID
 						};
 						const token = jwt.sign(payload, jwtConfig.secret);
 

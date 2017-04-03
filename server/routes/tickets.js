@@ -3,24 +3,34 @@ const ibmdb = require('../modules/ibmdb');
 
 
 router.route('/')
-	.post((req, res, next) => {
-
-	})
 	.get((req, res, next) => {
 		const limit = req.query.limit || 50,
 				start = req.query.start || 0,
-				orderBy = req.query.orderBy;
+				orderBy = req.query.orderBy,
+				keywords = req.query.keywords;
 
 		// limit max of 50
 		if (limit > 50) limit = 50;
 
-		const orderByIdentifier = getOrderByIdentifier(orderBy);
-		const sql = 'SELECT T.*, U.NAME AS SELLER FROM TICKETS T, USERS U ' +
-						'WHERE T.SELLER_ID = U.USER_ID ' +
-						'ORDER BY ' + orderByIdentifier + ' LIMIT ? OFFSET ?'
+		const params = [limit, start];
+		let sql = 'SELECT T.*, U.NAME AS SELLER FROM TICKETS T, USERS U ' +
+					 'WHERE T.SELLER_ID = U.USER_ID '
+		if (keywords) {
+			sql += 'AND (CONTAINS(T.LISTING_TITLE, ?) = 1 OR CONTAINS(T.DESCRIPTION, ?) = 1) ';
+			params.unshift(keywords, keywords);
+		} 
 
-		ibmdb.execute(sql, [limit, start])
-			.then(data => res.send(data))
+		const orderByIdentifier = getOrderByIdentifier(orderBy);
+		sql += 'ORDER BY ' + orderByIdentifier + ' LIMIT ? OFFSET ?';
+
+		ibmdb.execute(sql, params)
+			.then(data => {
+				if (data.length === 0) {
+					res.send('No tickets available.');
+				} else {
+					res.send(data);
+				}
+			})
 			.catch(err => res.status(400).send({
 				status: 400,
 				message: err.message
@@ -36,7 +46,13 @@ router.route('/:id')
 						'AND T.SELLER_ID = U.USER_ID';
 
 		ibmdb.execute(sql, [ticketId])
-			.then(data => res.send(data))
+			.then(data => {
+				if (data.length === 0) {
+					res.status(404).send('Ticket not found.');
+				} else {
+					res.send(data[0]);
+				}
+			})
 			.catch(err => res.status(400).send({
 				status: 400,
 				message: err.message
@@ -61,7 +77,6 @@ function getOrderByIdentifier(orderBy) {
 			break;
 		default:
 			identifier = 'CREATED_AT DESC';
-			break;
 	}
 	return identifier;
 }
