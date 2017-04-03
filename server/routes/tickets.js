@@ -6,17 +6,24 @@ router.route('/')
 	.get((req, res, next) => {
 		const limit = req.query.limit || 50,
 				start = req.query.start || 0,
-				orderBy = req.query.orderBy;
+				orderBy = req.query.orderBy,
+				keywords = req.query.keywords;
 
 		// limit max of 50
 		if (limit > 50) limit = 50;
 
-		const orderByIdentifier = getOrderByIdentifier(orderBy);
-		const sql = 'SELECT T.*, U.NAME AS SELLER FROM TICKETS T, USERS U ' +
-						'WHERE T.SELLER_ID = U.USER_ID ' +
-						'ORDER BY ' + orderByIdentifier + ' LIMIT ? OFFSET ?'
+		let params = [limit, start];
+		let sql = 'SELECT T.*, U.NAME AS SELLER FROM TICKETS T, USERS U ' +
+					 'WHERE T.SELLER_ID = U.USER_ID '
+		if (keywords) {
+			sql += 'AND (CONTAINS(T.LISTING_TITLE, ?) = 1 OR CONTAINS(T.DESCRIPTION, ?) = 1) ';
+			params.unshift(keywords, keywords);
+		} 
 
-		ibmdb.execute(sql, [limit, start])
+		const orderByIdentifier = getOrderByIdentifier(orderBy);
+		sql += 'ORDER BY ' + orderByIdentifier + ' LIMIT ? OFFSET ?';
+
+		ibmdb.execute(sql, params)
 			.then(data => {
 				if (data.length === 0) {
 					res.send('No tickets available.');
