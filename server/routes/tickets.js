@@ -12,7 +12,7 @@ router.route('/')
 		// limit max of 50
 		if (limit > 50) limit = 50;
 
-		let params = [limit, start];
+		const params = [limit, start];
 		let sql = 'SELECT T.*, U.NAME AS SELLER FROM TICKETS T, USERS U ' +
 					 'WHERE T.SELLER_ID = U.USER_ID '
 		if (keywords) {
