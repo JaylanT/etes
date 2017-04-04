@@ -5,23 +5,23 @@ const ibmdb = require('../modules/ibmdb');
 router.route('/')
 	.get((req, res, next) => {
 		const limit = req.query.limit || 50,
-				start = req.query.start || 0,
-				orderBy = req.query.orderBy,
-				keywords = req.query.keywords;
+				page = req.query.page || 1,
+				order = req.query.order,
+				q = req.query.q;
 
 		// limit max of 50
 		if (limit > 50) limit = 50;
 
-		const params = [limit, start];
+		const params = [limit, (page - 1) * limit];
 		let sql = 'SELECT T.*, U.NAME AS SELLER FROM TICKETS T, USERS U ' +
 					 'WHERE T.SELLER_ID = U.USER_ID '
-		if (keywords) {
+		if (q) {
 			sql += 'AND (CONTAINS(T.TITLE, ?) = 1 OR CONTAINS(T.DESCRIPTION, ?) = 1) ';
-			params.unshift(keywords, keywords);
+			params.unshift(q, q);
 		} 
 
-		const orderByIdentifier = getOrderByIdentifier(orderBy);
-		sql += 'ORDER BY ' + orderByIdentifier + ' LIMIT ? OFFSET ?';
+		const orderIdentifier = getOrderIdentifier(order);
+		sql += 'ORDER BY ' + orderIdentifier + ' LIMIT ? OFFSET ?';
 
 		ibmdb.execute(sql, params)
 			.then(data => {
@@ -59,10 +59,10 @@ router.route('/:id')
 			}));
 	});
 
-function getOrderByIdentifier(orderBy) {
+function getOrderIdentifier(order) {
 	let identifier = '';
 
-	switch(orderBy) {
+	switch(order) {
 		case 'newest':
 			identifier = 'CREATED_AT DESC';
 			break;
