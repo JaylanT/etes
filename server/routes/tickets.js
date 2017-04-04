@@ -16,7 +16,7 @@ router.route('/')
 		let sql = 'SELECT T.*, U.NAME AS SELLER FROM TICKETS T, USERS U ' +
 					 'WHERE T.SELLER_ID = U.USER_ID '
 		if (keywords) {
-			sql += 'AND (CONTAINS(T.LISTING_TITLE, ?) = 1 OR CONTAINS(T.DESCRIPTION, ?) = 1) ';
+			sql += 'AND (CONTAINS(T.TITLE, ?) = 1 OR CONTAINS(T.DESCRIPTION, ?) = 1) ';
 			params.unshift(keywords, keywords);
 		} 
 
@@ -33,7 +33,7 @@ router.route('/')
 			})
 			.catch(err => res.status(400).send({
 				status: 400,
-				message: err.message
+				message: err.message || 'An unknown error has occurred.'
 			}));
 	});
 
@@ -55,7 +55,7 @@ router.route('/:id')
 			})
 			.catch(err => res.status(400).send({
 				status: 400,
-				message: err.message
+				message: err.message || 'An unknown error has occurred.'
 			}));
 	});
 
