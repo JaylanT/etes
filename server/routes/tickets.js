@@ -11,14 +11,18 @@ router.route('/')
 
 		// limit max of 50
 		if (limit > 50) limit = 50;
+		
+		const offset = (page - 1) * limit;
+		const params = [];
 
-		const params = [limit, (page - 1) * limit];
 		let sql = 'SELECT T.*, U.NAME AS SELLER FROM TICKETS T, USERS U ' +
 					 'WHERE T.SELLER_ID = U.USER_ID '
 		if (q) {
 			sql += 'AND (CONTAINS(T.TITLE, ?) = 1 OR CONTAINS(T.DESCRIPTION, ?) = 1) ';
-			params.unshift(q, q);
+			params.push(q, q);
 		} 
+
+		params.push(limit, offset);
 
 		const orderIdentifier = getOrderIdentifier(order);
 		sql += 'ORDER BY ' + orderIdentifier + ' LIMIT ? OFFSET ?';
@@ -28,7 +32,19 @@ router.route('/')
 				if (data.length === 0) {
 					res.send('No tickets available.');
 				} else {
-					res.send(data);
+					let sql2 = 'SELECT COUNT(*) AS COUNT FROM TICKETS T ';
+					const params2 = [];
+					if (q) {
+						sql2 += 'WHERE CONTAINS(T.TITLE, ?) = 1 OR CONTAINS(T.DESCRIPTION, ?) = 1';
+						params2.push(q, q);
+					} 
+					return ibmdb.execute(sql2, params2)
+						.then(data2 => {
+							res.send({
+								tickets: data,
+								count: data2[0].COUNT
+							});
+						});
 				}
 			})
 			.catch(err => res.status(400).send({
