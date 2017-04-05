@@ -58,11 +58,12 @@ router.route('/')
 	});
 
 function generateLinks(count, limit, page, q, order) {
-	const lastPageCount = Math.floor(count / limit);
-	let	nextPage = page === lastPageCount ? '' : '/tickets?page=' + (page + 1) + '&limit=' + limit,
+	const lastPageNum = Math.ceil(count / limit);
+
+	let	nextPage = page === lastPageNum ? '' : '/tickets?page=' + (page + 1) + '&limit=' + limit,
 		prevPage = page === 1 ? '' : '/tickets?page=' + (page - 1) + '&limit=' + limit,
 		firstPage = '/tickets?page=1&limit=' + limit,
-		lastPage = '/tickets?page=' + lastPageCount + '&limit=' + limit;
+		lastPage = '/tickets?page=' + lastPageNum + '&limit=' + limit;
 
 	if (q) {
 		if (nextPage) nextPage += '&q=' + q;
