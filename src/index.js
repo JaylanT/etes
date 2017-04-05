@@ -1,16 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
-import Navbar from './Navbar';
+import Base from './components/Base';
 import './index.css';
-
-ReactDOM.render(
-  <App />,
-  document.getElementById('root')
-);
+import { BrowserRouter as Router } from 'react-router-dom';
 
 
-ReactDOM.render(
-  <Navbar />,
-  document.getElementById('nav')
-);
+ReactDOM.render((
+	<Router>
+		<Base />
+	</Router>
+), document.getElementById('root'));
+

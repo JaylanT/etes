@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-//import logo from './logo.svg';
 import './App.css';
-import config from './config';
-import utils from './utils/fetch-utils';
+import config from '../config';
+import utils from '../utils/fetch-utils';
 import 'whatwg-fetch';
 
-class App extends Component {
+
+class Tickets extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -30,7 +30,7 @@ class App extends Component {
 	
 	render() {
 		return (
-			<div className="App">
+			<div className="Tickets">
 				<div>
 					{this.state.data.map(data =>
 						<div className="listing" key={data.TICKET_ID}>{data.TITLE} - ${data.PRICE}</div>
@@ -41,4 +41,4 @@ class App extends Component {
 	}
 }
 
-export default App;
+export default Tickets;
