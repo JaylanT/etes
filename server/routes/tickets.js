@@ -4,19 +4,19 @@ const ibmdb = require('../modules/ibmdb');
 
 router.route('/')
 	.get((req, res, next) => {
-		const limit = req.query.limit || 50,
-				page = req.query.page || 1,
+		const limit = parseInt(req.query.limit) || 30,
+				page = parseInt(req.query.page) || 1,
 				order = req.query.order,
 				q = req.query.q;
 
-		// limit max of 50
-		if (limit > 50) limit = 50;
+		// limit max of 100
+		if (limit > 100) limit = 100;
 		
 		const offset = (page - 1) * limit;
 		const params = [];
 
 		let sql = 'SELECT T.*, U.NAME AS SELLER FROM TICKETS T, USERS U ' +
-					 'WHERE T.SELLER_ID = U.USER_ID '
+					 'WHERE T.SELLER_ID = U.USER_ID ';
 		if (q) {
 			sql += 'AND (CONTAINS(T.TITLE, ?) = 1 OR CONTAINS(T.DESCRIPTION, ?) = 1) ';
 			params.push(q, q);
@@ -40,10 +40,14 @@ router.route('/')
 					} 
 					return ibmdb.execute(sql2, params2)
 						.then(data2 => {
+							const count = data2[0].COUNT;
+							const links = generateLinks(count, limit, page, q, order);
+							res.links(links);
+
 							res.send({
 								tickets: data,
-								count: data2[0].COUNT
-							});
+								count
+							})
 						});
 				}
 			})
@@ -52,6 +56,35 @@ router.route('/')
 				message: err.message || 'An unknown error has occurred.'
 			}));
 	});
+
+function generateLinks(count, limit, page, q, order) {
+	const lastPageCount = Math.floor(count / limit);
+	let	nextPage = page === lastPageCount ? '' : '/tickets?page=' + (page + 1) + '&limit=' + limit,
+		prevPage = page === 1 ? '' : '/tickets?page=' + (page - 1) + '&limit=' + limit,
+		firstPage = '/tickets?page=1&limit=' + limit,
+		lastPage = '/tickets?page=' + lastPageCount + '&limit=' + limit;
+
+	if (q) {
+		if (nextPage) nextPage += '&q=' + q;
+		if (prevPage) prevPage += '&q=' + q;
+		firstPage += '&q=' + q;
+		lastPage += '&q=' + q;
+	}
+
+	if (order) {
+		if (nextPage) nextPage += '&order=' + order;
+		if (prevPage) prevPage += '&order=' + order;	
+		firstPage += '&order=' + order;
+		lastPage += '&order=' + order;
+	}
+
+	return {
+		next: nextPage,
+		previous: prevPage,
+		first: firstPage,
+		last: lastPage
+	};
+}
 
 router.route('/:id')
 	.get((req, res, next) => {
