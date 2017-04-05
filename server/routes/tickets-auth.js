@@ -24,10 +24,10 @@ router.route('/')
 			return res.status(401).end();
 		}
 
-		const sql = 'INSERT INTO TICKETS (SELLER_ID, LISTING_TITLE, DESCRIPTION, PRICE, CREATED_AT) ' +
+		const sql = 'INSERT INTO TICKETS (SELLER_ID, TITLE, DESCRIPTION, PRICE, CREATED_AT) ' +
 						'VALUES (?, ?, ?, ?, CURRENT TIMESTAMP)';
 
-		ibmdb.executeNonQuery(sql, [sellerId, data.listingTitle, data.description, data.price])
+		ibmdb.executeNonQuery(sql, [sellerId, data.title, data.description, data.price])
 			.then(ret => {
 				if (ret !== 1) {
 					throw Error('Insert failed.');
@@ -44,9 +44,9 @@ function validateTicket(payload) {
 	let isFormValid = true;
 	const errors = {};
 
-	if (!payload || typeof payload.listingTitle !== 'string' || payload.listingTitle.trim().length === 0) {
+	if (!payload || typeof payload.title !== 'string' || payload.title.trim().length === 0) {
 		isFormValid = false;
-		errors.listingTitle = 'Please enter a listing title.';
+		errors.title = 'Please enter a listing title.';
 	}
 	if (!payload || typeof payload.description !== 'string' || payload.description.trim().length === 0) {
 		isFormValid = false;

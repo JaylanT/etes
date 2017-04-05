@@ -17,6 +17,15 @@ function executeSql(sql, executeStmt) {
 }
 
 module.exports = {
+	query(sql) {
+		return pool.openAsync(config)
+			.then(conn => {
+				return conn.query(sql)
+					.finally(() => conn.close());
+			})
+			.catch(err => { throw Error(err.message) });
+	},
+
 	execute(sql, bindingParameters) {
 		function executeStmt(stmt) {
 			return stmt.executeAsync(bindingParameters)
