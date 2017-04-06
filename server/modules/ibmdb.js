@@ -9,7 +9,8 @@ function executeSql(sql, executeStmt) {
 		.then(conn => {
 			return conn.prepare(sql)
 				.then(stmt => {
-					return executeStmt(stmt);
+					return executeStmt(stmt)
+						.finally(() => stmt.closeSync());
 				})
 				.finally(() => conn.close());
 		})
@@ -32,16 +33,14 @@ module.exports = {
 					.then(result => {
 						return result.fetchAllAsync()
 							.finally(() => result.closeSync());
-					})
-					.finally(() => stmt.closeSync());
+					});
 		}
 		return executeSql(sql, executeStmt);
 	},
 
 	executeNonQuery(sql, bindingParameters) {
 		function executeStmt(stmt) {
-			return stmt.executeNonQueryAsync(bindingParameters)
-				.finally(() => stmt.closeSync());
+			return stmt.executeNonQueryAsync(bindingParameters);
 		}
 		return executeSql(sql, executeStmt);
 	}
