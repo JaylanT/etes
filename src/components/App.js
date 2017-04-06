@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
-import config from './config';
-import utils from './utils/fetch-utils';
+import config from '../config';
+import utils from '../utils/fetch-utils';
 import 'whatwg-fetch';
 
-class App extends Component {
+
+class Tickets extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -14,12 +14,12 @@ class App extends Component {
 	}
 
 	loadData() {
-		fetch(config.apiUrl + '/test')
+		fetch(config.apiUrl + '/tickets')
 			.then(utils.checkStatus)
 			.then(utils.parseJSON)
 			.then(data => {
-				this.setState({ data });
 				console.log(data);
+				this.setState({ data: data.tickets });
 			})
 			.catch(err => console.log(err));
 	}
@@ -30,19 +30,15 @@ class App extends Component {
 	
 	render() {
 		return (
-			<div className="App">
-				<div className="App-header">
-					<img src={logo} className="App-logo" alt="logo" />
-					<h2>Welcome to React</h2>
-				</div>
-				<ul>
+			<div className="Tickets">
+				<div>
 					{this.state.data.map(data =>
-						<li key={data.NAME}>{data.NAME}</li>
+						<div className="listing" key={data.TICKET_ID}>{data.TITLE} - ${data.PRICE}</div>
 					)}
-				</ul>
+				</div>
 			</div>
 		);
 	}
 }
 
-export default App;
+export default Tickets;
