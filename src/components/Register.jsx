@@ -20,7 +20,7 @@ class Register extends Component {
 				<div className="uk-margin">
 					<div className="uk-inline">
 						<span className="uk-form-icon uk-form-icon-flip" data-uk-icon="icon: lock"></span>
-						<input className="uk-input" type="text"/>
+						<input className="uk-input" type="password"/>
 					</div>
 				</div>
 
