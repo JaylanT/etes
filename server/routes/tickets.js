@@ -15,8 +15,8 @@ router.route('/')
 		const offset = (page - 1) * limit;
 		const params = [];
 
-		let sql = 'SELECT T.*, U.NAME AS SELLER FROM TICKETS T, USERS U ' +
-					 'WHERE T.SELLER_ID = U.USER_ID ';
+		let sql = 'SELECT T.* FROM TICKETS T ';;
+
 		if (q) {
 			sql += 'AND (CONTAINS(T.TITLE, ?) = 1 OR CONTAINS(T.DESCRIPTION, ?) = 1) ';
 			params.push(q, q);
@@ -30,7 +30,7 @@ router.route('/')
 		ibmdb.execute(sql, params)
 			.then(data => {
 				if (data.length === 0) {
-					res.send('No tickets available.');
+					res.send({ message: 'No tickets available.' });
 				} else {
 					let sql2 = 'SELECT COUNT(*) AS COUNT FROM TICKETS T ';
 					const params2 = [];
@@ -40,6 +40,9 @@ router.route('/')
 					} 
 					return ibmdb.execute(sql2, params2)
 						.then(data2 => {
+							if (data2.length === 0)
+								return res.status(500).send({ message: 'Unknown database error.' });
+
 							const count = data2[0].COUNT;
 							const links = generateLinks(count, limit, page, q, order);
 							res.links(links);
@@ -91,9 +94,8 @@ router.route('/:id')
 	.get((req, res, next) => {
 		const ticketId = req.params.id;
 
-		const sql = 'SELECT T.*, U.NAME AS SELLER FROM TICKETS T, USERS U ' +
-						'WHERE T.TICKET_ID = ? ' +
-						'AND T.SELLER_ID = U.USER_ID';
+		const sql = 'SELECT T.* FROM TICKETS T ' +
+						'WHERE T.TICKET_ID = ? '; 
 
 		ibmdb.execute(sql, [ticketId])
 			.then(data => {

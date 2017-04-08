@@ -6,24 +6,19 @@ import textUtils from '../utils/text';
 import 'whatwg-fetch';
 
 
-class Register extends Component {
+class Login extends Component {
 	constructor(props) {
 		super(props);
-		this.register = this.register.bind(this);
+		this.login = this.login.bind(this);
 	}
 
-	register(e) {
+	login(e) {
 		e.preventDefault();
 		const t = e.target;
 
-		const name = t.name.value.trim(),
-				email = t.email.value.trim(),
+		const email = t.email.value.trim(),
 				password = t.password.value;
 
-		if (!name) {
-			t.name.className += " uk-form-danger";
-			return;
-		}
 		if (!email || !textUtils.validateEmail(email)) {
 			t.email.className += " uk-form-danger";
 			return;
@@ -33,14 +28,13 @@ class Register extends Component {
 			return;
 		}
 
-		fetch(config.apiUrl + '/auth/register', {
+		fetch(config.apiUrl + '/auth/login', {
 			method: 'POST',
 			headers: {
 				"Content-Type": "application/json"
 			},
 			mode: 'cors',
 			body: JSON.stringify({
-				name,
 				email,
 				password
 			})
@@ -57,15 +51,9 @@ class Register extends Component {
 
 	render() {
 		return (
-			<form className="uk-position-center" onSubmit={this.register}>
+			<form className="uk-position-center" onSubmit={this.login}>
 				<div className="uk-margin">
-					<h3 className="uk-text-center">Sign up for ETES</h3>
-				</div>
-				<div className="uk-margin">
-					<div className="uk-inline">
-						<span className="uk-form-icon uk-form-icon-flip" data-uk-icon="icon: user"></span>
-						<input className="uk-input" type="text" placeholder="Name" name="name" required/>
-					</div>
+					<h3 className="uk-text-center">Sign in to your account</h3>
 				</div>
 				<div className="uk-margin">
 					<div className="uk-inline">
@@ -81,10 +69,10 @@ class Register extends Component {
 					</div>
 				</div>
 
-				<button className="uk-button uk-button-primary uk-width-1-1">Register</button>
+				<button className="uk-button uk-button-primary uk-width-1-1">Login</button>
 			</form>
 		);
 	}
 }
 
-export default Register;
+export default Login;

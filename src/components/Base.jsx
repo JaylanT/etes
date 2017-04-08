@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import Navbar from './Navbar';
 import Tickets from './Tickets';
 import Register from './Register';
+import Login from './Login';
+import Logout from './Logout';
 import {
 	Route,
 	Switch
@@ -12,11 +14,13 @@ class Base extends Component {
 	render() {
 		return (
 			<div>
-				<Navbar/>
+				<Navbar />
 				<div className="uk-container uk-container-expand">
 					<Switch>
-						<Route exact path='/' component={Tickets}/>
-						<Route path="/register" component={Register}/>
+						<Route exact path='/' component={Tickets} />
+						<Route path="/register" component={Register} />
+						<Route path="/login" component={Login} />
+						<Route path="/logout" component={Logout} />
 					</Switch>
 				</div>
 			</div>
