@@ -17,12 +17,12 @@ module.exports = new LocalStrategy(
 	},
 	(req, email, password, done) => {
 		email = email.trim();
-		name = req.body.name.trim();
+		const username = req.body.username.trim();
 
 		hashPassword(password)
 			.then(hash => {
-				const sql = 'INSERT INTO USERS (EMAIL, PASSWORD, NAME) VALUES (?, ?, ?)';
-				return ibmdb.executeNonQuery(sql, [email, hash, name]);
+				const sql = 'INSERT INTO USERS (EMAIL, PASSWORD, USERNAME) VALUES (?, ?, ?)';
+				return ibmdb.executeNonQuery(sql, [email, hash, username]);
 			})
 			.then(ret => done(null, ret))
 			.catch(err => done(err));

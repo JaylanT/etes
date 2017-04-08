@@ -34,13 +34,12 @@ module.exports = new LocalStrategy(
 						}
 
 						const payload = {
-							sub: foundUser.USER_ID
+							sub: foundUser.USER_ID,
+							username: foundUser.USERNAME
 						};
 						const token = jwt.sign(payload, jwtConfig.secret);
 
 						done(null, {
-							name: foundUser.NAME,
-							email: foundUser.EMAIL,
 							token: token
 						});
 					});

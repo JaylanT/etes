@@ -15,10 +15,11 @@ router.route('/')
 		const offset = (page - 1) * limit;
 		const params = [];
 
-		let sql = 'SELECT T.* FROM TICKETS T ';;
+		let sql = 'SELECT T.* FROM TICKETS T ' +
+					 'WHERE T.SOLD = 0 ';
 
 		if (q) {
-			sql += 'AND (CONTAINS(T.TITLE, ?) = 1 OR CONTAINS(T.DESCRIPTION, ?) = 1) ';
+			sql += 'WHERE (CONTAINS(T.TITLE, ?) = 1 OR CONTAINS(T.DESCRIPTION, ?) = 1) ';
 			params.push(q, q);
 		} 
 
@@ -94,8 +95,9 @@ router.route('/:id')
 	.get((req, res, next) => {
 		const ticketId = req.params.id;
 
-		const sql = 'SELECT T.* FROM TICKETS T ' +
-						'WHERE T.TICKET_ID = ? '; 
+		const sql = 'SELECT T.*, U.USERNAME AS SELLER ' +
+						'FROM TICKETS T, USERS U ' + 
+						'WHERE T.TICKET_ID = ? AND T.SELLER_ID = U.USER_ID'; 
 
 		ibmdb.execute(sql, [ticketId])
 			.then(data => {

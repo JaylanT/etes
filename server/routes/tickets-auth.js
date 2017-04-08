@@ -24,10 +24,10 @@ router.route('/')
 			return res.status(401).end();
 		}
 
-		const sql = 'INSERT INTO TICKETS (SELLER_ID, TITLE, DESCRIPTION, PRICE, CREATED_AT) ' +
-						'VALUES (?, ?, ?, ?, CURRENT TIMESTAMP)';
+		const sql = 'INSERT INTO TICKETS (SELLER_ID, TITLE, DESCRIPTION, PRICE, CATEGORY, CREATED_AT) ' +
+						'VALUES (?, ?, ?, ?, ?, CURRENT TIMESTAMP)';
 
-		ibmdb.executeNonQuery(sql, [sellerId, data.title, data.description, data.price])
+		ibmdb.executeNonQuery(sql, [sellerId, data.title, data.description, data.price, data.category])
 			.then(ret => {
 				if (ret !== 1) {
 					throw Error('Insert failed.');
@@ -55,6 +55,11 @@ function validateTicket(payload) {
 	if (!payload || isNaN(payload.price) || payload.price <= 0) {
 		isFormValid = false;
 		errors.price = 'Please enter a price above $0.00.';
+	}
+	const categories = ['Music', 'Sports', 'Arts & Theater', 'Family', 'Other'];
+	if (!payload || typeof payload.category !== 'string' || categories.indexOf(payload.category) < 0) {
+		isFormValid = false;
+		errors.category = 'Please select a category.';
 	}
 
 	const message = isFormValid ? '' : 'Form validation failed.';
