@@ -78,9 +78,9 @@ function validateSignupForm(payload) {
 		isFormValid = false;
 		errors.password = 'Password must be at least 8 characters long.';
 	}
-	if (!payload || typeof payload.name !== 'string' || payload.name.trim().legnth === 0) {
+	if (!payload || typeof payload.username !== 'string' || payload.username.trim().legnth === 0) {
 		isFormValid = false;
-		errors.name = 'Please provide your name.';
+		errors.name = 'Please provide a username.';
 	}
 
 	const message = isFormValid ? '' : 'Form validation failed.';
