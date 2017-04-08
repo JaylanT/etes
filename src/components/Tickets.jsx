@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Spinner from './Spinner';
 import config from '../config';
-import utils from '../utils/fetch-utils';
+import utils from '../utils/fetch';
 import 'whatwg-fetch';
 
 
@@ -23,7 +23,7 @@ class Tickets extends Component {
 				console.log(data);
 				this.setState({ 
 					ready: true,
-					data: data.tickets	
+					data: data.tickets || []	
 				});
 			})
 			.catch(err => console.log(err));

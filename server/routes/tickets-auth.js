@@ -32,7 +32,7 @@ router.route('/')
 				if (ret !== 1) {
 					throw Error('Insert failed.');
 				}
-				res.send('Ticket inserted.');
+				res.send({ message: 'Ticket inserted.' });
 			})
 			.catch(err => res.status(400).send({
 				status: 400,

@@ -1,7 +1,8 @@
-module.exports = {
+export default {
 	checkStatus(res) {
 		if (!res.ok) {
-			throw Error(res.statusText);
+			return res.json()
+				.then(err => { throw Error(err.message) });
 		}
 		return res;
 	},
@@ -9,5 +10,5 @@ module.exports = {
 	parseJSON(res) {
 		return res.json();
 	}
-}
+};
 
