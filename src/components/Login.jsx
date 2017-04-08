@@ -4,12 +4,14 @@ import config from '../config';
 import fetchUtils from '../utils/fetch';
 import textUtils from '../utils/text';
 import 'whatwg-fetch';
+const UIkit = window.UIkit;
 
 
 class Login extends Component {
 	constructor(props) {
 		super(props);
 		this.login = this.login.bind(this);
+		this.state = { error: null };
 	}
 
 	login(e) {
@@ -46,14 +48,18 @@ class Login extends Component {
 			Auth.authenticateUser(token);
 			this.props.history.push('/');
 		})
-		.catch(err => console.log(err));
+		.catch(err => {
+			console.log(err)
+			UIkit.notification('test');
+			this.setState({ error: err.message });
+		});
 	}
 
 	render() {
 		return (
 			<form className="uk-position-center" onSubmit={this.login}>
 				<div className="uk-margin">
-					<h3 className="uk-text-center">Sign in to your account</h3>
+					<h3 className="uk-text-center">Sign in to ETES</h3>
 				</div>
 				<div className="uk-margin">
 					<div className="uk-inline">
@@ -68,6 +74,10 @@ class Login extends Component {
 						<input className="uk-input" type="password" placeholder="Password" name="password" required minLength="8"/>
 					</div>
 				</div>
+
+				{this.state.error &&
+					<p className="uk-text-center uk-text-small">{this.state.error}</p>
+				}
 
 				<button className="uk-button uk-button-primary uk-width-1-1">Login</button>
 			</form>

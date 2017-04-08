@@ -10,18 +10,19 @@ class Register extends Component {
 	constructor(props) {
 		super(props);
 		this.register = this.register.bind(this);
+		this.state = { error: null };
 	}
 
 	register(e) {
 		e.preventDefault();
 		const t = e.target;
 
-		const name = t.name.value.trim(),
+		const username = t.username.value.trim(),
 				email = t.email.value.trim(),
 				password = t.password.value;
 
-		if (!name) {
-			t.name.className += " uk-form-danger";
+		if (!username) {
+			t.username.className += " uk-form-danger";
 			return;
 		}
 		if (!email || !textUtils.validateEmail(email)) {
@@ -40,7 +41,7 @@ class Register extends Component {
 			},
 			mode: 'cors',
 			body: JSON.stringify({
-				name,
+				username,
 				email,
 				password
 			})
@@ -52,7 +53,10 @@ class Register extends Component {
 			Auth.authenticateUser(token);
 			this.props.history.push('/');
 		})
-		.catch(err => console.log(err));
+		.catch(err => {
+			console.log(err)
+			this.setState({ error: err.message });
+		});
 	}
 
 	render() {
@@ -64,7 +68,7 @@ class Register extends Component {
 				<div className="uk-margin">
 					<div className="uk-inline">
 						<span className="uk-form-icon uk-form-icon-flip" data-uk-icon="icon: user"></span>
-						<input className="uk-input" type="text" placeholder="Name" name="name" required/>
+						<input className="uk-input" type="text" placeholder="Username" name="username" required/>
 					</div>
 				</div>
 				<div className="uk-margin">
@@ -80,6 +84,10 @@ class Register extends Component {
 						<input className="uk-input" type="password" placeholder="Password" name="password" required minLength="8"/>
 					</div>
 				</div>
+
+				{this.state.error &&
+					<p className="uk-text-center uk-text-small">{this.state.error}</p>
+				}
 
 				<button className="uk-button uk-button-primary uk-width-1-1">Register</button>
 			</form>
