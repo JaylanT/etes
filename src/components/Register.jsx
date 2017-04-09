@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import Auth from '../modules/Auth';
 import config from '../config';
 import fetchUtils from '../utils/fetch';
 import textUtils from '../utils/text';
 import 'whatwg-fetch';
+import './css/Register.css';
 
 
 class Register extends Component {
@@ -11,6 +13,10 @@ class Register extends Component {
 		super(props);
 		this.register = this.register.bind(this);
 		this.state = { error: null };
+	}
+
+	componentWillMount() {
+		if (Auth.isUserAuthenticated()) this.props.history.replace('/');
 	}
 
 	register(e) {
@@ -22,22 +28,20 @@ class Register extends Component {
 				password = t.password.value;
 
 		if (!username) {
-			t.username.className += " uk-form-danger";
+			t.username.className += ' uk-form-danger';
 			return;
-		}
-		if (!email || !textUtils.validateEmail(email)) {
-			t.email.className += " uk-form-danger";
+		} else if (!email || !textUtils.validateEmail(email)) {
+			t.email.className += ' uk-form-danger';
 			return;
-		}
-		if (!password || password.length < 8) {
-			t.password.className += " uk-form-danger";
+		} else if (!password || password.length < 8) {
+			t.password.className += ' uk-form-danger';
 			return;
 		}
 
 		fetch(config.apiUrl + '/auth/register', {
 			method: 'POST',
 			headers: {
-				"Content-Type": "application/json"
+				'Content-Type': 'application/json'
 			},
 			mode: 'cors',
 			body: JSON.stringify({
@@ -61,36 +65,39 @@ class Register extends Component {
 
 	render() {
 		return (
-			<form className="uk-position-center" onSubmit={this.register}>
-				<div className="uk-margin">
-					<h3 className="uk-text-center">Sign up for ETES</h3>
-				</div>
-				<div className="uk-margin">
-					<div className="uk-inline">
-						<span className="uk-form-icon uk-form-icon-flip" data-uk-icon="icon: user"></span>
-						<input className="uk-input" type="text" placeholder="Username" name="username" required/>
+			<div className="uk-position-center">
+				<form id="register-form" className="uk-animation-slide-top-small" onSubmit={this.register}>
+					<div className="uk-margin">
+						<h3 className="uk-text-center">Sign up for ETES</h3>
 					</div>
-				</div>
-				<div className="uk-margin">
-					<div className="uk-inline">
-						<span className="uk-form-icon uk-form-icon-flip" data-uk-icon="icon: mail"></span>
-						<input className="uk-input" type="email" placeholder="Email" name="email" required/>
+					<div className="uk-margin">
+						<div className="uk-inline uk-width-1">
+							<span className="uk-form-icon uk-form-icon-flip" data-uk-icon="icon: user"></span>
+							<input className="uk-input" type="text" placeholder="Username" name="username" autoFocus="true" required/>
+						</div>
 					</div>
-				</div>
-
-				<div className="uk-margin">
-					<div className="uk-inline">
-						<span className="uk-form-icon uk-form-icon-flip" data-uk-icon="icon: lock"></span>
-						<input className="uk-input" type="password" placeholder="Password" name="password" required minLength="8"/>
+					<div className="uk-margin">
+						<div className="uk-inline uk-width-1">
+							<span className="uk-form-icon uk-form-icon-flip" data-uk-icon="icon: mail"></span>
+							<input className="uk-input" type="email" placeholder="Email" name="email" required/>
+						</div>
 					</div>
-				</div>
 
-				{this.state.error &&
-					<p className="uk-text-center uk-text-small">{this.state.error}</p>
-				}
+					<div className="uk-margin">
+						<div className="uk-inline uk-width-1">
+							<span className="uk-form-icon uk-form-icon-flip" data-uk-icon="icon: lock"></span>
+							<input className="uk-input" type="password" placeholder="Password" name="password" required minLength="8"/>
+						</div>
+					</div>
 
-				<button className="uk-button uk-button-primary uk-width-1-1">Register</button>
-			</form>
+					{this.state.error &&
+						<p className="uk-text-center uk-text-small uk-animation-fade uk-animation-fast">{this.state.error}</p>
+					}
+
+					<button className="uk-button uk-button-primary uk-width-1-1">Register</button>
+					<p className="uk-text-center">Already a member? <Link to="/login">Login</Link></p>
+				</form>
+			</div>
 		);
 	}
 }

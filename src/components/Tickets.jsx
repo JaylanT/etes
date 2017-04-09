@@ -3,6 +3,7 @@ import Spinner from './Spinner';
 import config from '../config';
 import utils from '../utils/fetch';
 import 'whatwg-fetch';
+import './css/Tickets.css';
 
 
 class Tickets extends Component {
@@ -39,7 +40,7 @@ class Tickets extends Component {
 				{!this.state.ready &&
 					<Spinner/>
 				}
-				<div className="uk-text-center">
+				<div className="uk-text-center uk-animation-slide-top-small">
 					{this.state.data.map(data =>
 						<div className="listing" key={data.TICKET_ID}>{data.TITLE} - ${data.PRICE}</div>
 					)}

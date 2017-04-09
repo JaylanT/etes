@@ -11,15 +11,21 @@ class Navbar extends Component {
 		}
 	}
 
+	getUsername() {
+		const token = Auth.getToken(),
+				base64url = token.split('.')[1],
+				base64 = base64url.replace('-', '+').replace('_', '/'),
+				decoded = JSON.parse(window.atob(base64));
+		return decoded.username;
+	}
+
 	render() {
 		return (
 			<nav className="uk-navbar-container" data-uk-navbar>
 				<div className="uk-navbar-left">
-
 					<ul className="uk-navbar-nav">
 						<Link to="/" className="uk-navbar-item uk-logo">ETES</Link>
 					</ul>
-
 				</div>
 
 				<div className="uk-navbar-right">
@@ -30,6 +36,7 @@ class Navbar extends Component {
 							</ul>
 							:
 							<ul className="uk-navbar-nav">
+								<li><Link to="/profile">{this.getUsername()}</Link></li>
 								<li><Link to="/logout">Logout</Link></li>
 							</ul>
 						}
