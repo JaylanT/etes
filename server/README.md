@@ -78,6 +78,7 @@ Example for GET /ticket/1
 }
 
 ### POST /tickets
+Requires JWT to be passed in header for authentication. JWT is given after successful login.
 #### Data Parameters
 {
 <br/>
