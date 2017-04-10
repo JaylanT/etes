@@ -1,18 +1,18 @@
 export default {
-  authenticateUser(token) {
-    localStorage.setItem('token', token);
-  },
+	authenticateUser(token) {
+		localStorage.setItem('token', token);
+	},
 
-  isUserAuthenticated() {
-    return localStorage.getItem('token') !== null;
-  },
+	isUserAuthenticated() {
+		return localStorage.getItem('token') !== null;
+	},
 
-  deauthenticateUser() {
-    localStorage.removeItem('token');
-  },
+	deauthenticateUser() {
+		localStorage.removeItem('token');
+	},
 
-  getToken() {
-    return localStorage.getItem('token');
-  }
+	getToken() {
+		return localStorage.getItem('token');
+	}
 };
 

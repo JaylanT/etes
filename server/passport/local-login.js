@@ -19,16 +19,17 @@ module.exports = new LocalStrategy(
 		email = email.trim();
 		const sql = 'SELECT * FROM USERS WHERE EMAIL = ?';
 
-		ibmdb.execute(sql, [email])
-			.then(data => {
-				if (data.length === 0) {
-					return done(null, false, { message: 'Incorrect email or password.' });
-				}
+		ibmdb.open().then(conn => {
+			return ibmdb.prepareAndExecute(conn, sql, [email])
+				.then(data => {
+					conn.close();
+					if (data.length === 0) {
+						return done(null, false, { message: 'Incorrect email or password.' });
+					}
 
-				// user with email found, check password hash
-				const foundUser = data[0];
-				return comparePassword(foundUser, password)
-					.then(match => {
+					// user with email found, check password hash
+					const foundUser = data[0];
+					return comparePassword(foundUser, password).then(match => {
 						if (!match) {
 							return done(null, false, { message: 'Incorrect email or password.' });
 						}
@@ -43,7 +44,8 @@ module.exports = new LocalStrategy(
 							token: token
 						});
 					});
-			})
-			.catch(err => done(err));
+				});
+		})
+		.catch(err => done(err));
 	}
 );

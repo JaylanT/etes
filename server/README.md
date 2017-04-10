@@ -50,7 +50,7 @@ Run 'npm install' to install all dependencies, then 'node index' to run.
 &nbsp;&nbsp;&nbsp;&nbsp;"count": 25
 <br/>
 }
-
+<br/>
 ### GET /tickets/:id
 #### Path Parameters
 id: Ticket ID
@@ -76,7 +76,7 @@ Example for GET /ticket/1
 &nbsp;&nbsp;&nbsp;&nbsp;"SOLD": 0,
 <br/>
 }
-
+<br/>
 ### POST /tickets
 Requires JWT to be passed in header for authentication. JWT is given after successful login.
 #### Data Parameters

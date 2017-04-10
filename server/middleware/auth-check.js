@@ -13,16 +13,21 @@ module.exports = (req, res, next) => {
 		const userId = decoded.sub;
 		const sql = 'SELECT * FROM USERS WHERE USER_ID = ?';
 
-		ibmdb.execute(sql, [userId])
-			.then(data => {
-				if (data.length === 0) {
-					return res.status(401).end();
-				}
-				return next();
-			})
-			.catch(err => res.status(400).send({
+		ibmdb.open().then(conn => {
+			return ibmdb.prepareAndExecute(conn, sql, [userId])
+				.then(data => {
+					conn.close();
+					if (data.length === 0) {
+						return res.status(401).end();
+					}
+					return next();
+				});
+		})
+		.catch(err => {
+			res.status(400).send({
 				status: 400,
 				message: err.message
-			}));
+			});
+		});
 	});
 };

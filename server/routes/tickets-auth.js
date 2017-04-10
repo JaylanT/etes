@@ -26,19 +26,25 @@ router.route('/')
 
 		const sql = 'INSERT INTO TICKETS (SELLER_ID, TITLE, DESCRIPTION, PRICE, CATEGORY, CREATED_AT) ' +
 						'VALUES (?, ?, ?, ?, ?, CURRENT TIMESTAMP)';
+		const params = [sellerId, data.title, data.description, data.price, data.category];
 
-		ibmdb.executeNonQuery(sql, [sellerId, data.title, data.description, data.price, data.category])
-			.then(ret => {
-				if (ret !== 1) {
-					throw Error('Insert failed.');
-				}
-				res.send({ message: 'Ticket inserted.' });
-			})
-			.catch(err => res.status(400).send({
+		ibmdb.open().then(conn => {
+			return ibmdb.prepareAndExecuteNonQuery(conn, sql, params)
+				.then(ret => {
+					conn.close();
+					if (ret !== 1) {
+						throw Error('Insert failed.');
+					}
+					res.send({ message: 'Ticket inserted.' });
+				});
+		})
+		.catch(err => {
+			res.status(400).send({
 				status: 400,
-				message: err.message
-			}));
-	})
+				message: err.message || 'An unknown erorr has occurred.'
+			});
+		});
+	});
 
 function validateTicket(payload) {
 	let isFormValid = true;

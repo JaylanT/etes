@@ -19,12 +19,18 @@ module.exports = new LocalStrategy(
 		email = email.trim();
 		const username = req.body.username.trim();
 
-		hashPassword(password)
-			.then(hash => {
-				const sql = 'INSERT INTO USERS (EMAIL, PASSWORD, USERNAME) VALUES (?, ?, ?)';
-				return ibmdb.executeNonQuery(sql, [email, hash, username]);
-			})
-			.then(ret => done(null, ret))
-			.catch(err => done(err));
+		hashPassword(password).then(hash => {
+			const sql = 'INSERT INTO USERS (EMAIL, PASSWORD, USERNAME) VALUES (?, ?, ?)';
+			const params = [email, hash, username];
+
+			return ibmdb.open().then(conn => {
+				return ibmdb.prepareAndExecuteNonQuery(conn, sql, params)
+					.then(ret => {
+						conn.close();
+						done(null, ret);
+					});
+			});
+		})
+		.catch(err => done(err));
 	}
 );
