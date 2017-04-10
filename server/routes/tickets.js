@@ -14,8 +14,7 @@ router.route('/')
 		// limit max of 100
 		if (limit > 100) limit = 100;
 		
-		let sqlTickets = 'SELECT T.* FROM TICKETS T ' +
-					 'WHERE T.SOLD = 0 ';
+		let sqlTickets = 'SELECT T.* FROM TICKETS T WHERE T.SOLD = 0 ';
 		const paramsTickets = [];
 
 		let sqlCount = 'SELECT COUNT(*) AS COUNT FROM TICKETS T ';

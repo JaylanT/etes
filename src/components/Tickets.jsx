@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import Spinner from './Spinner';
 import config from '../config';
 import utils from '../utils/fetch';
@@ -24,7 +25,8 @@ class Tickets extends Component {
 				console.log(data);
 				this.setState({ 
 					ready: true,
-					data: data.tickets || []	
+					data: data.tickets || [],
+					count: data.count
 				});
 			})
 			.catch(err => console.log(err));
@@ -37,14 +39,45 @@ class Tickets extends Component {
 	render() {
 		return (
 			<div>
-				{!this.state.ready &&
+				{!this.state.ready ?
 					<Spinner/>
+				:
+					<div id="tickets-table" className="uk-container">
+						<h2 className="uk-animation-slide-left-small">Newest Listings</h2>
+						<table className="uk-table uk-table-middle uk-table-hover uk-animation-slide-left-small">
+							<caption>{this.state.count} results</caption>
+							<tbody>
+								{this.state.data.map(data =>
+									<tr key={data.TICKET_ID}>
+										<td className="uk-table-link">
+											<Link className="uk-link-reset" to={`/tickets/${data.TICKET_ID}`}>
+												<dl className="uk-description-list">
+													<dd>{data.TITLE}</dd>
+													<dt>{data.DESCRIPTION}</dt>
+												</dl>
+											</Link>
+										</td>
+										<td className="uk-table-link">
+											<Link className="uk-link-reset" to={`/tickets/${data.TICKET_ID}`}>
+												${data.PRICE}
+											</Link>
+										</td>
+										<td className="uk-table-link">
+											<Link className="uk-link-reset" to={`/tickets/${data.TICKET_ID}`}>
+												{data.CATEGORY}
+											</Link>
+										</td>
+										<td className="uk-table-link uk-width-small">
+											<Link className="uk-link-reset" to={`/tickets/${data.TICKET_ID}`}>
+												{data.CREATED_AT}
+											</Link>
+										</td>
+									</tr>
+								)}
+							</tbody>
+						</table>
+					</div>
 				}
-				<div className="uk-text-center uk-animation-slide-top-small">
-					{this.state.data.map(data =>
-						<div className="listing" key={data.TICKET_ID}>{data.TITLE} - ${data.PRICE}</div>
-					)}
-				</div>
 			</div>
 		);
 	}
