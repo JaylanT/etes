@@ -8,35 +8,44 @@ router.route('/')
 		const limit = parseInt(req.query.limit) || 30,
 				page = parseInt(req.query.page) || 1,
 				order = req.query.order,
-				q = req.query.q;
+				q = req.query.q,
+				category = req.query.category;
 
 		// limit max of 100
 		if (limit > 100) limit = 100;
 		
-		let sql = 'SELECT T.* FROM TICKETS T ' +
+		let sqlTickets = 'SELECT T.* FROM TICKETS T ' +
 					 'WHERE T.SOLD = 0 ';
-		const params = [];
+		const paramsTickets = [];
 
-		let sql2 = 'SELECT COUNT(*) AS COUNT FROM TICKETS T ';
-		const params2 = [];
+		let sqlCount = 'SELECT COUNT(*) AS COUNT FROM TICKETS T ';
+		const paramsCount = [];
 
 		if (q) {
-			const whereClause = 'WHERE (CONTAINS(T.TITLE, ?) = 1 OR CONTAINS(T.DESCRIPTION, ?) = 1) ';
-			sql += whereClause;
-			params.push(q, q);
-			sql2 += whereClause;
-			params2.push(q, q);
+			sqlTickets += 'AND (CONTAINS(T.TITLE, ?) = 1 OR CONTAINS(T.DESCRIPTION, ?) = 1) ';
+			paramsTickets.push(q, q);
+			sqlCount += 'WHERE (CONTAINS(T.TITLE, ?) = 1 OR CONTAINS(T.DESCRIPTION, ?) = 1) ';
+			paramsCount.push(q, q);
 		} 
 
-		const offset = (page - 1) * limit;
-		params.push(limit, offset);
+		if (category) {
+			sqlTickets += 'AND ';
+			sqlCount += q ? 'AND ' : 'WHERE ';
 
+			sqlTickets += 'CATEGORY = ? ';
+			paramsTickets.push(category);
+			sqlCount += 'CATEGORY = ? ';
+			paramsCount.push(category);
+		}
+
+		const offset = (page - 1) * limit;
+		paramsTickets.push(limit, offset);
 		const orderIdentifier = getOrderIdentifier(order);
-		sql += 'ORDER BY ' + orderIdentifier + ' LIMIT ? OFFSET ?';
+		sqlTickets += 'ORDER BY ' + orderIdentifier + ' LIMIT ? OFFSET ?';
 
 		ibmdb.open().then(conn => {
-			const ticketsQuery = ibmdb.prepareAndExecute(conn, sql, params);
-			const countQuery = ibmdb.prepareAndExecute(conn, sql2, params2);
+			const ticketsQuery = ibmdb.prepareAndExecute(conn, sqlTickets, paramsTickets);
+			const countQuery = ibmdb.prepareAndExecute(conn, sqlCount, paramsCount);
 
 			return Promise.all([ticketsQuery, countQuery]).then(values => {
 				conn.close();
