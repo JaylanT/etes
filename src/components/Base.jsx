@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Navbar from './Navbar';
-import Tickets from './Tickets';
+import Home from './Home';
 import Register from './Register';
 import Login from './Login';
 import Logout from './Logout';
@@ -17,7 +17,7 @@ class Base extends Component {
 				<Navbar />
 				<div className="uk-container uk-container-expand">
 					<Switch>
-						<Route exact path='/' component={Tickets} />
+						<Route exact path='/' component={Home} />
 						<Route path="/register" component={Register} />
 						<Route path="/login" component={Login} />
 						<Route path="/logout" component={Logout} />

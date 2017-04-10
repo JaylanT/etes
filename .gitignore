@@ -18,6 +18,5 @@ yarn-error.log*
 
 *.swp
 
-server/config.js
 server/config/db-config.js
 server/config/jwt-config.js

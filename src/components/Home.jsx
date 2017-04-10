@@ -4,10 +4,10 @@ import Spinner from './Spinner';
 import config from '../config';
 import utils from '../utils/fetch';
 import 'whatwg-fetch';
-import './css/Tickets.css';
+import './css/Home.css';
 
 
-class Tickets extends Component {
+class Home extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -57,12 +57,12 @@ class Tickets extends Component {
 												</dl>
 											</Link>
 										</td>
-										<td className="uk-table-link">
+										<td className="uk-table-link uk-width-small">
 											<Link className="uk-link-reset" to={`/tickets/${data.TICKET_ID}`}>
 												${data.PRICE}
 											</Link>
 										</td>
-										<td className="uk-table-link">
+										<td className="uk-table-link uk-width-small">
 											<Link className="uk-link-reset" to={`/tickets/${data.TICKET_ID}`}>
 												{data.CATEGORY}
 											</Link>
@@ -83,4 +83,4 @@ class Tickets extends Component {
 	}
 }
 
-export default Tickets;
+export default Home;
