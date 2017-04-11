@@ -21,7 +21,6 @@ class Navbar extends Component {
 	}
 
 	focusSearch(e) {
-		console.log(e)
 	}
 
 	search(e) {

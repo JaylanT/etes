@@ -4,6 +4,16 @@ import './css/TicketsTable.css';
 
 
 class TicketsTable extends Component {
+	constructor(props) {
+		super(props);
+		this.renderRow = this.renderRow.bind(this);
+	}
+
+	getFormattedDate(date) {
+		const d = new Date(date.split(' ')[0]);
+		return d.toLocaleString('en-us', { year: 'numeric', month: 'long', day: 'numeric' });
+	}
+
 	renderRow(data) {
 		return (
 			<tr key={data.TICKET_ID}>
@@ -27,7 +37,7 @@ class TicketsTable extends Component {
 				</td>
 				<td className="uk-table-link uk-width-small">
 					<Link className="uk-link-reset" to={`/tickets/${data.TICKET_ID}`}>
-						{data.CREATED_AT}
+						{this.getFormattedDate(data.CREATED_AT)}
 					</Link>
 				</td>
 			</tr>
