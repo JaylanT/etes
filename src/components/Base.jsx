@@ -19,11 +19,11 @@ class Base extends Component {
 				<div className="uk-container uk-container-expand">
 					<Switch>
 						<Route exact path='/' component={Home} />
-						<Route path="/music" component={Tickets} />
-						<Route path="/sports" component={Tickets} />
-						<Route path="/arts" component={Tickets} />
-						<Route path="/family" component={Tickets} />
-						<Route path="/other" component={Tickets} />
+						<Route path="/music" render={()=><Tickets category="Music" />} />
+						<Route path="/sports" render={()=><Tickets category="Sports" />} />
+						<Route path="/arts" render={()=><Tickets category="Arts & Theater" />} />
+						<Route path="/family" render={()=><Tickets category="Family" />} />
+						<Route path="/other" render={()=><Tickets category="Other" />} />
 						<Route path="/register" component={Register} />
 						<Route path="/login" component={Login} />
 						<Route path="/logout" component={Logout} />

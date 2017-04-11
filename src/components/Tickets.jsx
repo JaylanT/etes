@@ -12,13 +12,8 @@ class Tickets extends Component {
 		this.state = {
 			data: [],
 			ready: false,
-			category: null
+			category: props.category
 		}
-	}
-
-	componentWillMount() {
-		const path = this.props.location.pathname.substring(1);
-		this.setState({ category: path });
 	}
 
 	componentDidMount() {
@@ -26,8 +21,7 @@ class Tickets extends Component {
 	}
 	
 	componentWillReceiveProps(nextProps) {
-		const path = nextProps.location.pathname.substring(1);
-		this.setState({ category: path }, () => this.loadData());
+		this.setState({ category: nextProps.category }, () => this.loadData());
 	}
 
 	loadData() {
@@ -47,14 +41,13 @@ class Tickets extends Component {
 	}
 
 	render() {
-		const heading = this.state.category.charAt(0).toUpperCase() + this.state.category.slice(1);
 		return (
 			<div>
 				{!this.state.ready ?
 					<Spinner/>
 				:
 					<div id="tickets-table" className="uk-container">
-						<h2 className="uk-animation-slide-left-small">{heading}</h2>
+						<h2 className="uk-animation-slide-left-small">{this.state.category}</h2>
 						<table className="uk-table uk-table-middle uk-table-hover uk-animation-slide-left-small">
 							<caption>{this.state.count} results</caption>
 							<tbody>
