@@ -32,9 +32,11 @@ router.route('/')
 			sqlCount += q ? 'AND ' : 'WHERE ';
 
 			sqlTickets += 'CATEGORY = ? ';
-			paramsTickets.push(category);
 			sqlCount += 'CATEGORY = ? ';
-			paramsCount.push(category);
+
+			const cat = category.charAt(0).toUpperCase() + category.slice(1);
+			paramsTickets.push(cat);
+			paramsCount.push(cat);
 		}
 
 		const offset = (page - 1) * limit;

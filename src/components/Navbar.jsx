@@ -35,11 +35,11 @@ class Navbar extends Component {
 							<li className="uk-parent">
 								<Link to="/">ETES</Link>
 								<ul className="uk-nav-sub">
-									<li><Link to="/?category=Music">Music</Link></li>
-									<li><Link to="/?category=Sports">Sports</Link></li>
-									<li><Link to="/?category=Arts%20&%20Theater">Arts & Theater</Link></li>
-									<li><Link to="/?category=Family">Family</Link></li>
-									<li><Link to="/?category=Other">Other</Link></li>
+									<li><Link to="/music">Music</Link></li>
+									<li><Link to="/sports">Sports</Link></li>
+									<li><Link to="/arts">Arts & Theater</Link></li>
+									<li><Link to="/family">Family</Link></li>
+									<li><Link to="/other">Other</Link></li>
 								</ul>
 							</li>
 							<li className="uk-nav-divider"></li>
@@ -61,11 +61,11 @@ class Navbar extends Component {
 
 				<div className="nav-overlay uk-navbar-center uk-visible@m">
 					<ul className="uk-navbar-nav">
-						<li><Link to="/?category=Music" className="uk-navbar-item">Music</Link></li>
-						<li><Link to="/?category=Sports" className="uk-navbar-item">Sports</Link></li>
-						<li><Link to="/?category=Arts%20&%20Theater" className="uk-navbar-item">Arts & Theater</Link></li>
-						<li><Link to="/?category=Family" className="uk-navbar-item">Family</Link></li>
-						<li><Link to="/?category=Other" className="uk-navbar-item">Other</Link></li>
+						<li><Link to="/music" className="uk-navbar-item">Music</Link></li>
+						<li><Link to="/sports" className="uk-navbar-item">Sports</Link></li>
+						<li><Link to="/arts" className="uk-navbar-item">Arts & Theater</Link></li>
+						<li><Link to="/family" className="uk-navbar-item">Family</Link></li>
+						<li><Link to="/other" className="uk-navbar-item">Other</Link></li>
 						<li>
 							<a className="uk-navbar-toggle" data-uk-toggle="target: .nav-overlay; animation: uk-animation-fade" href="#">
 								<span className="uk-icon" href="#" data-uk-icon="icon: search"></span>
