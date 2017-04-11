@@ -6,6 +6,7 @@ import Auth from '../modules/Auth';
 class Navbar extends Component {
 	constructor(props) {
 		super(props);
+		this.search = this.search.bind(this);
 		this.state = {
 			data: []
 		}
@@ -17,6 +18,18 @@ class Navbar extends Component {
 				base64 = base64url.replace('-', '+').replace('_', '/'),
 				decoded = JSON.parse(window.atob(base64));
 		return decoded.username;
+	}
+
+	focusSearch(e) {
+		console.log(e)
+	}
+
+	search(e) {
+		e.preventDefault();
+		const t = e.target;
+
+		const search = t.search.value;
+		this.props.history.push('/search?q=' + search);
 	}
 
 	render() {
@@ -35,11 +48,11 @@ class Navbar extends Component {
 							<li className="uk-parent">
 								<Link to="/">ETES</Link>
 								<ul className="uk-nav-sub">
-									<li><Link to="/?category=Music">Music</Link></li>
-									<li><Link to="/?category=Sports">Sports</Link></li>
-									<li><Link to="/?category=Arts%20&%20Theater">Arts & Theater</Link></li>
-									<li><Link to="/?category=Family">Family</Link></li>
-									<li><Link to="/?category=Other">Other</Link></li>
+									<li><Link to="/music">Music</Link></li>
+									<li><Link to="/sports">Sports</Link></li>
+									<li><Link to="/arts">Arts & Theater</Link></li>
+									<li><Link to="/family">Family</Link></li>
+									<li><Link to="/other">Other</Link></li>
 								</ul>
 							</li>
 							<li className="uk-nav-divider"></li>
@@ -61,13 +74,13 @@ class Navbar extends Component {
 
 				<div className="nav-overlay uk-navbar-center uk-visible@m">
 					<ul className="uk-navbar-nav">
-						<li><Link to="/?category=Music" className="uk-navbar-item">Music</Link></li>
-						<li><Link to="/?category=Sports" className="uk-navbar-item">Sports</Link></li>
-						<li><Link to="/?category=Arts%20&%20Theater" className="uk-navbar-item">Arts & Theater</Link></li>
-						<li><Link to="/?category=Family" className="uk-navbar-item">Family</Link></li>
-						<li><Link to="/?category=Other" className="uk-navbar-item">Other</Link></li>
+						<li><Link to="/music" className="uk-navbar-item">Music</Link></li>
+						<li><Link to="/sports" className="uk-navbar-item">Sports</Link></li>
+						<li><Link to="/arts" className="uk-navbar-item">Arts & Theater</Link></li>
+						<li><Link to="/family" className="uk-navbar-item">Family</Link></li>
+						<li><Link to="/other" className="uk-navbar-item">Other</Link></li>
 						<li>
-							<a className="uk-navbar-toggle" data-uk-toggle="target: .nav-overlay; animation: uk-animation-fade" href="#">
+							<a className="uk-navbar-toggle" data-uk-toggle="target: .nav-overlay; animation: uk-animation-fade" onClick={this.focusSearch}>
 								<span className="uk-icon" href="#" data-uk-icon="icon: search"></span>
 							</a>
 						</li>
@@ -76,8 +89,8 @@ class Navbar extends Component {
 
 				<div className="nav-overlay uk-navbar-left uk-flex-1" hidden>
 					<div className="uk-navbar-item uk-width-expand">
-						<form className="uk-search uk-search-navbar uk-width-1-1">
-							<input className="uk-search-input" type="search" placeholder="Search..." autoFocus="true"/>
+						<form className="uk-search uk-search-navbar uk-width-1-1" onSubmit={this.search}>
+							<input className="uk-search-input" type="search" placeholder="Search..." name="search" autoFocus="true"/>
 						</form>
 					</div>
 					<a className="uk-navbar-toggle" data-uk-close data-uk-toggle="target: .nav-overlay; animation: uk-animation-fade" href="#"></a>

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import TicketsTable from './TicketsTable';
 import Spinner from './Spinner';
 import config from '../config';
@@ -6,13 +6,14 @@ import utils from '../utils/fetch';
 import 'whatwg-fetch';
 
 
-class Home extends Component {
+class Tickets extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			data: [],
 			count: 0,
-			ready: false
+			ready: false,
+			category: props.category
 		}
 	}
 
@@ -20,9 +21,13 @@ class Home extends Component {
 		this.loadData();
 	}
 	
+	componentWillReceiveProps(nextProps) {
+		this.setState({ category: nextProps.category }, () => this.loadData());
+	}
+
 	loadData() {
 		this.setState({ ready: false });
-		fetch(config.apiUrl + '/tickets')
+		fetch(config.apiUrl + '/tickets?category=' + encodeURIComponent(this.state.category))
 			.then(utils.checkStatus)
 			.then(utils.parseJSON)
 			.then(data => {
@@ -40,8 +45,8 @@ class Home extends Component {
 		return !this.state.ready ?
 			<Spinner />
 			:
-			<TicketsTable tableHeader="Newest Listings" data={this.state.data} count={this.state.count} />
+			<TicketsTable tableHeader={this.state.category} data={this.state.data} count={this.state.count} />
 	}
 }
 
-export default Home;
+export default Tickets;

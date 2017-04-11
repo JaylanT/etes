@@ -32,8 +32,9 @@ router.route('/')
 			sqlCount += q ? 'AND ' : 'WHERE ';
 
 			sqlTickets += 'CATEGORY = ? ';
-			paramsTickets.push(category);
 			sqlCount += 'CATEGORY = ? ';
+
+			paramsTickets.push(category);
 			paramsCount.push(category);
 		}
 
