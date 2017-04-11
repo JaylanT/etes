@@ -34,9 +34,8 @@ router.route('/')
 			sqlTickets += 'CATEGORY = ? ';
 			sqlCount += 'CATEGORY = ? ';
 
-			const cat = category.charAt(0).toUpperCase() + category.slice(1);
-			paramsTickets.push(cat);
-			paramsCount.push(cat);
+			paramsTickets.push(category);
+			paramsCount.push(category);
 		}
 
 		const offset = (page - 1) * limit;

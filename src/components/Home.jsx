@@ -16,6 +16,10 @@ class Home extends Component {
 		}
 	}
 
+	componentDidMount() {
+		this.loadData();
+	}
+	
 	loadData() {
 		this.setState({ ready: false });
 		fetch(config.apiUrl + '/tickets')
@@ -32,10 +36,6 @@ class Home extends Component {
 			.catch(err => console.log(err));
 	}
 
-	componentDidMount() {
-		this.loadData();
-	}
-	
 	render() {
 		return (
 			<div>

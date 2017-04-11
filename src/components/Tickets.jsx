@@ -26,7 +26,7 @@ class Tickets extends Component {
 
 	loadData() {
 		this.setState({ ready: false });
-		fetch(config.apiUrl + '/tickets?category=' + this.state.category)
+		fetch(config.apiUrl + '/tickets?category=' + encodeURIComponent(this.state.category))
 			.then(utils.checkStatus)
 			.then(utils.parseJSON)
 			.then(data => {
