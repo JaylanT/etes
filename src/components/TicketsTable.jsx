@@ -20,8 +20,8 @@ class TicketsTable extends Component {
 				<td className="uk-table-link">
 					<Link className="uk-link-reset" to={`/tickets/${data.TICKET_ID}`}>
 						<dl className="uk-description-list">
-							<dd>{data.TITLE}</dd>
-							<dt>{data.DESCRIPTION}</dt>
+							<dt>{data.TITLE}</dt>
+							<dd>{data.DESCRIPTION}</dd>
 						</dl>
 					</Link>
 				</td>
