@@ -11,6 +11,7 @@ class Tickets extends Component {
 		super(props);
 		this.state = {
 			data: [],
+			count: 0,
 			ready: false,
 			category: props.category
 		}
@@ -42,7 +43,7 @@ class Tickets extends Component {
 
 	render() {
 		return !this.state.ready ?
-			<Spinner/>
+			<Spinner />
 			:
 			<TicketsTable tableHeader={this.state.category} data={this.state.data} count={this.state.count} />
 	}
