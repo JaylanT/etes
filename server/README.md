@@ -12,6 +12,7 @@ Run 'npm install' to install all dependencies, then 'node index' to run.
 | parameter | type | description |
 |-----------|--------|----------------------------------------------------------------------|
 | q | string | search query |
+| cateogry | string | ticket category |
 | order | string | order results: newest (default), oldest, price_highest, price_lowest |
 | page | int | page number of search results (default 1) |
 | limit | int | max results per page (max 100, default 30) |
