@@ -37,7 +37,7 @@ class Search extends Component {
 				console.log(data);
 				this.setState({ 
 					ready: true,
-					data: data.tickets || [],
+					data: data.tickets,
 					count: data.count
 				});
 			})
@@ -48,7 +48,7 @@ class Search extends Component {
 		return !this.state.ready ?
 			<Spinner />
 			:
-			<TicketsTable tableHeader={this.state.search} data={this.state.data} count={this.state.count} />
+			<TicketsTable tableHeader={`Results for '${this.state.search}'`} data={this.state.data} count={this.state.count} />
 	}
 }
 

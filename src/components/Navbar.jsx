@@ -7,10 +7,7 @@ class Navbar extends Component {
 	constructor(props) {
 		super(props);
 		this.search = this.search.bind(this);
-		this.state = {
-			data: [],
-			currentRoute: props.location.pathname
-		}
+		this.state = { currentRoute: props.location.pathname };
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -25,17 +22,13 @@ class Navbar extends Component {
 		return decoded.username;
 	}
 
-	focusSearch(e) {
-		document.getElementById('nav-search').focus();
-	}
-
 	search(e) {
 		e.preventDefault();
 		const t = e.target;
 		t.search.blur();
 
 		const search = t.search.value;
-		this.props.history.push('/search?q=' + search);
+		if (search) this.props.history.push('/search?q=' + search);
 	}
 
 	render() {
@@ -99,7 +92,7 @@ class Navbar extends Component {
 					<div className="uk-navbar-item">
 						<form className="uk-search uk-search-navbar" onSubmit={this.search}>
 							<span data-uk-search-icon></span>
-							<input className="uk-search-input" type="search" placeholder="Search..." name="search"/>
+							<input className="uk-search-input" type="search" placeholder="Search..." name="search" required/>
 						</form>
 					</div>
 				</div>
