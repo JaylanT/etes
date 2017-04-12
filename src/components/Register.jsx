@@ -77,8 +77,8 @@ class Register extends Component {
 
 	render() {
 		return ( 
-			<div className="uk-position-center">
-				<form id="register-form" className="uk-animation-slide-top-small" onSubmit={this.register}>
+			<div id="register-container">
+				<form className="uk-animation-slide-top-small" onSubmit={this.register}>
 					<div className="uk-margin">
 						<h3 className="uk-text-center">Sign up for ETES</h3>
 					</div>

@@ -1,4 +1,5 @@
-#register-form {
+#register-container {
+	margin: 0 auto;
 	width: 265px;
-	margin-top: -10%;
+	margin-top: 10%;
 }

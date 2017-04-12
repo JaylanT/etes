@@ -74,8 +74,8 @@ class Login extends Component {
 
 	render() {
 		return (
-			<div className="uk-position-center">
-				<form id="login-form" className="uk-animation-slide-top-small" onSubmit={this.login}>
+			<div id="login-container">
+				<form className="uk-animation-slide-top-small" onSubmit={this.login}>
 					<div className="uk-margin">
 						<h3 className="uk-text-center">Sign in to ETES</h3>
 					</div>
