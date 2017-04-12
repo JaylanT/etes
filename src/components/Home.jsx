@@ -40,7 +40,7 @@ class Home extends Component {
 		return !this.state.ready ?
 			<Spinner />
 			:
-			<TicketsTable tableHeader="Newest Listings" data={this.state.data} count={this.state.count} />
+			<TicketsTable tableHeader="Recently Listed" data={this.state.data} count={this.state.count} />
 	}
 }
 
