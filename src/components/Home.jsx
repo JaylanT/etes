@@ -19,7 +19,7 @@ class Home extends Component {
 	componentDidMount() {
 		this.loadData();
 	}
-	
+
 	loadData() {
 		this.setState({ ready: false });
 		fetch(config.apiUrl + '/tickets')
@@ -27,7 +27,7 @@ class Home extends Component {
 			.then(utils.parseJSON)
 			.then(data => {
 				console.log(data);
-				this.setState({ 
+				this.setState({
 					ready: true,
 					data: data.tickets || [],
 					count: data.count

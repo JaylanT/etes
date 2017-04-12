@@ -8,8 +8,13 @@ class Navbar extends Component {
 		super(props);
 		this.search = this.search.bind(this);
 		this.state = {
-			data: []
+			data: [],
+			currentRoute: props.location.pathname
 		}
+	}
+
+	componentWillReceiveProps(nextProps) {
+		this.setState({ currentRoute: nextProps.location.pathname });
 	}
 
 	getUsername() {
@@ -21,11 +26,13 @@ class Navbar extends Component {
 	}
 
 	focusSearch(e) {
+		document.getElementById('nav-search').focus();
 	}
 
 	search(e) {
 		e.preventDefault();
 		const t = e.target;
+		t.search.blur();
 
 		const search = t.search.value;
 		this.props.history.push('/search?q=' + search);
@@ -34,7 +41,7 @@ class Navbar extends Component {
 	render() {
 		return (
 			<nav className="uk-navbar-container" data-uk-navbar>
-				<div className="nav-overlay uk-navbar-left">
+				<div className="uk-navbar-left">
 					<ul className="uk-navbar-nav">
 						<a className="uk-navbar-toggle uk-hidden@m" data-uk-icon="icon: menu" data-uk-toggle="target: #offcanvas" href="#"></a>
 						<Link to="/" className="uk-navbar-item uk-logo">ETES</Link>
@@ -71,31 +78,33 @@ class Navbar extends Component {
 					</div>
 				</div>
 
-				<div className="nav-overlay uk-navbar-center uk-visible@m">
+				<div className="uk-navbar-center uk-visible@m">
 					<ul className="uk-navbar-nav">
-						<li><Link to="/music" className="uk-navbar-item">Music</Link></li>
-						<li><Link to="/sports" className="uk-navbar-item">Sports</Link></li>
-						<li><Link to="/arts" className="uk-navbar-item">Arts & Theater</Link></li>
-						<li><Link to="/family" className="uk-navbar-item">Family</Link></li>
-						<li><Link to="/other" className="uk-navbar-item">Other</Link></li>
-						<li>
-							<a className="uk-navbar-toggle" data-uk-toggle="target: .nav-overlay; animation: uk-animation-fade" onClick={this.focusSearch}>
-								<span className="uk-icon" href="#" data-uk-icon="icon: search"></span>
-							</a>
+						<li className={this.state.currentRoute === '/music' ? 'uk-active' : ''}>
+							<Link to="/music" className="uk-navbar-item">Music</Link>
+						</li>
+						<li className={this.state.currentRoute === '/sports' ? 'uk-active' : ''}>
+							<Link to="/sports" className="uk-navbar-item">Sports</Link>
+						</li>
+						<li className={this.state.currentRoute === '/arts' ? 'uk-active' : ''}>
+							<Link to="/arts" className="uk-navbar-item">Arts & Theater</Link>
+						</li>
+						<li className={this.state.currentRoute === '/family' ? 'uk-active' : ''}>
+							<Link to="/family" className="uk-navbar-item">Family</Link>
+						</li>
+						<li className={this.state.currentRoute === '/other' ? 'uk-active' : ''}>
+							<Link to="/other" className="uk-navbar-item">Other</Link>
 						</li>
 					</ul>
-				</div>
-
-				<div className="nav-overlay uk-navbar-left uk-flex-1" hidden>
-					<div className="uk-navbar-item uk-width-expand">
-						<form className="uk-search uk-search-navbar uk-width-1-1" onSubmit={this.search}>
-							<input className="uk-search-input" type="search" placeholder="Search..." name="search" autoFocus="true"/>
+					<div className="uk-navbar-item">
+						<form className="uk-search uk-search-navbar" onSubmit={this.search}>
+							<span data-uk-search-icon></span>
+							<input className="uk-search-input" type="search" placeholder="Search..." name="search"/>
 						</form>
 					</div>
-					<a className="uk-navbar-toggle" data-uk-close data-uk-toggle="target: .nav-overlay; animation: uk-animation-fade" href="#"></a>
 				</div>
 
-				<div className="nav-overlay uk-navbar-right uk-visible@m">
+				<div className="uk-navbar-right uk-visible@m">
 						{!Auth.isUserAuthenticated() ? 
 							<ul className="uk-navbar-nav">
 								<li><Link to="/login">Login</Link></li> 

@@ -21,7 +21,7 @@ class TicketsTable extends Component {
 					<Link className="uk-link-reset" to={`/tickets/${data.TICKET_ID}`}>
 						<dl className="uk-description-list">
 							<dt>{data.TITLE}</dt>
-							<dd>{data.DESCRIPTION}</dd>
+							<dd className="uk-visible@m">{data.DESCRIPTION}</dd>
 						</dl>
 					</Link>
 				</td>
@@ -47,7 +47,7 @@ class TicketsTable extends Component {
 	render() {
 		return (
 			<div id="tickets-table" className="uk-container">
-				<h2 className="uk-animation-slide-left-small">{this.props.tableHeader}</h2>
+				<h3 className="uk-animation-slide-left-small">{this.props.tableHeader}</h3>
 				<table className="uk-table uk-table-middle uk-table-hover uk-animation-slide-left-small">
 					<caption>{this.props.count} results</caption>
 					<tbody>{this.props.data.map(this.renderRow)}</tbody>
