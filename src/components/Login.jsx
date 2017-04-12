@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Auth from '../modules/Auth';
+import SmallSpinner from './SmallSpinner';
 import config from '../config';
 import fetchUtils from '../utils/fetch';
 import textUtils from '../utils/text';
@@ -13,7 +14,10 @@ class Login extends Component {
 	constructor(props) {
 		super(props);
 		this.login = this.login.bind(this);
-		this.state = { error: null };
+		this.state = {
+			error: null,
+			ready: true
+		};
 	}
 
 	componentWillMount() {
@@ -21,6 +25,10 @@ class Login extends Component {
 	}
 
 	login(e) {
+		this.setState({
+			error: null,
+			ready: false
+		});
 		e.preventDefault();
 		const t = e.target;
 
@@ -49,6 +57,7 @@ class Login extends Component {
 		.then(fetchUtils.checkStatus)
 		.then(fetchUtils.parseJSON)
 		.then(data => {
+			this.setState({ ready: true });
 			const token = data.token;
 			Auth.authenticateUser(token);
 			this.props.history.push('/');
@@ -56,7 +65,10 @@ class Login extends Component {
 		.catch(err => {
 			console.log(err)
 			//UIkit.notification('test');
-			this.setState({ error: err.message });
+			this.setState({
+				error: err.message,
+				ready: true
+			});
 		});
 	}
 
@@ -85,7 +97,11 @@ class Login extends Component {
 						<p className="uk-text-center uk-text-small uk-animation-fade uk-animation-fast">{this.state.error}</p>
 					}
 
-					<button className="uk-button uk-button-primary uk-width-1-1">Login</button>
+					{this.state.ready ?
+						<button className="uk-button uk-button-primary uk-width-1-1">Login</button>
+						:
+						<SmallSpinner />
+					}
 					<p className="uk-text-center">Need an account? <Link to="/register">Register</Link></p>
 				</form>
 			</div>
