@@ -5,7 +5,7 @@ import SmallSpinner from './SmallSpinner';
 import config from '../config';
 import fetchUtils from '../utils/fetch';
 import textUtils from '../utils/text';
-import debounce from 'debounce';
+import debounce from 'lodash.debounce';
 import 'whatwg-fetch';
 import './css/Register.css';
 
@@ -14,7 +14,7 @@ class Register extends Component {
 	constructor(props) {
 		super(props);
 		this.register = this.register.bind(this);
-		this.checkPassword = this.checkPassword.bind(this);
+		this.checkPassword = debounce(this.checkPassword.bind(this), 350);
 		this.setInputValue = this.setInputValue.bind(this);
 		this.state = {
 			error: null,
@@ -32,6 +32,7 @@ class Register extends Component {
 			error: null,
 			ready: false
 		});
+
 		e.preventDefault();
 		const t = e.target;
 
@@ -40,19 +41,10 @@ class Register extends Component {
 				password = t.password.value,
 				confirmPassword = t.confirmPassword.value;
 
-		if (!username) {
-			t.username.classList.add('uk-form-danger');
-			return;
-		} else if (!email || !textUtils.validateEmail(email)) {
-			t.email.classList.add('uk-form-danger');
-			return;
-		} else if (!password || password.length < 8) {
-			t.password.classList.add('uk-form-danger');
-			return;
-		} else if (confirmPassword !== password) {
-			t.confirmPassword.classList.add('uk-form-danger');
+		const validation = this.validateForm(t, username, email, password, confirmPassword);
+		if (!validation.isValid) {
 			this.setState({
-				error: 'Passwords do not match.',
+				error: validation.error,
 				ready: true
 			});
 			return;
@@ -85,10 +77,37 @@ class Register extends Component {
 			});
 		});
 	}
+	
+	validateForm(t, username, email, password, confirmPassword) {
+		const validation = {
+			isValid: true,
+			error: ''
+		};
 
-	setInputValue(input) {
-		const debounced = debounce(this.checkPassword, 350);
-		return e => this.setState({ [input]: e.target.value }, debounced);
+		if (!username) {
+			t.username.classList.add('uk-form-danger');
+			validation.isValid = false;
+			validation.error = 'Please enter a username.';
+		} else if (!email || !textUtils.validateEmail(email)) {
+			t.email.classList.add('uk-form-danger');
+			validation.isValid = false;
+			validation.error = 'Please enter a valid email.';
+		} else if (!password || password.length < 8) {
+			t.password.classList.add('uk-form-danger');
+			validation.isValid = false;
+			validation.error = 'Passwords must be at least 8 characters';
+		} else if (confirmPassword !== password) {
+			t.confirmPassword.classList.add('uk-form-danger');
+			validation.isValid = false;
+			validation.error = 'Passwords do not match.';
+		}
+
+		return validation;
+	}
+
+	setInputValue(e) {
+		const t = e.target;
+		this.setState({ [t.name]: t.value }, this.checkPassword);
 	}
 	
 	checkPassword() {
@@ -133,13 +152,13 @@ class Register extends Component {
 					<div className="uk-margin">
 						<div className="uk-inline uk-width-1">
 							<span className="uk-form-icon uk-form-icon-flip" data-uk-icon="icon: lock"></span>
-							<input className="uk-input" type="password" placeholder="Password" name="password" onInput={this.setInputValue('password')} required minLength="8"/>
+							<input className="uk-input" type="password" placeholder="Password" name="password" onInput={this.setInputValue} required minLength="8"/>
 						</div>
 					</div>
 					<div className="uk-margin">
 						<div className="uk-inline uk-width-1">
 							<span className="uk-form-icon uk-form-icon-flip" data-uk-icon="icon: lock"></span>
-							<input className={this.getConfirmPasswordClass()} type="password" placeholder="Confirm password" name="confirmPassword" onInput={this.setInputValue('confirmPassword')} required minLength="8"/>
+							<input className={this.getConfirmPasswordClass()} type="password" placeholder="Confirm password" name="confirmPassword" onInput={this.setInputValue} required minLength="8"/>
 						</div>
 					</div>
 
