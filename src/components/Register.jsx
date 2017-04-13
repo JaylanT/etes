@@ -15,9 +15,11 @@ class Register extends Component {
 		super(props);
 		this.register = this.register.bind(this);
 		this.checkPassword = this.checkPassword.bind(this);
+		this.setInputValue = this.setInputValue.bind(this);
 		this.state = {
 			error: null,
-			ready: true
+			ready: true,
+			passwordsMatch: true
 		};
 	}
 
@@ -83,17 +85,30 @@ class Register extends Component {
 			});
 		});
 	}
+
+	setInputValue(input) {
+		const debounced = debounce(this.checkPassword, 350);
+		return e => this.setState({ [input]: e.target.value }, debounced);
+	}
 	
-	checkPassword(e) {
-		const confirmPassword = document.getElementsByName('confirmPassword')[0];
-		const password = document.getElementsByName('password')[0];
-		if (confirmPassword.value && password.value !== confirmPassword.value) {
-			confirmPassword.classList.add('uk-form-danger');
-			this.setState({ error: 'Passwords do not match.' });
+	checkPassword() {
+		if (this.state.confirmPassword && this.state.password !== this.state.confirmPassword) {
+			this.setState({ 
+				passwordsMatch: false,
+				error: 'Passwords do not match.'
+			});
 		} else {
-			confirmPassword.classList.remove('uk-form-danger');	
-			this.setState({ error: null });
+			this.setState({
+				passwordsMatch: true,
+				error: null
+			});
 		}
+	}
+	
+	getConfirmPasswordClass() {
+		let className = 'uk-input ';
+		className += this.state.passwordsMatch ? '' : 'uk-form-danger';
+		return className;
 	}
 
 	render() {
@@ -118,13 +133,13 @@ class Register extends Component {
 					<div className="uk-margin">
 						<div className="uk-inline uk-width-1">
 							<span className="uk-form-icon uk-form-icon-flip" data-uk-icon="icon: lock"></span>
-							<input className="uk-input" type="password" placeholder="Password" name="password" onInput={debounce(this.checkPassword, 350)} required minLength="8"/>
+							<input className="uk-input" type="password" placeholder="Password" name="password" onInput={this.setInputValue('password')} required minLength="8"/>
 						</div>
 					</div>
 					<div className="uk-margin">
 						<div className="uk-inline uk-width-1">
 							<span className="uk-form-icon uk-form-icon-flip" data-uk-icon="icon: lock"></span>
-							<input className="uk-input" type="password" placeholder="Confirm password" name="confirmPassword" onInput={debounce(this.checkPassword, 350)} required minLength="8"/>
+							<input className={this.getConfirmPasswordClass()} type="password" placeholder="Confirm password" name="confirmPassword" onInput={this.setInputValue('confirmPassword')} required minLength="8"/>
 						</div>
 					</div>
 
