@@ -7,6 +7,7 @@ import Register from './Register';
 import Login from './Login';
 import Logout from './Logout';
 import NoMatch from './NoMatch';
+import Create from './Create';
 import { Route, Switch } from 'react-router-dom';
 
 
@@ -27,6 +28,7 @@ class Base extends Component {
 						<Route path="/register" component={Register} />
 						<Route path="/login" component={Login} />
 						<Route path="/logout" component={Logout} />
+						<Route path="/create" component={Create} />
 						<Route component={NoMatch} />
 					</Switch>
 				</div>
