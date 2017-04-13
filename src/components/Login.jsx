@@ -36,10 +36,10 @@ class Login extends Component {
 				password = t.password.value;
 
 		if (!email || !textUtils.validateEmail(email)) {
-			t.email.className += ' uk-form-danger';
+			t.email.classList.add('uk-form-danger');
 			return;
 		} else if (!password || password.length < 8) {
-			t.password.className += ' uk-form-danger';
+			t.password.classList.add('uk-form-danger');
 			return;
 		}
 
@@ -63,8 +63,6 @@ class Login extends Component {
 			this.props.history.push('/');
 		})
 		.catch(err => {
-			console.log(err)
-			//UIkit.notification('test');
 			this.setState({
 				error: err.message,
 				ready: true

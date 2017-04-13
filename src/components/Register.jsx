@@ -5,6 +5,7 @@ import SmallSpinner from './SmallSpinner';
 import config from '../config';
 import fetchUtils from '../utils/fetch';
 import textUtils from '../utils/text';
+import debounce from 'debounce';
 import 'whatwg-fetch';
 import './css/Register.css';
 
@@ -13,6 +14,7 @@ class Register extends Component {
 	constructor(props) {
 		super(props);
 		this.register = this.register.bind(this);
+		this.checkPassword = this.checkPassword.bind(this);
 		this.state = {
 			error: null,
 			ready: true
@@ -33,16 +35,24 @@ class Register extends Component {
 
 		const username = t.username.value.trim(),
 				email = t.email.value.trim(),
-				password = t.password.value;
+				password = t.password.value,
+				confirmPassword = t.confirmPassword.value;
 
 		if (!username) {
-			t.username.className += ' uk-form-danger';
+			t.username.classList.add('uk-form-danger');
 			return;
 		} else if (!email || !textUtils.validateEmail(email)) {
-			t.email.className += ' uk-form-danger';
+			t.email.classList.add('uk-form-danger');
 			return;
 		} else if (!password || password.length < 8) {
-			t.password.className += ' uk-form-danger';
+			t.password.classList.add('uk-form-danger');
+			return;
+		} else if (confirmPassword !== password) {
+			t.confirmPassword.classList.add('uk-form-danger');
+			this.setState({
+				error: 'Passwords do not match.',
+				ready: true
+			});
 			return;
 		}
 
@@ -67,12 +77,23 @@ class Register extends Component {
 			this.props.history.push('/');
 		})
 		.catch(err => {
-			console.log(err)
 			this.setState({
 				error: err.message,
 				ready: true
 			});
 		});
+	}
+	
+	checkPassword(e) {
+		const confirmPassword = document.getElementsByName('confirmPassword')[0];
+		const password = document.getElementsByName('password')[0];
+		if (confirmPassword.value && password.value !== confirmPassword.value) {
+			confirmPassword.classList.add('uk-form-danger');
+			this.setState({ error: 'Passwords do not match.' });
+		} else {
+			confirmPassword.classList.remove('uk-form-danger');	
+			this.setState({ error: null });
+		}
 	}
 
 	render() {
@@ -94,11 +115,16 @@ class Register extends Component {
 							<input className="uk-input" type="email" placeholder="Email" name="email" required/>
 						</div>
 					</div>
-
 					<div className="uk-margin">
 						<div className="uk-inline uk-width-1">
 							<span className="uk-form-icon uk-form-icon-flip" data-uk-icon="icon: lock"></span>
-							<input className="uk-input" type="password" placeholder="Password" name="password" required minLength="8"/>
+							<input className="uk-input" type="password" placeholder="Password" name="password" onInput={debounce(this.checkPassword, 350)} required minLength="8"/>
+						</div>
+					</div>
+					<div className="uk-margin">
+						<div className="uk-inline uk-width-1">
+							<span className="uk-form-icon uk-form-icon-flip" data-uk-icon="icon: lock"></span>
+							<input className="uk-input" type="password" placeholder="Confirm password" name="confirmPassword" onInput={debounce(this.checkPassword, 350)} required minLength="8"/>
 						</div>
 					</div>
 
