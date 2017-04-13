@@ -7,7 +7,8 @@ class Create extends Component {
 		super(props);
 		this.create = this.create.bind(this);
 		this.state = {error: null};
-		}
+	}
+
 	createticket(e) {
 		e.preventDefault(); 
 		if(!Auth.isUserAuthenticated()) this.state = {error: true}
@@ -16,5 +17,6 @@ class Create extends Component {
 
 
 	}
-
 }
+
+export default Create;

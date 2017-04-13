@@ -62,6 +62,9 @@ class Navbar extends Component {
 									<li><Link to="/register">Register</Link></li>
 							}
 							{Auth.isUserAuthenticated() && 
+									<li><Link to="/create">Sell</Link></li>
+							}
+							{Auth.isUserAuthenticated() && 
 									<li><Link to="/profile">{this.getUsername()}</Link></li>
 							}
 							{Auth.isUserAuthenticated() && 
@@ -105,6 +108,7 @@ class Navbar extends Component {
 							</ul>
 							:
 							<ul className="uk-navbar-nav">
+								<li><Link to="/create">Sell</Link></li>
 								<li><Link to="/profile">{this.getUsername()}</Link></li>
 								<li><Link to="/logout">Logout</Link></li>
 							</ul>
