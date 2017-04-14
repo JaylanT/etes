@@ -59,7 +59,7 @@ class Search extends Component {
 
 	render() {
 		return (
-			<div className="uk-container uk-margin-top uk-margin-medium-bottom">
+			<div className="uk-container uk-margin-top uk-margin-large-bottom">
 				<h3 className="uk-animation-fade uk-animation-fast">Results for '{this.state.search}'</h3>
 				{!this.state.ready ?
 				<Spinner />
