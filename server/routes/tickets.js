@@ -14,17 +14,19 @@ router.route('/')
 		// limit max of 100
 		if (limit > 100) limit = 100;
 		
-		let sqlTickets = 'SELECT T.*, C.NAME AS CATEGORY FROM TICKETS T, CATEGORIES C ' +
-							  'WHERE T.SOLD = 0 AND T.CATEGORY_ID = C.CATEGORY_ID ';
+		let sqlTickets = 'SELECT T.*, C.NAME AS CATEGORY FROM TICKETS T ' +
+							  'INNER JOIN CATEGORIES C ON T.CATEGORY_ID = C.CATEGORY_ID ' +
+							  'WHERE T.SOLD = 0 ';
 		const paramsTickets = [];
 
-		let sqlCount = 'SELECT COUNT(*) AS COUNT FROM TICKETS T, CATEGORIES C ' +
-							'WHERE T.CATEGORY_ID = C.CATEGORY_ID ';
+		let sqlCount = 'SELECT COUNT(*) AS COUNT FROM TICKETS T ' +
+							'INNER JOIN CATEGORIES C ON T.CATEGORY_ID = C.CATEGORY_ID ';
 		const paramsCount = [];
 
 		if (q) {
-			sqlTickets += 'AND (CONTAINS(T.TITLE, ?) = 1 OR CONTAINS(T.DESCRIPTION, ?) = 1) ';
-			sqlCount += 'AND (CONTAINS(T.TITLE, ?) = 1 OR CONTAINS(T.DESCRIPTION, ?) = 1) ';
+			const containsClause = 'AND (CONTAINS(T.TITLE, ?) = 1 OR CONTAINS(T.DESCRIPTION, ?) = 1) ';
+			sqlTickets += containsClause;
+			sqlCount += containsClause;
 			paramsTickets.push(q, q);
 			paramsCount.push(q, q);
 		} 
