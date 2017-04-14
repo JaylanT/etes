@@ -24,8 +24,8 @@ router.route('/')
 			return res.status(401).end();
 		}
 
-		const sql = 'INSERT INTO TICKETS (SELLER_ID, TITLE, DESCRIPTION, PRICE, CATEGORY, CREATED_AT) ' +
-						'VALUES (?, ?, ?, ?, ?, CURRENT TIMESTAMP)';
+		const sql = 'INSERT INTO TICKETS (SELLER_ID, TITLE, DESCRIPTION, PRICE, CATEGORY_ID, CREATED_AT) ' +
+						'VALUES (?, ?, ?, ?, (SELECT CATEGORY_ID FROM CATEGORIES WHERE NAME = ?), CURRENT TIMESTAMP)';
 		const params = [sellerId, data.title, data.description, data.price, data.category];
 
 		ibmdb.open().then(conn => {
