@@ -45,7 +45,7 @@ class TicketsTable extends Component {
 
 	render() {
 		return (
-			<table className="uk-table uk-table-middle uk-table-hover uk-margin-medium-bottom uk-animation-slide-left-small">
+			<table className="uk-table uk-table-middle uk-table-hover uk-margin-bottom uk-animation-slide-left-small">
 				<caption>{this.props.count} results</caption>
 				<tbody>{this.props.data.map(this.renderRow)}</tbody>
 			</table>
