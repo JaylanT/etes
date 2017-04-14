@@ -34,7 +34,6 @@ class Search extends Component {
 			.then(utils.checkStatus)
 			.then(utils.parseJSON)
 			.then(data => {
-				console.log(data);
 				this.setState({ 
 					ready: true,
 					data: data.tickets,
@@ -45,10 +44,16 @@ class Search extends Component {
 	}
 
 	render() {
-		return !this.state.ready ?
-			<Spinner />
-			:
-			<TicketsTable tableHeader={`Results for '${this.state.search}'`} data={this.state.data} count={this.state.count} />
+		return (
+			<div className="uk-container uk-margin-medium-top uk-margin-medium-bottom">
+				<h3 className="uk-animation-fade uk-animation-fast">Results for '{this.state.search}'</h3>
+				{!this.state.ready ?
+				<Spinner />
+				:
+				<TicketsTable data={this.state.data} count={this.state.count} />
+				}
+			</div>
+		);
 	}
 }
 

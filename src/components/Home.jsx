@@ -26,7 +26,7 @@ class Home extends Component {
 			.then(utils.checkStatus)
 			.then(utils.parseJSON)
 			.then(data => {
-				console.log(data);
+				//console.log(data);
 				this.setState({
 					ready: true,
 					data: data.tickets || [],
@@ -39,7 +39,7 @@ class Home extends Component {
 	render() {
 		return (
 			<div className="uk-container uk-margin-medium-top">
-				<h3 className="uk-animation-slide-left-small">Recently Listed</h3>
+				<h3 className="uk-animation-fade uk-animation-fast">Recently Listed</h3>
 				{!this.state.ready ?
 					<Spinner />
 					:

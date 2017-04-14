@@ -19,12 +19,13 @@ class Base extends Component {
 				<div className="uk-container uk-container-expand">
 					<Switch>
 						<Route exact path='/' component={Home} />
-						<Route path="/music" component={props => <Tickets category="Music" location={props.location} />} />
-						<Route path="/sports" component={props => <Tickets category="Sports" location={props.location} />} />
-						<Route path="/arts" component={props => <Tickets category="Arts & Theater" location={props.location} />} />
-						<Route path="/family" component={props => <Tickets category="Family" location={props.location} />} />
-						<Route path="/other" component={props => <Tickets category="Other" location={props.location} />} />
+						<Route path="/music" render={props => <Tickets category="Music" history={props.history} />} />
+						<Route path="/sports" render={props => <Tickets category="Sports" history={props.history} />} />
+						<Route path="/arts" render={props => <Tickets category="Arts & Theater" history={props.history} />} />
+						<Route path="/family" render={props => <Tickets category="Family" history={props.history} />} />
+						<Route path="/other" render={props => <Tickets category="Other" history={props.history} />} />
 						<Route path="/search" component={Search} />
+						<Route path="/tickets" />
 						<Route path="/register" component={Register} />
 						<Route path="/login" component={Login} />
 						<Route path="/logout" component={Logout} />

@@ -14,7 +14,7 @@ class Tickets extends Component {
 		super(props);
 		this.state = {
 			data: [],
-			page: qs.parse(props.location.search.substring(1)).page || 1,
+			page: qs.parse(props.history.location.search.substring(1)).page || 1,
 			count: 0,
 			ready: false,
 			category: props.category
@@ -26,7 +26,8 @@ class Tickets extends Component {
 	}
 	
 	componentWillReceiveProps(nextProps) {
-		this.setState({ category: nextProps.category }, () => this.loadData());
+		const page = qs.parse(nextProps.history.location.search.substring(1)).page;
+		this.setState({ category: nextProps.category, page }, () => this.loadData());
 	}
 
 	loadData() {
@@ -59,14 +60,14 @@ class Tickets extends Component {
 
 	render() {
 		return (
-			<div className="uk-container uk-margin-medium-top">
+			<div className="uk-container uk-margin-medium-top uk-margin-medium-bottom">
 				<h3 className="uk-animation-fade uk-animation-fast">{this.state.category}</h3>
 				{!this.state.ready ?
 					<Spinner />
 					:
 					<div>
 						<TicketsTable data={this.state.data} count={this.state.count} />
-						<Paginator prevPage={this.state.prevPage} nextPage={this.state.nextPage} />				
+						<Paginator history={this.props.history} prevPage={this.state.prevPage} nextPage={this.state.nextPage} />				
 					</div>
 				}
 			</div>
