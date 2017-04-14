@@ -26,7 +26,7 @@ class Home extends Component {
 			.then(utils.checkStatus)
 			.then(utils.parseJSON)
 			.then(data => {
-				console.log(data);
+				//console.log(data);
 				this.setState({
 					ready: true,
 					data: data.tickets || [],
@@ -37,10 +37,16 @@ class Home extends Component {
 	}
 
 	render() {
-		return !this.state.ready ?
-			<Spinner />
-			:
-			<TicketsTable tableHeader="Recently Listed" data={this.state.data} count={this.state.count} />
+		return (
+			<div className="uk-container uk-margin-top">
+				<h3 className="uk-animation-fade uk-animation-fast">Recently Listed</h3>
+				{!this.state.ready ?
+					<Spinner />
+					:
+					<TicketsTable data={this.state.data} count={this.state.count} />
+				}
+			</div>
+		);
 	}
 }
 
