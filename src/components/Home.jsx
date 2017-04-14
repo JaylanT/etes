@@ -37,10 +37,16 @@ class Home extends Component {
 	}
 
 	render() {
-		return !this.state.ready ?
-			<Spinner />
-			:
-			<TicketsTable tableHeader="Recently Listed" data={this.state.data} count={this.state.count} />
+		return (
+			<div className="uk-container uk-margin-medium-top">
+				<h3 className="uk-animation-slide-left-small">Recently Listed</h3>
+				{!this.state.ready ?
+					<Spinner />
+					:
+					<TicketsTable data={this.state.data} count={this.state.count} />
+				}
+			</div>
+		);
 	}
 }
 

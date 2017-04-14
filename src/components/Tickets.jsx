@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom';
 import TicketsTable from './TicketsTable';
+import Paginator from './Paginator';
 import Spinner from './Spinner';
 import config from '../config';
 import utils from '../utils/fetch';
@@ -37,9 +37,11 @@ class Tickets extends Component {
 			.then(res => {
 				const links = res.headers.get('link');
 				const parsed = parse(links);
+				const nextPage = parsed.next.page,
+						prevPage = parsed.previous.page;
 				this.setState({
-					nextPage: '?page=' + parsed.next.page,
-					prevPage: '?page=' + parsed.previous.page
+					nextPage: nextPage ? '?page=' + nextPage : '',
+					prevPage: prevPage ? '?page=' + prevPage : ''
 				});
 				return res;
 			})
@@ -55,32 +57,20 @@ class Tickets extends Component {
 			.catch(err => console.log(err));
 	}
 
-	prevPageLinkClass() {
-		let link = '';
-		if (this.state.prevPage === '?page=undefined') link += ' uk-hidden';
-		return link;
-	}
-
-	nextPageLinkClass() {
-		let link = 'uk-margin-auto-left';
-		if (this.state.nextPage === '?page=undefined') link += ' uk-hidden';
-		return link;
-	}
-
 	render() {
-		return !this.state.ready ?
-			<Spinner />
-			:
-			<div>
-				<TicketsTable tableHeader={this.state.category} data={this.state.data} count={this.state.count} />
-				
-				<div className="uk-container uk-animation-fade uk-animation-fast">
-					<ul className="uk-pagination">
-						 <li className={this.prevPageLinkClass()}><Link to={this.state.prevPage || ''}><span className="uk-margin-small-right" data-uk-icon="icon: pagination-previous"></span> Previous</Link></li>
-						 <li className={this.nextPageLinkClass()}><Link to={this.state.nextPage}>Next <span className="uk-margin-small-left" data-uk-icon="icon : pagination-next"></span></Link></li>
-					</ul>
-				</div>
+		return (
+			<div className="uk-container uk-margin-medium-top">
+				<h3 className="uk-animation-fade uk-animation-fast">{this.state.category}</h3>
+				{!this.state.ready ?
+					<Spinner />
+					:
+					<div>
+						<TicketsTable data={this.state.data} count={this.state.count} />
+						<Paginator prevPage={this.state.prevPage} nextPage={this.state.nextPage} />				
+					</div>
+				}
 			</div>
+		);
 	}
 }
 

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import './css/TicketsTable.css';
 
 
 class TicketsTable extends Component {
@@ -46,13 +45,10 @@ class TicketsTable extends Component {
 
 	render() {
 		return (
-			<div id="tickets-table" className="uk-container">
-				<h3 className="uk-animation-slide-left-small">{this.props.tableHeader}</h3>
-				<table className="uk-table uk-table-middle uk-table-hover uk-animation-slide-left-small">
-					<caption>{this.props.count} results</caption>
-					<tbody>{this.props.data.map(this.renderRow)}</tbody>
-				</table>
-			</div>
+			<table className="uk-table uk-table-middle uk-table-hover uk-margin-medium-bottom uk-animation-slide-left-small">
+				<caption>{this.props.count} results</caption>
+				<tbody>{this.props.data.map(this.renderRow)}</tbody>
+			</table>
 		);
 	}
 }
