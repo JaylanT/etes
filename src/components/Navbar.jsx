@@ -100,6 +100,15 @@ class Navbar extends Component {
 					</div>
 				</div>
 
+				<div className="uk-navbar-right uk-hidden@m">
+					<div className="uk-navbar-item">
+						<form className="uk-search uk-search-navbar uk-width-auto" onSubmit={this.search}>
+							<span data-uk-search-icon></span>
+							<input className="uk-search-input" type="search" placeholder="Search..." name="search" required/>
+						</form>
+					</div>
+				</div>
+
 				<div className="uk-navbar-right uk-visible@m">
 						{!Auth.isUserAuthenticated() ? 
 							<ul className="uk-navbar-nav">

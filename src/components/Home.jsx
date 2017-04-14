@@ -38,7 +38,7 @@ class Home extends Component {
 
 	render() {
 		return (
-			<div className="uk-container uk-margin-top">
+			<div className="uk-container uk-margin-top uk-margin-large-bottom">
 				<h3 className="uk-animation-fade uk-animation-fast">Recently Listed</h3>
 				{!this.state.ready ?
 					<Spinner />
