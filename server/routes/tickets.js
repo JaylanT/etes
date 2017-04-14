@@ -73,7 +73,7 @@ router.route('/')
 function generateLinks(count, limit, page, q, order) {
 	const lastPageNum = Math.ceil(count / limit);
 
-	let nextPage = page === lastPageNum ? '' : '/tickets?page=' + (page + 1) + '&limit=' + limit,
+	let nextPage = (lastPageNum > 0 && page !== lastPageNum) ? '/tickets?page=' + (page + 1) + '&limit=' + limit : '',
 		prevPage = page === 1 ? '' : '/tickets?page=' + (page - 1) + '&limit=' + limit,
 		firstPage = '/tickets?page=1&limit=' + limit,
 		lastPage = '/tickets?page=' + lastPageNum + '&limit=' + limit;
