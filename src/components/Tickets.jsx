@@ -45,7 +45,7 @@ class Tickets extends Component {
 			})
 			.then(utils.parseJSON)
 			.then(data => {
-				console.log(data);
+				//console.log(data);
 				this.setState({ 
 					ready: true,
 					data: data.tickets || [],
@@ -63,7 +63,6 @@ class Tickets extends Component {
 
 	nextPageLinkClass() {
 		let link = 'uk-margin-auto-left';
-		console.log(this.state)
 		if (this.state.nextPage === '?page=undefined') link += ' uk-hidden';
 		return link;
 	}
@@ -75,7 +74,7 @@ class Tickets extends Component {
 			<div>
 				<TicketsTable tableHeader={this.state.category} data={this.state.data} count={this.state.count} />
 				
-				<div className="uk-container">
+				<div className="uk-container uk-animation-fade uk-animation-fast">
 					<ul className="uk-pagination">
 						 <li className={this.prevPageLinkClass()}><Link to={this.state.prevPage || ''}><span className="uk-margin-small-right" data-uk-icon="icon: pagination-previous"></span> Previous</Link></li>
 						 <li className={this.nextPageLinkClass()}><Link to={this.state.nextPage}>Next <span className="uk-margin-small-left" data-uk-icon="icon : pagination-next"></span></Link></li>
