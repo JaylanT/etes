@@ -20,7 +20,8 @@ router.route('/')
 		const paramsTickets = [];
 
 		let sqlCount = 'SELECT COUNT(*) AS COUNT FROM TICKETS T ' +
-							'INNER JOIN CATEGORIES C ON T.CATEGORY_ID = C.CATEGORY_ID ';
+							'INNER JOIN CATEGORIES C ON T.CATEGORY_ID = C.CATEGORY_ID ' +
+							'WHERE T.SOLD = 0 ';
 		const paramsCount = [];
 
 		if (q) {
