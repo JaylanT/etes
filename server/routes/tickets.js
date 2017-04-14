@@ -14,26 +14,24 @@ router.route('/')
 		// limit max of 100
 		if (limit > 100) limit = 100;
 		
-		let sqlTickets = 'SELECT T.* FROM TICKETS T WHERE T.SOLD = 0 ';
+		let sqlTickets = 'SELECT T.*, C.NAME AS CATEGORY FROM TICKETS T, CATEGORIES C ' +
+							  'WHERE T.SOLD = 0 AND T.CATEGORY_ID = C.CATEGORY_ID ';
 		const paramsTickets = [];
 
-		let sqlCount = 'SELECT COUNT(*) AS COUNT FROM TICKETS T ';
+		let sqlCount = 'SELECT COUNT(*) AS COUNT FROM TICKETS T, CATEGORIES C ' +
+							'WHERE T.CATEGORY_ID = C.CATEGORY_ID ';
 		const paramsCount = [];
 
 		if (q) {
 			sqlTickets += 'AND (CONTAINS(T.TITLE, ?) = 1 OR CONTAINS(T.DESCRIPTION, ?) = 1) ';
+			sqlCount += 'AND (CONTAINS(T.TITLE, ?) = 1 OR CONTAINS(T.DESCRIPTION, ?) = 1) ';
 			paramsTickets.push(q, q);
-			sqlCount += 'WHERE (CONTAINS(T.TITLE, ?) = 1 OR CONTAINS(T.DESCRIPTION, ?) = 1) ';
 			paramsCount.push(q, q);
 		} 
 
 		if (category) {
-			sqlTickets += 'AND ';
-			sqlCount += q ? 'AND ' : 'WHERE ';
-
-			sqlTickets += 'CATEGORY = ? ';
-			sqlCount += 'CATEGORY = ? ';
-
+			sqlTickets += 'AND C.NAME = ? ';
+			sqlCount += 'AND C.NAME = ? ';
 			paramsTickets.push(category);
 			paramsCount.push(category);
 		}
@@ -42,7 +40,7 @@ router.route('/')
 		paramsTickets.push(limit, offset);
 		const orderIdentifier = getOrderIdentifier(order);
 		sqlTickets += 'ORDER BY ' + orderIdentifier + ' LIMIT ? OFFSET ?';
-
+		
 		ibmdb.open().then(conn => {
 			const ticketsQuery = ibmdb.prepareAndExecute(conn, sqlTickets, paramsTickets);
 			const countQuery = ibmdb.prepareAndExecute(conn, sqlCount, paramsCount);
