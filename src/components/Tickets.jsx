@@ -32,7 +32,7 @@ class Tickets extends Component {
 
 	loadData() {
 		this.setState({ ready: false });
-		const url = `${config.apiUrl}/tickets?limit=4&category=${encodeURIComponent(this.state.category)}&page=${this.state.page}`;
+		const url = `${config.apiUrl}/tickets?limit=10&category=${encodeURIComponent(this.state.category)}&page=${this.state.page}`;
 		fetch(url)
 			.then(utils.checkStatus)
 			.then(res => {

@@ -32,7 +32,7 @@ class Search extends Component {
 
 	loadData() {
 		this.setState({ ready: false });
-		const url = `${config.apiUrl}/tickets?limit=4&q=${encodeURIComponent(this.state.search)}&page=${this.state.page}`;
+		const url = `${config.apiUrl}/tickets?limit=10&q=${encodeURIComponent(this.state.search)}&page=${this.state.page}`;
 		fetch(url)
 			.then(utils.checkStatus)
 			.then(res => {
