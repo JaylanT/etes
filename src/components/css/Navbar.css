@@ -2,12 +2,13 @@
 	background: #457fca;  /* fallback for old browsers */
 	background: -webkit-linear-gradient(to right, #5691c8, #457fca);  /* Chrome 10-25, Safari 5.1-6 */
 	background: linear-gradient(to right, #5691c8, #457fca); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	box-shadow: 0 2px 5px 0 rgba(30,30,30,.09);
 }
 
 .uk-navbar-item.uk-logo {
 	font-family: 'Palanquin Dark', sans-serif;	
 	font-size: 27px;
-	color: rgba(255,255,255,.95) !important;
+	color: white !important;
 }
 
 .uk-navbar-fixed {
