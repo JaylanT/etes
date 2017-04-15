@@ -9,6 +9,7 @@ import Logout from './Logout';
 import NoMatch from './NoMatch';
 import Create from './Create';
 import { Route, Switch } from 'react-router-dom';
+import './css/Base.css';
 
 
 class Base extends Component {
@@ -16,7 +17,7 @@ class Base extends Component {
 		return (
 			<div>
 				<Route component={Navbar} />
-				<div className="uk-container uk-container-expand">
+				<div id="content" className="uk-container uk-container-expand">
 					<Switch>
 						<Route exact path='/' component={Home} />
 						<Route path="/music" render={props => <Tickets category="Music" history={props.history} />} />
