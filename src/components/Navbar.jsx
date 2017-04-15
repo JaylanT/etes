@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Auth from '../modules/Auth';
+import './css/Navbar.css';
 
 
 class Navbar extends Component {
@@ -33,7 +34,7 @@ class Navbar extends Component {
 
 	render() {
 		return (
-			<nav className="uk-navbar-container uk-margin-small-bottom" data-uk-navbar>
+			<nav className="uk-navbar-container uk-margin-small-bottom uk-light" data-uk-navbar>
 				<div className="uk-navbar-left">
 					<ul className="uk-navbar-nav">
 						<a className="uk-navbar-toggle uk-hidden@m" data-uk-icon="icon: menu" data-uk-toggle="target: #offcanvas" href="#"></a>
