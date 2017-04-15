@@ -4,11 +4,6 @@ body {
 	font-family: sans-serif;
 }
 
-@font-face {
-  font-family: 'Moderne';
-  src: local('Moderne'), url('./fonts/MODERNESANS.ttf') format('truetype');
-}
-
 .uk-button-primary {
 	background-color: royalblue;
 }
