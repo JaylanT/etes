@@ -5,8 +5,9 @@
 }
 
 .uk-navbar-item.uk-logo {
+	font-family: 'Palanquin Dark', sans-serif;	
 	font-size: 27px;
-	color: rgba(255,255,255,.83) !important;
+	color: rgba(255,255,255,.95) !important;
 }
 
 .uk-navbar-fixed {
