@@ -2,3 +2,9 @@
 	background: royalblue;
 }
 
+.uk-navbar-item.uk-logo {
+/*	font-family: Moderne; */
+	font-size: 27px;
+	color: rgba(255,255,255,.8) !important;
+}
+

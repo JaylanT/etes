@@ -1,6 +1,22 @@
 body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
+	margin: 0;
+	padding: 0;
+	font-family: sans-serif;
 }
 
+@font-face {
+  font-family: 'Moderne';
+  src: local('Moderne'), url('./fonts/MODERNESANS.ttf') format('truetype');
+}
+
+.uk-button-primary {
+	background-color: royalblue;
+}
+
+.uk-button-primary:focus, .uk-button-primary:hover {
+	background-color: #2b58de;
+}
+
+.uk-input:focus, .uk-select:focus, .uk-textarea:focus {
+	border-color: royalblue;
+}

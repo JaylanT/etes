@@ -96,7 +96,7 @@ class Navbar extends Component {
 					<div className="uk-navbar-item">
 						<form className="uk-search uk-search-navbar" onSubmit={this.search}>
 							<span data-uk-search-icon></span>
-							<input className="uk-search-input" type="search" placeholder="Search..." name="search" required/>
+							<input className="uk-search-input" type="search" placeholder="Search..." name="search" />
 						</form>
 					</div>
 				</div>
@@ -105,7 +105,7 @@ class Navbar extends Component {
 					<div className="uk-navbar-item">
 						<form className="uk-search uk-search-navbar uk-width-auto" onSubmit={this.search}>
 							<span data-uk-search-icon></span>
-							<input className="uk-search-input" type="search" placeholder="Search..." name="search" required/>
+							<input className="uk-search-input" type="search" placeholder="Search..." name="search" />
 						</form>
 					</div>
 				</div>
