@@ -5,13 +5,13 @@ body {
 }
 
 .uk-button-primary {
-	background-color: royalblue;
+	background-color: #457fca;
 }
 
 .uk-button-primary:focus, .uk-button-primary:hover {
-	background-color: #2b58de;
+	background-color: #3672BF;
 }
 
 .uk-input:focus, .uk-select:focus, .uk-textarea:focus {
-	border-color: royalblue;
+	border-color: #457fca;
 }

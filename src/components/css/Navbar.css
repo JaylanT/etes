@@ -1,10 +1,12 @@
 .uk-navbar-container:not(.uk-navbar-transparent) {
-	background: royalblue;
+	background: #457fca;  /* fallback for old browsers */
+	background: -webkit-linear-gradient(to right, #5691c8, #457fca);  /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to right, #5691c8, #457fca); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
 .uk-navbar-item.uk-logo {
 	font-size: 27px;
-	color: rgba(255,255,255,.8) !important;
+	color: rgba(255,255,255,.83) !important;
 }
 
 .uk-navbar-fixed {
