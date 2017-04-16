@@ -23,6 +23,10 @@ class Navbar extends Component {
 		return decoded.username;
 	}
 
+	highlightIfActive(path) {
+		return this.state.currentRoute.substring(1) === path ? 'uk-active' : ''
+	}
+
 	search(e) {
 		e.preventDefault();
 		const t = e.target;
@@ -30,6 +34,7 @@ class Navbar extends Component {
 
 		const search = t.search.value;
 		if (search) this.props.history.push('/search?q=' + search);
+		t.reset();
 	}
 
 	render() {
@@ -63,7 +68,7 @@ class Navbar extends Component {
 									<li><Link to="/register">Register</Link></li>
 							}
 							{Auth.isUserAuthenticated() && 
-									<li><Link to="/create">Sell</Link></li>
+									<li><Link to="/sell">Sell</Link></li>
 							}
 							{Auth.isUserAuthenticated() && 
 									<li><Link to="/profile">{this.getUsername()}</Link></li>
@@ -77,19 +82,19 @@ class Navbar extends Component {
 
 				<div className="uk-navbar-center uk-visible@m">
 					<ul className="uk-navbar-nav">
-						<li className={this.state.currentRoute === '/music' ? 'uk-active' : ''}>
+						<li className={this.highlightIfActive('music')}>
 							<Link to="/music" className="uk-navbar-item">Music</Link>
 						</li>
-						<li className={this.state.currentRoute === '/sports' ? 'uk-active' : ''}>
+						<li className={this.highlightIfActive('sports')}>
 							<Link to="/sports" className="uk-navbar-item">Sports</Link>
 						</li>
-						<li className={this.state.currentRoute === '/arts' ? 'uk-active' : ''}>
+						<li className={this.highlightIfActive('arts')}>
 							<Link to="/arts" className="uk-navbar-item">Arts & Theater</Link>
 						</li>
-						<li className={this.state.currentRoute === '/family' ? 'uk-active' : ''}>
+						<li className={this.highlightIfActive('family')}>
 							<Link to="/family" className="uk-navbar-item">Family</Link>
 						</li>
-						<li className={this.state.currentRoute === '/other' ? 'uk-active' : ''}>
+						<li className={this.highlightIfActive('other')}>
 							<Link to="/other" className="uk-navbar-item">Other</Link>
 						</li>
 					</ul>
@@ -113,13 +118,13 @@ class Navbar extends Component {
 				<div className="uk-navbar-right uk-visible@m">
 						{!Auth.isUserAuthenticated() ? 
 							<ul className="uk-navbar-nav">
-								<li><Link to="/login">Login</Link></li> 
-								<li><Link to="/register">Register</Link></li>
+								<li className={this.highlightIfActive('login')}><Link to="/login">Login</Link></li> 
+								<li className={this.highlightIfActive('register')}><Link to="/register">Register</Link></li>
 							</ul>
 							:
 							<ul className="uk-navbar-nav">
-								<li><Link to="/create">Sell</Link></li>
-								<li><Link to="/profile">{this.getUsername()}</Link></li>
+								<li className={this.highlightIfActive('sell')}><Link to="/sell">Sell</Link></li>
+								<li className={this.highlightIfActive('profile')}><Link to="/profile">{this.getUsername()}</Link></li>
 								<li><Link to="/logout">Logout</Link></li>
 							</ul>
 						}
