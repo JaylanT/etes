@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import TicketsTable from './TicketsTable';
 import Paginator from './Paginator';
 import Spinner from './Spinner';
@@ -18,7 +19,7 @@ class Tickets extends Component {
 			count: 0,
 			ready: false,
 			category: props.category
-		}
+		};
 	}
 
 	componentDidMount() {
@@ -73,5 +74,10 @@ class Tickets extends Component {
 		);
 	}
 }
+
+Tickets.propTypes = {
+	category: PropTypes.string,
+	history: PropTypes.object
+};
 
 export default Tickets;

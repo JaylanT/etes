@@ -21,3 +21,4 @@ yarn-error.log*
 server/config/db-config.js
 server/config/jwt-config.js
 src/config.js
+*.eslintrc

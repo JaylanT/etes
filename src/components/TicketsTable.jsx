@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 
@@ -52,5 +53,20 @@ class TicketsTable extends Component {
 		);
 	}
 }
+
+TicketsTable.propTypes = {
+	count: PropTypes.number.isRequired,
+	data: PropTypes.arrayOf(PropTypes.shape({
+		"TICKET_ID": PropTypes.number,
+		"SELLER_ID": PropTypes.number,
+		"CATEGORY_ID": PropTypes.number,
+		"TITLE": PropTypes.string,
+		"DESCRIPTION": PropTypes.string,
+		"PRICE": PropTypes.string,
+		"CREATED_AT": PropTypes.string,
+		"SOLD": PropTypes.number,
+		"CATEGORY": PropTypes.string
+	})).isRequired
+};
 
 export default TicketsTable;
