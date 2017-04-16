@@ -34,7 +34,7 @@ class Navbar extends Component {
 
 	render() {
 		return (
-			<nav className="uk-navbar-container uk-navbar-fixed uk-margin-small-bottom uk-light" data-uk-navbar>
+			<nav className="uk-navbar-container uk-navbar-fixed uk-light" data-uk-navbar>
 				<div className="uk-navbar-left">
 					<ul className="uk-navbar-nav">
 						<a className="uk-navbar-toggle uk-hidden@m" data-uk-icon="icon: menu" data-uk-toggle="target: #offcanvas" href="#"></a>
