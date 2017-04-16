@@ -15,7 +15,7 @@ class Tickets extends Component {
 		super(props);
 		this.state = {
 			data: [],
-			page: qs.parse(props.history.location.search.substring(1)).page || 1,
+			page: qs.parse(props.location.search.substring(1)).page || 1,
 			count: 0,
 			ready: false,
 			category: props.category
@@ -27,7 +27,7 @@ class Tickets extends Component {
 	}
 	
 	componentWillReceiveProps(nextProps) {
-		const page = qs.parse(nextProps.history.location.search.substring(1)).page;
+		const page = qs.parse(nextProps.location.search.substring(1)).page;
 		this.setState({ category: nextProps.category, page }, () => this.loadData());
 	}
 
@@ -67,7 +67,7 @@ class Tickets extends Component {
 					:
 					<div>
 						<TicketsTable data={this.state.data} count={this.state.count} />
-						<Paginator history={this.props.history} prevPage={this.state.prevPage} nextPage={this.state.nextPage} />				
+						<Paginator prevPage={this.state.prevPage} nextPage={this.state.nextPage} />				
 					</div>
 				}
 			</div>
@@ -76,8 +76,8 @@ class Tickets extends Component {
 }
 
 Tickets.propTypes = {
-	category: PropTypes.string,
-	history: PropTypes.object
+	category: PropTypes.string.isRequired,
+	location: PropTypes.object.isRequired
 };
 
 export default Tickets;

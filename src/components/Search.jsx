@@ -68,7 +68,7 @@ class Search extends Component {
 				:
 				<div>
 					<TicketsTable data={this.state.data} count={this.state.count} />
-					<Paginator history={this.props.history} prevPage={this.state.prevPage} nextPage={this.state.nextPage} />				
+					<Paginator prevPage={this.state.prevPage} nextPage={this.state.nextPage} />				
 				</div>
 				}
 			</div>
@@ -77,8 +77,7 @@ class Search extends Component {
 }
 
 Search.propTypes = {
-	history: PropTypes.object,
-	location: PropTypes.object
+	location: PropTypes.object.isRequired
 };
 
 export default Search;

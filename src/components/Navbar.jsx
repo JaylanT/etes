@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Auth from '../modules/Auth';
 import './css/Navbar.css';
@@ -24,7 +25,7 @@ class Navbar extends Component {
 	}
 
 	highlightIfActive(path) {
-		return this.state.currentRoute.substring(1) === path ? 'uk-active' : ''
+		return this.state.currentRoute.substring(1) === path ? 'uk-active' : '';
 	}
 
 	search(e) {
@@ -133,5 +134,10 @@ class Navbar extends Component {
 		);	
 	}
 }
+
+Navbar.propTypes = {
+	location: PropTypes.object.isRequired,
+	history: PropTypes.object.isRequired
+};
 
 export default Navbar;

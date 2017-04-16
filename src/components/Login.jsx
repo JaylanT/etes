@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Auth from '../modules/Auth';
 import SmallSpinner from './SmallSpinner';
@@ -106,5 +107,9 @@ class Login extends Component {
 		);
 	}
 }
+
+Login.propTypes = {
+	history: PropTypes.object.isRequired
+};
 
 export default Login;

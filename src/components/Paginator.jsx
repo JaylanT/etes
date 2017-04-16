@@ -35,8 +35,8 @@ class Paginator extends Component {
 }
 
 Paginator.propTypes = {
-	prevPage: PropTypes.string,
-	nextPage: PropTypes.string
+	prevPage: PropTypes.string.isRequired,
+	nextPage: PropTypes.string.isRequired
 };
 
 export default Paginator;
