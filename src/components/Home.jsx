@@ -13,7 +13,7 @@ class Home extends Component {
 			data: [],
 			count: 0,
 			ready: false
-		}
+		};
 	}
 
 	componentDidMount() {

@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import TicketsTable from './TicketsTable';
 import Paginator from './Paginator';
 import Spinner from './Spinner';
@@ -12,13 +13,14 @@ import qs from 'qs';
 class Search extends Component {
 	constructor(props) {
 		super(props);
+		const params = qs.parse(props.location.search.substring(1));
 		this.state = {
 			data: [],
-			page: qs.parse(props.history.location.search.substring(1)).page || 1,
+			page: params.page || 1,
 			count: 0,
 			ready: false,
-			search: qs.parse(this.props.location.search.substring(1)).q
-		}
+			search: params.q
+		};
 	}
 
 	componentDidMount() {
@@ -73,5 +75,10 @@ class Search extends Component {
 		);
 	}
 }
+
+Search.propTypes = {
+	history: PropTypes.object,
+	location: PropTypes.object
+};
 
 export default Search;

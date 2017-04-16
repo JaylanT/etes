@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Auth from '../modules/Auth';
 import SmallSpinner from './SmallSpinner';
@@ -177,5 +178,9 @@ class Register extends Component {
 		);
 	}
 }
+
+Register.propTypes = {
+	history: PropTypes.object
+};
 
 export default Register;
