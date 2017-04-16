@@ -5,11 +5,11 @@ const ibmdb = require('../modules/ibmdb');
 
 router.route('/')
 	.get((req, res, next) => {
-		const limit = parseInt(req.query.limit) || 30,
-				page = parseInt(req.query.page) || 1,
+		const page = parseInt(req.query.page) || 1,
 				order = req.query.order,
 				q = req.query.q,
 				category = req.query.category;
+		let limit = parseInt(req.query.limit) || 30;
 
 		// limit max of 100
 		if (limit > 100) limit = 100;
