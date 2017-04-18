@@ -22,15 +22,14 @@ class Home extends Component {
 
 	loadData() {
 		this.setState({ ready: false });
-		fetch(config.apiUrl + '/tickets')
+		fetch(config.apiUrl + '/tickets?limit=20')
 			.then(utils.checkStatus)
 			.then(utils.parseJSON)
 			.then(data => {
-				//console.log(data);
 				this.setState({
 					ready: true,
-					data: data.tickets || [],
-					count: data.count
+					data: data.tickets,
+					count: data.count > 20 ? 20 : data.count
 				});
 			})
 			.catch(err => console.log(err));
