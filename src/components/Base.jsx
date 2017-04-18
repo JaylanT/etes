@@ -30,7 +30,7 @@ class Base extends Component {
 						<Route path="/register" component={Register} />
 						<Route path="/login" component={Login} />
 						<Route path="/logout" component={Logout} />
-						<Route path="/sell" component={Create} />
+						<Route path="/sell" component={Create}/>
 						<Route component={NoMatch} />
 					</Switch>
 				</div>
