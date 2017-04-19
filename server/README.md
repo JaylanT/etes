@@ -5,6 +5,8 @@ Run 'npm install' to install all dependencies, then 'node index' to run.
 
 # Resources
 
+All routes are prefixed with '/api'.
+
 ## Tickets
 
 ### GET /tickets
