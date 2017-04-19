@@ -14,39 +14,39 @@ router.route('/')
 		// limit max of 100
 		if (limit > 100) limit = 100;
 
-		let sqlTickets = 'SELECT T.*, C.NAME AS CATEGORY FROM TICKETS T ' +
+		let selectTickets = 'SELECT T.*, C.NAME AS CATEGORY FROM TICKETS T ' +
 			'INNER JOIN CATEGORIES C ON T.CATEGORY_ID = C.CATEGORY_ID ' +
 			'WHERE T.SOLD = 0 ';
-		const paramsTickets = [];
+		const selectTicketsParams = [];
 
-		let sqlCount = 'SELECT COUNT(*) AS COUNT FROM TICKETS T ' +
+		let selectTicketsCount = 'SELECT COUNT(*) AS COUNT FROM TICKETS T ' +
 			'INNER JOIN CATEGORIES C ON T.CATEGORY_ID = C.CATEGORY_ID ' +
 			'WHERE T.SOLD = 0 ';
-		const paramsCount = [];
+		const selectTicketsCountParams = [];
 
 		if (q) {
 			const containsClause = 'AND (CONTAINS(T.TITLE, ?) = 1 OR CONTAINS(T.DESCRIPTION, ?) = 1) ';
-			sqlTickets += containsClause;
-			sqlCount += containsClause;
-			paramsTickets.push(q, q);
-			paramsCount.push(q, q);
+			selectTickets += containsClause;
+			selectTicketsCount += containsClause;
+			selectTicketsParams.push(q, q);
+			selectTicketsCountParams.push(q, q);
 		} 
 
 		if (category) {
-			sqlTickets += 'AND C.NAME = ? ';
-			sqlCount += 'AND C.NAME = ? ';
-			paramsTickets.push(category);
-			paramsCount.push(category);
+			selectTickets += 'AND C.NAME = ? ';
+			selectTicketsCount += 'AND C.NAME = ? ';
+			selectTicketsParams.push(category);
+			selectTicketsCountParams.push(category);
 		}
 
 		const offset = (page - 1) * limit;
-		paramsTickets.push(limit, offset);
+		selectTicketsParams.push(limit, offset);
 		const orderIdentifier = getOrderIdentifier(order);
-		sqlTickets += 'ORDER BY ' + orderIdentifier + ' LIMIT ? OFFSET ?';
+		selectTickets += 'ORDER BY ' + orderIdentifier + ' LIMIT ? OFFSET ?';
 
 		ibmdb.open().then(conn => {
-			const ticketsQuery = ibmdb.prepareAndExecute(conn, sqlTickets, paramsTickets);
-			const countQuery = ibmdb.prepareAndExecute(conn, sqlCount, paramsCount);
+			const ticketsQuery = ibmdb.prepareAndExecute(conn, selectTickets, selectTicketsParams);
+			const countQuery = ibmdb.prepareAndExecute(conn, selectTicketsCount, selectTicketsCountParams);
 
 			return Promise.all([ticketsQuery, countQuery]).then(values => {
 				conn.close();
@@ -62,13 +62,12 @@ router.route('/')
 					count
 				});
 			});
-		})
-			.catch(err => {
-				res.status(400).send({
-					status: 400,
-					message: err.message || 'An unknown erorr has occurred.'
-				});
+		}).catch(err => {
+			res.status(400).send({
+				status: 400,
+				message: err.message || 'An unknown erorr has occurred.'
 			});
+		});
 	});
 
 function generateLinks(count, limit, page, q, order) {

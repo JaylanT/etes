@@ -59,20 +59,20 @@ router.route('/:id/purchase')
 			return res.status(401).end();
 		}
 
-		const insertOrder = 'INSERT INTO ORDERS (TICKET_ID, BUYER_ID)';
-		const params = [ticketId, buyerId];
+		const insertOrder = 'INSERT INTO ORDERS (TICKET_ID, BUYER_ID) VALUES (?, ?)';
+		const insertOrderParams = [ticketId, buyerId];
 
 		const updateTicket = 'UPDATE TICKETS SET SOLD = 1 WHERE TICKET_ID = ?';
-		const params2 = [ticketId];
+		const updateTicketParams = [ticketId];
 
 		ibmdb.open().then(conn => {
 				return conn.beginTransactionAsync()
-					.then(() => ibmdb.prepareAndExecuteNonQuery(conn, insertOrder, params))
+					.then(() => ibmdb.prepareAndExecuteNonQuery(conn, insertOrder, insertOrderParams))
 					.then(ret => {
 						if (ret !== 1) {
 							throw Error('Purchase failed.');
 						}
-						return ibmdb.prepareAndExecuteNonQuery(conn, updateTicket, params2);
+						return ibmdb.prepareAndExecuteNonQuery(conn, updateTicket, updateTicketParams);
 					})
 					.then(ret => {
 						if (ret !== 1) {
