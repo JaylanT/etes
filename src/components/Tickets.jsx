@@ -51,7 +51,7 @@ class Tickets extends Component {
 			.then(data => {
 				this.setState({ 
 					ready: true,
-					data: data.tickets || [],
+					data: data.tickets,
 					count: data.count
 				});
 			})

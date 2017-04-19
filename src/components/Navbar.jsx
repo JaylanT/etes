@@ -18,9 +18,9 @@ class Navbar extends Component {
 
 	getUsername() {
 		const token = Auth.getToken(),
-				base64url = token.split('.')[1],
-				base64 = base64url.replace('-', '+').replace('_', '/'),
-				decoded = JSON.parse(window.atob(base64));
+			base64url = token.split('.')[1],
+			base64 = base64url.replace('-', '+').replace('_', '/'),
+			decoded = JSON.parse(window.atob(base64));
 		return decoded.username;
 	}
 
@@ -62,8 +62,8 @@ class Navbar extends Component {
 								</ul>
 							</li>
 							<li className="uk-nav-divider"></li>
-							{!Auth.isUserAuthenticated() && 
-									<li><Link to="/login">Login</Link></li> 
+							{!Auth.isUserAuthenticated() &&
+									<li><Link to="/login">Login</Link></li>
 							}
 							{!Auth.isUserAuthenticated() && 
 									<li><Link to="/register">Register</Link></li>
@@ -117,21 +117,28 @@ class Navbar extends Component {
 				</div>
 
 				<div className="uk-navbar-right uk-visible@m">
-						{!Auth.isUserAuthenticated() ? 
+					{!Auth.isUserAuthenticated() ?
 							<ul className="uk-navbar-nav">
-								<li className={this.highlightIfActive('login')}><Link to="/login">Login</Link></li> 
+								<li className={this.highlightIfActive('login')}><Link to="/login">Login</Link></li>
 								<li className={this.highlightIfActive('register')}><Link to="/register">Register</Link></li>
 							</ul>
 							:
 							<ul className="uk-navbar-nav">
 								<li className={this.highlightIfActive('sell')}><Link to="/sell">Sell</Link></li>
-								<li className={this.highlightIfActive('profile')}><Link to="/profile">{this.getUsername()}</Link></li>
-								<li><Link to="/logout">Logout</Link></li>
+								<li>
+									<a href="#">{this.getUsername()}</a>
+									<div className="uk-navbar-dropdown">
+										<ul className="uk-nav uk-navbar-dropdown-nav">
+											<li><Link to="/profile">Profile</Link></li>
+											<li><Link to="/logout">Logout</Link></li>
+										</ul>
+									</div>
+								</li>
 							</ul>
-						}
+					}
 				</div>
 			</nav>
-		);	
+		);
 	}
 }
 
