@@ -59,54 +59,80 @@ router.route('/:id/purchase')
 			return res.status(401).end();
 		}
 
-		const sql = 'INSERT INTO ORDERS (TICKET_ID, BUYER_ID)';
+		const insertOrder = 'INSERT INTO ORDERS (TICKET_ID, BUYER_ID)';
 		const params = [ticketId, buyerId];
+
+		const updateTicket = 'UPDATE TICKETS SET SOLD = 1 WHERE TICKET_ID = ?';
+		const params2 = [ticketId];
+
 		ibmdb.open().then(conn => {
-			return ibmdb.prepareAndExecuteNonQuery(conn, sql, params)
-				.then(ret => {
-					if (ret !== 1) {
-						throw Error('Insert failed.');
+				conn.beginTransaction(err => {
+					if (err) {
+						throw Error(err.message);
+						return conn.closeSync();
 					}
-					res.send({ message: 'ok' });
+
+					return ibmdb.prepareAndExecuteNonQuery(conn, insertOrder, params)
+						.then(ret => {
+							if (ret !== 1) {
+								throw Error('Purchase failed.');
+							}
+							return ibmdb.prepareAndExecuteNonQuery(conn, updateTicket, params2)
+						})
+						.then(ret => {
+							if (ret !== 1) {
+								throw Error('Purchase failed.');
+							}
+							conn.commitTransaction(err => {
+								if (err) {
+									throw Error(err.message);
+									return conn.closeSync();
+								}
+
+								res.send({ message: 'ok' });
+								//Close the connection
+								conn.closeSync();
+							});
+						});
 				});
-		})
-		.catch(err => {
-			res.status(400).send({
-				status: 400,
-				message: err.message || 'An unknown erorr has occurred.'
+			})
+			.catch(err => {
+				res.status(400).send({
+					status: 400,
+					message: err.message || 'An unknown erorr has occurred.'
+				});
 			});
 		});
-	});
 
-function validateTicket(payload) {
-	let isFormValid = true;
-	const errors = {};
+		function validateTicket(payload) {
+			let isFormValid = true;
+			const errors = {};
 
-	if (!payload || typeof payload.title !== 'string' || payload.title.trim().length === 0) {
-		isFormValid = false;
-		errors.title = 'Please enter a listing title.';
-	}
-	if (!payload || typeof payload.description !== 'string' || payload.description.trim().length === 0) {
-		isFormValid = false;
-		errors.description = 'Please enter a description.';
-	}
-	if (!payload || isNaN(payload.price) || payload.price <= 0) {
-		isFormValid = false;
-		errors.price = 'Please enter a price above $0.00.';
-	}
-	const categories = ['Music', 'Sports', 'Arts & Theater', 'Family', 'Other'];
-	if (!payload || typeof payload.category !== 'string' || categories.indexOf(payload.category) < 0) {
-		isFormValid = false;
-		errors.category = 'Please select a category.';
-	}
+			if (!payload || typeof payload.title !== 'string' || payload.title.trim().length === 0) {
+				isFormValid = false;
+				errors.title = 'Please enter a listing title.';
+			}
+			if (!payload || typeof payload.description !== 'string' || payload.description.trim().length === 0) {
+				isFormValid = false;
+				errors.description = 'Please enter a description.';
+			}
+			if (!payload || isNaN(payload.price) || payload.price <= 0) {
+				isFormValid = false;
+				errors.price = 'Please enter a price above $0.00.';
+			}
+			const categories = ['Music', 'Sports', 'Arts & Theater', 'Family', 'Other'];
+			if (!payload || typeof payload.category !== 'string' || categories.indexOf(payload.category) < 0) {
+				isFormValid = false;
+				errors.category = 'Please select a category.';
+			}
 
-	const message = isFormValid ? '' : 'Form validation failed.';
+			const message = isFormValid ? '' : 'Form validation failed.';
 
-	return {
-		success: isFormValid,
-		message,
-		errors
-	};
-}
+			return {
+				success: isFormValid,
+				message,
+				errors
+			};
+		}
 
-module.exports = router;
+		module.exports = router;
