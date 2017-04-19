@@ -67,7 +67,7 @@ router.route('/:id/purchase')
 
 		ibmdb.open().then(conn => {
 				return conn.beginTransactionAsync()
-					.then(() => ibmdb.prepareAndExecuteNonQuery(conn, insertOrder, params);)
+					.then(() => ibmdb.prepareAndExecuteNonQuery(conn, insertOrder, params))
 					.then(ret => {
 						if (ret !== 1) {
 							throw Error('Purchase failed.');
