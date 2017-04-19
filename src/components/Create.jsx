@@ -68,7 +68,7 @@ class Create extends Component {
 	
 	render() {
 		return (
-			<div>
+			<div id="create-container">
 				<form className="uk-animation-slide-top-small" onSubmit={this.createTicket}>
 					<div className="uk-margin">
 						<h3 className="uk-text-center">SELL TICKET</h3>
@@ -100,7 +100,7 @@ class Create extends Component {
 				</div>
 		</div>
 		{this.state.ready ?
-					    <button className="uk-button uk-button-primary ">Submit Ticket</button>
+					    <button className="uk-button uk-button-primary uk-width-1-1">Submit Ticket</button>
 						:
 						<SmallSpinner />
 					}
