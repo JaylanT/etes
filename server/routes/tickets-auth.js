@@ -66,35 +66,30 @@ router.route('/:id/purchase')
 		const params2 = [ticketId];
 
 		ibmdb.open().then(conn => {
-				conn.beginTransaction(err => {
-					if (err) {
+				return conn.beginTransactionAsync()
+					.then(() => {
+						return ibmdb.prepareAndExecuteNonQuery(conn, insertOrder, params);
+					})
+					.then(ret => {
+						if (ret !== 1) {
+							throw Error('Purchase failed.');
+						}
+						return ibmdb.prepareAndExecuteNonQuery(conn, updateTicket, params2);
+					})
+					.then(ret => {
+						if (ret !== 1) {
+							throw Error('Purchase failed.');
+						}
+						return conn.commitTransactionAsync();
+					})
+					.then(() => {
+						res.send({ message: 'ok' });
+						conn.closeSync();
+					})
+					.catch(err => {
+						conn.closeSync();
 						throw Error(err.message);
-						return conn.closeSync();
-					}
-
-					return ibmdb.prepareAndExecuteNonQuery(conn, insertOrder, params)
-						.then(ret => {
-							if (ret !== 1) {
-								throw Error('Purchase failed.');
-							}
-							return ibmdb.prepareAndExecuteNonQuery(conn, updateTicket, params2)
-						})
-						.then(ret => {
-							if (ret !== 1) {
-								throw Error('Purchase failed.');
-							}
-							conn.commitTransaction(err => {
-								if (err) {
-									throw Error(err.message);
-									return conn.closeSync();
-								}
-
-								res.send({ message: 'ok' });
-								//Close the connection
-								conn.closeSync();
-							});
-						});
-				});
+					});
 			})
 			.catch(err => {
 				res.status(400).send({
