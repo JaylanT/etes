@@ -16,9 +16,9 @@ router.route('/')
 
 		// jwt should have been previously verified
 		const token = req.headers.authorization.split(' ')[1];
-		const decoded = jwt.verify(token, jwtConfig.secret);
 		let sellerId;
 		try {
+			const decoded = jwt.verify(token, jwtConfig.secret);
 			sellerId = decoded.sub;
 		} catch(err) {
 			return res.status(401).end();
@@ -36,6 +36,38 @@ router.route('/')
 						throw Error('Insert failed.');
 					}
 					res.send({ message: 'Ticket inserted.' });
+				});
+		})
+		.catch(err => {
+			res.status(400).send({
+				status: 400,
+				message: err.message || 'An unknown erorr has occurred.'
+			});
+		});
+	});
+
+router.route('/:id/purchase')
+	.post((req, res, next) => {
+		const ticketId = req.params.id;
+
+		const token = req.headers.authorization.split(' ')[1];
+		let buyerId;
+		try {
+			const decoded = jwt.verify(token, jwtConfig.secret);
+			buyerId = decoded.sub;
+		} catch(err) {
+			return res.status(401).end();
+		}
+
+		const sql = 'INSERT INTO ORDERS (TICKET_ID, BUYER_ID)';
+		const params = [ticketId, buyerId];
+		ibmdb.open().then(conn => {
+			return ibmdb.prepareAndExecuteNonQuery(conn, sql, params)
+				.then(ret => {
+					if (ret !== 1) {
+						throw Error('Insert failed.');
+					}
+					res.send({ message: 'ok' });
 				});
 		})
 		.catch(err => {
