@@ -67,9 +67,7 @@ router.route('/:id/purchase')
 
 		ibmdb.open().then(conn => {
 				return conn.beginTransactionAsync()
-					.then(() => {
-						return ibmdb.prepareAndExecuteNonQuery(conn, insertOrder, params);
-					})
+					.then(() => ibmdb.prepareAndExecuteNonQuery(conn, insertOrder, params);)
 					.then(ret => {
 						if (ret !== 1) {
 							throw Error('Purchase failed.');
@@ -97,7 +95,7 @@ router.route('/:id/purchase')
 					message: err.message || 'An unknown erorr has occurred.'
 				});
 			});
-		});
+	});
 
 		function validateTicket(payload) {
 			let isFormValid = true;
