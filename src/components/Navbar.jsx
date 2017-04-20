@@ -62,8 +62,11 @@ class Navbar extends Component {
 								</ul>
 							</li>
 							<li className="uk-nav-divider"></li>
+						
 							{!Auth.isUserAuthenticated() &&
-									<li><Link to="/login">Login</Link></li>
+									
+									<li>
+									<Link to="/login">Login</Link></li>
 							}
 							{!Auth.isUserAuthenticated() && 
 									<li><Link to="/register">Register</Link></li>
@@ -119,7 +122,8 @@ class Navbar extends Component {
 				<div className="uk-navbar-right uk-visible@m">
 					{!Auth.isUserAuthenticated() ?
 							<ul className="uk-navbar-nav">
-								<li className={this.highlightIfActive('login')}><Link to="/login">Login</Link></li>
+								<li className={this.highlightIfActive('login')}>
+								<Link to="/login">Login</Link></li>
 								<li className={this.highlightIfActive('register')}><Link to="/register">Register</Link></li>
 							</ul>
 							:
