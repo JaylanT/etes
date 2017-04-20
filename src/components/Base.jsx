@@ -7,7 +7,7 @@ import Register from './Register';
 import Login from './Login';
 import Logout from './Logout';
 import NoMatch from './NoMatch';
-import Create from './Create';
+import Sell from './Sell';
 import { Route, Switch } from 'react-router-dom';
 import './css/Base.css';
 
@@ -27,10 +27,10 @@ class Base extends Component {
 						<Route path="/other" render={props => <Tickets category="Other" location={props.location} />} />
 						<Route path="/search" component={Search} />
 						<Route path="/tickets" />
+						<Route path="/sell" component={Sell}/>
 						<Route path="/register" component={Register} />
 						<Route path="/login" component={Login} />
 						<Route path="/logout" component={Logout} />
-						<Route path="/sell" component={Create} />
 						<Route component={NoMatch} />
 					</Switch>
 				</div>

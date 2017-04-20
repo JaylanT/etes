@@ -4,14 +4,15 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 const app = express();
 
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// CORS
 app.use((req, res, next) => {
-	res.header("Access-Control-Allow-Origin", "*");
-	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-	res.header("Access-Control-Expose-Headers", "Link");
+	// CORS
+	res.header('Access-Control-Allow-Origin', '*');
+	res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+	res.header('Access-Control-Expose-Headers', 'Link');
 	next();
 });
 
