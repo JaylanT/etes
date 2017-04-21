@@ -61,8 +61,13 @@ router.route('/')
 					tickets,
 					count
 				});
+			})
+			.catch(err => {
+				conn.closeSync();
+				throw Error(err.message);
 			});
-		}).catch(err => {
+		})
+		.catch(err => {
 			res.status(400).send({
 				status: 400,
 				message: err.message || 'An unknown erorr has occurred.'
@@ -110,6 +115,10 @@ router.route('/:id')
 
 		ibmdb.open().then(conn => {
 			return ibmdb.prepareAndExecute(conn, sql, [ticketId])
+				.catch(err => {
+					conn.closeSync();
+					throw Error(err.message);
+				})
 				.then(data => {
 					conn.close();
 					if (data.length === 0) {
@@ -122,10 +131,10 @@ router.route('/:id')
 					}
 				});
 		})
-			.catch(err => res.status(400).send({
-				status: 400,
-				message: err.message || 'An unknown error has occurred.'
-			}));
+		.catch(err => res.status(400).send({
+			status: 400,
+			message: err.message || 'An unknown error has occurred.'
+		}));
 	});
 
 function getOrderIdentifier(order) {

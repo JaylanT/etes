@@ -25,6 +25,10 @@ module.exports = new LocalStrategy(
 
 			return ibmdb.open().then(conn => {
 				return ibmdb.prepareAndExecuteNonQuery(conn, sql, params)
+					.catch(err => {
+						conn.closeSync();
+						throw Error(err.message);
+					})
 					.then(ret => {
 						conn.close();
 						done(null, ret);
