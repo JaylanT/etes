@@ -25,9 +25,12 @@ router.route('/')
 			return res.status(401).end();
 		}
 
-		const sql = 'INSERT INTO TICKETS (SELLER_ID, TITLE, DESCRIPTION, PRICE, CATEGORY_ID, CREATED_AT) ' +
-						'VALUES (?, ?, ?, ?, (SELECT CATEGORY_ID FROM CATEGORIES WHERE NAME = ?), CURRENT TIMESTAMP)';
-		const params = [sellerId, data.title, data.description, data.price, data.category];
+		const sql = 'INSERT INTO TICKETS (SELLER_ID, TITLE, DESCRIPTION, PRICE, CATEGORY_ID, CREATED_AT, ' +
+						'SELLER_NAME, SELLER_ADDRESS_LINE_1, SELLER_ADDRESS_LINE_2, SELLER_CITY, SELLER_STATE, SELLER_ZIP) ' +
+						'VALUES (?, ?, ?, ?, (SELECT CATEGORY_ID FROM CATEGORIES WHERE NAME = ?), CURRENT TIMESTAMP, ?, ?, ?, ?, ?, ?)';
+		const params = [sellerId, data.title, data.description, data.price, data.category,
+							data.sellerName, data.sellerAddressLine1, data.sellerAddressLine2,
+							data.sellerCity, data.sellerState, data.sellerZip];
 
 		ibmdb.open().then(conn => {
 			return ibmdb.prepareAndExecuteNonQuery(conn, sql, params)
