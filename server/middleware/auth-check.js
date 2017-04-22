@@ -15,6 +15,10 @@ module.exports = (req, res, next) => {
 
 		ibmdb.open().then(conn => {
 			return ibmdb.prepareAndExecute(conn, sql, [userId])
+				.catch(err => {
+					conn.closeSync();
+					throw Error(err.message);
+				})
 				.then(data => {
 					conn.close();
 					if (data.length === 0) {

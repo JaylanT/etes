@@ -16,19 +16,11 @@ module.exports = {
 				const data = result.fetchAllSync();
 				result.closeSync();
 				return data;
-			})
-			.catch(err => {
-				conn.closeSync();
-				throw Error(err.message);
 			});
 	},
 
 	prepareAndExecuteNonQuery(conn, sql, bindingParameters) {
 		return conn.prepareAsync(sql)
-			.then(stmt => stmt.executeNonQueryAsync(bindingParameters))
-			.catch(err => {
-				conn.closeSync();
-				throw Error(err.message);
-			});
+			.then(stmt => stmt.executeNonQueryAsync(bindingParameters));
 	}
 };
