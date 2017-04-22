@@ -25,7 +25,7 @@ export default () => (
 		</div>
 		<div className="uk-width-1-1">
 			<label className="uk-form-label" htmlFor="zip-input">Zip Code</label>
-			<input id="zip-input" className="uk-input" type="text" pattern="[0-9]{4}" name="zip" required/>
+			<input id="zip-input" className="uk-input" type="text" pattern="[0-9]{5}" name="zip" required/>
 		</div>
 	</div>
 );
