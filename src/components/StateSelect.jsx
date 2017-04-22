@@ -2,7 +2,7 @@ import React from 'react';
 
 export default () => (
 	<select className="uk-select" name="state">
-		<option value="" selected disabled>State</option>
+		<option value="" selected disabled>Select</option>
 		<option value="AK">Alaska</option>
 		<option value="AZ">Arizona</option>
 		<option value="AR">Arkansas</option>

@@ -86,23 +86,26 @@ class Sell extends Component {
 
 	render() {
 		return (
-			<div id="sell-container" className="uk-container uk-margin-top">
+			<div id="sell-container" className="uk-container uk-margin-top uk-margin-large-bottom">
 				<div className="uk-margin">
 					<h3 className="uk-heading-line uk-animation-fade uk-animation-fast"><span>Sell</span></h3>
 				</div>
-				<form className="uk-grid-small uk-animation-slide-left-small" onSubmit={this.createTicket} data-uk-grid>
+				<form className="uk-grid-small uk-form-stacked uk-animation-slide-left-small" onSubmit={this.createTicket} data-uk-grid>
 					<div className="uk-width-1-2@m">
 						<div className="uk-grid-small" data-uk-grid>
 							<h4>Ticket Details</h4>
 							<div className="uk-width-1-1">
-								<input className="uk-input" type="text" placeholder="Title" name="title" autoFocus="true" required/>
+								<label className="uk-form-label" htmlFor="title-input">Title</label>
+								<input id="title-input" className="uk-input" type="text" placeholder="" name="title" autoFocus="true" required/>
 							</div>
 							<div className="uk-width-1-1">
-								<textarea className="uk-textarea" rows="5" placeholder="Description" name="description"></textarea>
+								<label className="uk-form-label" htmlFor="description-input">Description</label>
+								<textarea id="description-input" className="uk-textarea" rows="5" placeholder="Event information, venue, etc..." name="description"></textarea>
 							</div>
 							<div className="uk-width-1-2@m">
-								<select className="uk-select" name="category">
-									<option value="" disabled selected>Category</option>
+								<label className="uk-form-label" htmlFor="category-select">Category</label>
+								<select id="category-select" className="uk-select" name="category">
+									<option value="" disabled selected>Select</option>
 									<option value="Music">Music</option>
 									<option value="Sports">Sports</option>
 									<option value="Arts & Theater">Arts & Theater</option>
@@ -111,7 +114,8 @@ class Sell extends Component {
 								</select>
 							</div>
 							<div className="uk-width-1-2@m">
-								<input className="uk-input" type="number" min="0" placeholder="$ Price" name="price" required/>
+								<label className="uk-form-label" htmlFor="price-input">Price</label>
+								<input id="price-input" className="uk-input" type="number" min="0" placeholder="$" name="price" required/>
 							</div>
 						</div>
 					</div>
@@ -122,7 +126,7 @@ class Sell extends Component {
 
 					<div className="uk-width-1-1">
 						{this.state.ready ?
-							<button className="uk-button uk-button-primary uk-align-right uk-width-1-1 uk-margin-small-top">List</button>
+							<button className="uk-button uk-button-primary uk-align-right uk-margin-small-top">List It</button>
 							:
 							<SmallSpinner />
 						}
