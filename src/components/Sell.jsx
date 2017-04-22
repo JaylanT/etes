@@ -86,21 +86,21 @@ class Sell extends Component {
 
 	render() {
 		return (
-			<div id="sell-container" className="uk-container uk-margin-top uk-margin-large-bottom">
+			<div id="sell-container" className="uk-margin-top uk-margin-large-bottom">
 				<div className="uk-margin">
 					<h3 className="uk-heading-line uk-animation-fade uk-animation-fast"><span>Sell</span></h3>
 				</div>
 				<form className="uk-grid-small uk-form-stacked uk-animation-slide-left-small" onSubmit={this.createTicket} data-uk-grid>
-					<div className="uk-width-1-2@m">
+					<div className="uk-width-1-2@m uk-padding-small">
 						<div className="uk-grid-small" data-uk-grid>
 							<h4>Ticket Details</h4>
 							<div className="uk-width-1-1">
 								<label className="uk-form-label" htmlFor="title-input">Title</label>
-								<input id="title-input" className="uk-input" type="text" placeholder="" name="title" autoFocus="true" required/>
+								<input id="title-input" className="uk-input" type="text" placeholder="" name="title" required/>
 							</div>
 							<div className="uk-width-1-1">
 								<label className="uk-form-label" htmlFor="description-input">Description</label>
-								<textarea id="description-input" className="uk-textarea" rows="5" placeholder="Event information, venue, etc..." name="description"></textarea>
+								<textarea id="description-input" className="uk-textarea" rows="5" placeholder="Event information, venue, etc..." name="description" required></textarea>
 							</div>
 							<div className="uk-width-1-2@m">
 								<label className="uk-form-label" htmlFor="category-select">Category</label>
@@ -120,13 +120,13 @@ class Sell extends Component {
 						</div>
 					</div>
 
-					<div className="uk-width-1-2@m">
+					<div className="uk-width-1-2@m uk-padding-small">
 						<AddressForm />
 					</div>
 
-					<div className="uk-width-1-1">
+					<div className="uk-width-1-1 uk-padding-small uk-padding-remove-top">
 						{this.state.ready ?
-							<button className="uk-button uk-button-primary uk-align-right uk-margin-small-top">List It</button>
+							<button className="uk-button uk-button-primary uk-align-right">List It</button>
 							:
 							<SmallSpinner />
 						}

@@ -60,7 +60,7 @@ class Tickets extends Component {
 
 	render() {
 		return (
-			<div className="uk-container uk-margin-top uk-margin-large-bottom">
+			<div className="uk-margin-top uk-margin-large-bottom">
 				<h3 className="uk-animation-fade uk-animation-fast uk-heading-line"><span>{this.state.category}</span></h3>
 				{!this.state.ready ?
 					<Spinner />

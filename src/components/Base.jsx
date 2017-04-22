@@ -17,7 +17,7 @@ class Base extends Component {
 		return (
 			<div>
 				<Route component={Navbar} />
-				<div id="content" className="uk-container uk-container-expand">
+				<div id="content" className="uk-container uk-container-large">
 					<Switch>
 						<Route exact path='/' component={Home} />
 						<Route path="/music" render={props => <Tickets category="Music" location={props.location} />} />

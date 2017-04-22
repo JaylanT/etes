@@ -140,6 +140,7 @@ function getShippingInfo(sellerAddress, buyerAddress) {
 	return got(`https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=${originAddress}&destinations=${destinationAddress}&key=${googleConfig.key}`)
 		.then(res => {
 			const body = JSON.parse(res.body);
+			if (body.status !== 'OK') throw Error('Failed to calculate shipping information.');
 			return body.rows[0].elements[0];
 		});
 }

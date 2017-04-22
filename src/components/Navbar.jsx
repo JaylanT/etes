@@ -52,7 +52,6 @@ class Navbar extends Component {
 					<div className="uk-offcanvas-bar uk-flex uk-flex-column">
 						<ul className="uk-nav uk-nav-primary uk-nav-center uk-margin-auto-vertical">
 							<li className="uk-parent">
-								<Link to="/">ETES</Link>
 								<ul className="uk-nav-sub">
 									<li><Link to="/music">Music</Link></li>
 									<li><Link to="/sports">Sports</Link></li>
