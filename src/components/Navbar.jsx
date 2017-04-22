@@ -53,28 +53,28 @@ class Navbar extends Component {
 						<ul className="uk-nav uk-nav-primary uk-nav-center uk-margin-auto-vertical">
 							<li className="uk-parent">
 								<ul className="uk-nav-sub">
-									<li><Link to="/music">Music</Link></li>
-									<li><Link to="/sports">Sports</Link></li>
-									<li><Link to="/arts">Arts & Theater</Link></li>
-									<li><Link to="/family">Family</Link></li>
-									<li><Link to="/other">Other</Link></li>
+									<li data-uk-toggle="target: #offcanvas"><Link to="/music">Music</Link></li>
+									<li data-uk-toggle="target: #offcanvas"><Link to="/sports">Sports</Link></li>
+									<li data-uk-toggle="target: #offcanvas"><Link to="/arts">Arts & Theater</Link></li>
+									<li data-uk-toggle="target: #offcanvas"><Link to="/family">Family</Link></li>
+									<li data-uk-toggle="target: #offcanvas"><Link to="/other">Other</Link></li>
 								</ul>
 							</li>
 							<li className="uk-nav-divider"></li>
 							{!Auth.isUserAuthenticated() &&
-									<li><Link to="/login">Login</Link></li>
+									<li data-uk-toggle="target: #offcanvas"><Link to="/login">Login</Link></li>
 							}
 							{!Auth.isUserAuthenticated() && 
-									<li><Link to="/register">Register</Link></li>
+									<li data-uk-toggle="target: #offcanvas"><Link to="/register">Register</Link></li>
 							}
 							{Auth.isUserAuthenticated() && 
-									<li><Link to="/sell">Sell</Link></li>
+									<li data-uk-toggle="target: #offcanvas"><Link to="/sell">Sell</Link></li>
 							}
 							{Auth.isUserAuthenticated() && 
-									<li><Link to="/profile">{this.getUsername()}</Link></li>
+									<li data-uk-toggle="target: #offcanvas"><Link to="/profile">{this.getUsername()}</Link></li>
 							}
 							{Auth.isUserAuthenticated() && 
-									<li><Link to="/logout">Logout</Link></li>
+									<li data-uk-toggle="target: #offcanvas"><Link to="/logout">Logout</Link></li>
 							}
 						</ul>
 					</div>
