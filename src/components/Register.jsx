@@ -133,48 +133,46 @@ class Register extends Component {
 
 	render() {
 		return ( 
-			<div id="register-container">
-				<form className="uk-animation-slide-top-small" onSubmit={this.register}>
-					<div className="uk-margin">
-						<h3 className="uk-text-center">Sign up for ETES</h3>
+			<form id="register-container" className="uk-animation-slide-top-small uk-margin-large-bottom" onSubmit={this.register}>
+				<div className="uk-margin">
+					<h3 className="uk-text-center">Sign up for ETES</h3>
+				</div>
+				<div className="uk-margin">
+					<div className="uk-inline uk-width-1">
+						<span className="uk-form-icon uk-form-icon-flip" data-uk-icon="icon: user"></span>
+						<input className="uk-input" type="text" placeholder="Username" name="username" autoFocus="true" required/>
 					</div>
-					<div className="uk-margin">
-						<div className="uk-inline uk-width-1">
-							<span className="uk-form-icon uk-form-icon-flip" data-uk-icon="icon: user"></span>
-							<input className="uk-input" type="text" placeholder="Username" name="username" autoFocus="true" required/>
-						</div>
+				</div>
+				<div className="uk-margin">
+					<div className="uk-inline uk-width-1">
+						<span className="uk-form-icon uk-form-icon-flip" data-uk-icon="icon: mail"></span>
+						<input className="uk-input" type="email" placeholder="Email" name="email" required/>
 					</div>
-					<div className="uk-margin">
-						<div className="uk-inline uk-width-1">
-							<span className="uk-form-icon uk-form-icon-flip" data-uk-icon="icon: mail"></span>
-							<input className="uk-input" type="email" placeholder="Email" name="email" required/>
-						</div>
+				</div>
+				<div className="uk-margin">
+					<div className="uk-inline uk-width-1">
+						<span className="uk-form-icon uk-form-icon-flip" data-uk-icon="icon: lock"></span>
+						<input className="uk-input" type="password" placeholder="Password" name="password" onInput={this.setInputValue} required minLength="8"/>
 					</div>
-					<div className="uk-margin">
-						<div className="uk-inline uk-width-1">
-							<span className="uk-form-icon uk-form-icon-flip" data-uk-icon="icon: lock"></span>
-							<input className="uk-input" type="password" placeholder="Password" name="password" onInput={this.setInputValue} required minLength="8"/>
-						</div>
+				</div>
+				<div className="uk-margin">
+					<div className="uk-inline uk-width-1">
+						<span className="uk-form-icon uk-form-icon-flip" data-uk-icon="icon: lock"></span>
+						<input className={this.getConfirmPasswordClass()} type="password" placeholder="Confirm password" name="confirmPassword" onInput={this.setInputValue} required minLength="8"/>
 					</div>
-					<div className="uk-margin">
-						<div className="uk-inline uk-width-1">
-							<span className="uk-form-icon uk-form-icon-flip" data-uk-icon="icon: lock"></span>
-							<input className={this.getConfirmPasswordClass()} type="password" placeholder="Confirm password" name="confirmPassword" onInput={this.setInputValue} required minLength="8"/>
-						</div>
-					</div>
+				</div>
 
-					{this.state.error &&
-						<p className="uk-text-center uk-text-small">{this.state.error}</p>
-					}
+				{this.state.error &&
+					<p className="uk-text-center uk-text-small">{this.state.error}</p>
+				}
 
-					{this.state.ready ?
-						<button className="uk-button uk-button-primary uk-width-1-1">Register</button>
-						:
-						<SmallSpinner />
-					}
-					<p className="uk-text-center">Already a member? <Link to="/login">Login</Link></p>
-				</form>
-			</div>
+				{this.state.ready ?
+					<button className="uk-button uk-button-primary uk-width-1-1">Register</button>
+					:
+					<SmallSpinner />
+				}
+				<p className="uk-text-center">Already a member? <Link to="/login">Login</Link></p>
+			</form>
 		);
 	}
 }
