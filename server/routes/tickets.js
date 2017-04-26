@@ -109,9 +109,9 @@ router.route('/:id')
 	.get((req, res, next) => {
 		const ticketId = req.params.id;
 
-		const sql = 'SELECT T.*, U.USERNAME AS SELLER ' +
-			'FROM TICKETS T, USERS U ' + 
-			'WHERE T.TICKET_ID = ? AND T.SELLER_ID = U.USER_ID'; 
+		const sql = 'SELECT T.TICKET_ID, T.TITLE, T.DESCRIPTION, T.PRICE, T.CREATED_AT, C.NAME AS CATEGORY ' +
+			'FROM TICKETS T INNER JOIN CATEGORIES C ON T.CATEGORY_ID = C.CATEGORY_ID ' +
+			'WHERE T.TICKET_ID = ?'; 
 
 		ibmdb.open().then(conn => {
 			return ibmdb.prepareAndExecute(conn, sql, [ticketId])

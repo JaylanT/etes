@@ -73,10 +73,10 @@ class Sell extends Component {
 		})
 		.then(fetchUtils.checkStatus)
 		.then(fetchUtils.parseJSON)
-		.then(() =>{
+		.then(() => {
 			this.props.history.push('/');
 		})
-		.catch(err=>{
+		.catch(err => {
 			this.setState({
 				error: err.message,
 				ready: true
@@ -92,11 +92,11 @@ class Sell extends Component {
 				</div>
 				<form className="uk-grid-small uk-form-stacked uk-animation-slide-left-small" onSubmit={this.createTicket} data-uk-grid>
 					<div className="uk-width-1-2@m uk-padding-small">
+						<h4>Ticket Details</h4>
 						<div className="uk-grid-small" data-uk-grid>
-							<h4>Ticket Details</h4>
 							<div className="uk-width-1-1">
 								<label className="uk-form-label" htmlFor="title-input">Title</label>
-								<input id="title-input" className="uk-input" type="text" placeholder="" name="title" required/>
+								<input id="title-input" className="uk-input" type="text" name="title" required/>
 							</div>
 							<div className="uk-width-1-1">
 								<label className="uk-form-label" htmlFor="description-input">Description</label>
@@ -104,8 +104,8 @@ class Sell extends Component {
 							</div>
 							<div className="uk-width-1-2@m">
 								<label className="uk-form-label" htmlFor="category-select">Category</label>
-								<select id="category-select" className="uk-select" name="category">
-									<option value="" disabled selected>Select</option>
+								<select id="category-select" className="uk-select" name="category" defaultValue={''} required>
+									<option value="" disabled>Select</option>
 									<option value="Music">Music</option>
 									<option value="Sports">Sports</option>
 									<option value="Arts & Theater">Arts & Theater</option>
@@ -121,6 +121,7 @@ class Sell extends Component {
 					</div>
 
 					<div className="uk-width-1-2@m uk-padding-small">
+						<h4>Address</h4>
 						<AddressForm />
 					</div>
 

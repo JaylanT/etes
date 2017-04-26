@@ -8,6 +8,7 @@ import Login from './Login';
 import Logout from './Logout';
 import NoMatch from './NoMatch';
 import Sell from './Sell';
+import PurchaseTicket from './PurchaseTicket';
 import { Route, Switch } from 'react-router-dom';
 import './css/Base.css';
 
@@ -26,7 +27,7 @@ class Base extends Component {
 						<Route path="/family" render={props => <Tickets category="Family" location={props.location} />} />
 						<Route path="/other" render={props => <Tickets category="Other" location={props.location} />} />
 						<Route path="/search" component={Search} />
-						<Route path="/tickets" />
+						<Route path="/tickets/:id/purchase" component={PurchaseTicket} />
 						<Route path="/sell" component={Sell}/>
 						<Route path="/register" component={Register} />
 						<Route path="/login" component={Login} />
