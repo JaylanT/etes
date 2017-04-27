@@ -22,6 +22,7 @@ module.exports = (req, res, next) => {
 				.then(data => {
 					conn.close();
 					if (data.length === 0) {
+						console.log(err)
 						return res.status(401).end();
 					}
 					return next();

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import Auth from '../modules/Auth';
 import { Link } from 'react-router-dom';
 
 
@@ -14,6 +15,14 @@ class TicketsTable extends Component {
 		return d.toLocaleString('en-us', { year: 'numeric', month: 'long', day: 'numeric' });
 	}
 
+	getUserId() {
+		const token = Auth.getToken(),
+			base64url = token.split('.')[1],
+			base64 = base64url.replace('-', '+').replace('_', '/'),
+			decoded = JSON.parse(window.atob(base64));
+		return decoded.sub;
+	}
+
 	renderRow(data) {
 		return (
 			<tr key={data.TICKET_ID}>
@@ -25,7 +34,11 @@ class TicketsTable extends Component {
 				</td>
 				<td className="uk-width-small">${data.PRICE}</td>
 				<td className="uk-width-small">{this.getFormattedDate(data.CREATED_AT)}</td>
-				<td className="uk-width-small"><Link to={`/tickets/${data.TICKET_ID}/purchase`} className="uk-button uk-button-default">Buy</Link></td>
+				<td className="uk-width-small">
+					{Auth.isUserAuthenticated() && data.SELLER_ID !== this.getUserId() &&
+						<Link to={`/tickets/${data.TICKET_ID}/purchase`} className="uk-button uk-button-default">Buy</Link>
+					}
+			</td>
 			</tr>
 		);
 	}
@@ -42,17 +55,19 @@ class TicketsTable extends Component {
 
 TicketsTable.propTypes = {
 	count: PropTypes.number.isRequired,
-	data: PropTypes.arrayOf(PropTypes.shape({
-		"TICKET_ID": PropTypes.number,
-		"SELLER_ID": PropTypes.number,
-		"CATEGORY_ID": PropTypes.number,
-		"TITLE": PropTypes.string,
-		"DESCRIPTION": PropTypes.string,
-		"PRICE": PropTypes.string,
-		"CREATED_AT": PropTypes.string,
-		"SOLD": PropTypes.number,
-		"CATEGORY": PropTypes.string
-	})).isRequired
+	data: PropTypes.arrayOf(
+		PropTypes.shape({
+			"TICKET_ID": PropTypes.number,
+			"SELLER_ID": PropTypes.number,
+			"CATEGORY_ID": PropTypes.number,
+			"TITLE": PropTypes.string,
+			"DESCRIPTION": PropTypes.string,
+			"PRICE": PropTypes.string,
+			"CREATED_AT": PropTypes.string,
+			"SOLD": PropTypes.number,
+			"CATEGORY": PropTypes.string
+		})
+	).isRequired
 };
 
 export default TicketsTable;

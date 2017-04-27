@@ -84,9 +84,10 @@ class PurchaseTicket extends Component {
 			shippingState = t.state.value,
 			shippingZip = t.zip.value;
 
-		fetch(`${config.apiUrl}/tickets/${this.props.match.params.id}/purchase`, {
+		const url = `${config.apiUrl}/tickets/${this.props.match.params.id}/purchase`; 
+		fetch(url, {
 			method:'POST',
-			headers:{
+			headers: {
 				'Content-Type':'application/json',
 				Authorization: 'Bearer ' + Auth.getToken()
 			},
