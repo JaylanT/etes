@@ -12,6 +12,3 @@ body {
 	background-color: #E91C34;
 }
 
-.uk-input:focus, .uk-select:focus, .uk-textarea:focus {
-	border-color: #EB3349;
-}

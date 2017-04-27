@@ -44,8 +44,7 @@ class PurchaseTicket extends Component {
 		e.preventDefault();
 		const t = e.target;
 
-		const cardType = t.cardType.value,
-			cardNumber = t.cardNumber.value,
+		const cardNumber = t.cardNumber.value,
 			cardName = t.cardName.value,
 			cardDate = t.cardDate.value,
 			cardSecurity = t.cardSecurity.value;
@@ -59,7 +58,6 @@ class PurchaseTicket extends Component {
 
 		this.setState({
 			isEditingBilling: false,
-			cardType,
 			cardNumber,
 			cardName,
 			cardDate,
@@ -128,22 +126,15 @@ class PurchaseTicket extends Component {
 						<h4>Payment Information</h4>
 						<div className="uk-grid-small" data-uk-grid>
 							<div className="uk-width-1-1">
-								<label className="uk-form-label" htmlFor="card-select">Card Type</label>
-								<select id="card-select" className="uk-select uk-width-1-3@m" name="cardType" defaultValue={this.state.cardType || ''} required>
-									<option value="" disabled>Select</option>
-									<option value="Visa">Visa</option>
-									<option value="MasterCard">MasterCard</option>
-									<option value="American Express">American Express</option>
-									<option value="Discover">Discover</option>
-								</select>
+								<img alt="Credit cards" src="https://www.3dcart.com/images/credit-card-logos/cc-sm-4.png" width="180" height="25" data-border="0" />
+							</div>
+							<div className="uk-width-1-2@m">
+								<label className="uk-form-label" htmlFor="card-name-input">Cardholder's Name</label>
+								<input id="card-name-input" className="uk-input" type="text" name="cardName" defaultValue={this.state.cardName} required/>
 							</div>
 							<div className="uk-width-1-2@m">
 								<label className="uk-form-label" htmlFor="card-number-input">Card Number</label>
 								<input id="card-number-input" className="uk-input" type="number" name="cardNumber" defaultValue={this.state.cardNumber} required/>
-							</div>
-							<div className="uk-width-1-2@m">
-								<label className="uk-form-label" htmlFor="card-name-input">Full Name</label>
-								<input id="card-name-input" className="uk-input" type="text" name="cardName" defaultValue={this.state.cardName} required/>
 							</div>
 							<div className="uk-width-1-4@m uk-width-1-5@l uk-width-1-6@xl">
 								<label className="uk-form-label" htmlFor="card-date-input">Expiration Date</label>
@@ -185,10 +176,8 @@ class PurchaseTicket extends Component {
 					<p>
 						{this.state.billingName}<br/>
 						{this.state.billingAddressLine1}<br/>
-						{this.state.billingAddressLine2 ?
+						{this.state.billingAddressLine2 &&
 							<span>{this.state.billingAddressLine2}<br/></span>
-							:
-							''
 						}
 						{this.state.billingCity}, {this.state.billingState} {this.state.billingZip}
 					</p>
