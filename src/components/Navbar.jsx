@@ -74,6 +74,9 @@ class Navbar extends Component {
 									<li data-uk-toggle="target: #offcanvas"><Link to="/profile">{this.getUsername()}</Link></li>
 							}
 							{Auth.isUserAuthenticated() && 
+									<li data-uk-toggle="target: #offcanvas"><Link to="/selling">Selling</Link></li>
+							}
+                            {Auth.isUserAuthenticated() && 
 									<li data-uk-toggle="target: #offcanvas"><Link to="/logout">Logout</Link></li>
 							}
 						</ul>
@@ -129,6 +132,7 @@ class Navbar extends Component {
 									<div className="uk-navbar-dropdown">
 										<ul className="uk-nav uk-navbar-dropdown-nav">
 											<li><Link to="/profile">Profile</Link></li>
+                                            <li><Link to="/selling">Selling</Link></li>
 											<li><Link to="/logout">Logout</Link></li>
 										</ul>
 									</div>
