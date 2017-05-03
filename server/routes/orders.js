@@ -2,6 +2,7 @@ const router = require('express').Router();
 const ibmdb = require('../modules/ibmdb');
 const jwt = require('jsonwebtoken');
 const jwtConfig = require('../config/jwt-config');
+const Promise = require('bluebird');
 const pagination = require('../modules/pagination');
 
 
@@ -9,8 +10,7 @@ router.route('/')
 	.get((req, res, next) => {
 		const page = parseInt(req.query.page) || 1,
 			order = req.query.order,
-			q = req.query.q,
-			category = req.query.category;
+			q = req.query.q;
 		let limit = parseInt(req.query.limit) || 30;
 
 		// limit max of 100
@@ -25,7 +25,7 @@ router.route('/')
 			return res.status(401).end();
 		}
 
-		const selectOrders = 'SELECT O.TICKET_ID, O.DATE_ORDERED, T.TITLE, T.DESCRIPTION, T.PRICE, T.CREATED_AT ' +
+		const selectOrders = 'SELECT O.TICKET_ID, O.DATE_ORDERED, O.SHIP_TIME, O.SHIP_DISTANCE, T.TITLE, T.DESCRIPTION, T.PRICE, T.CREATED_AT ' +
 				'FROM ORDERS O INNER JOIN TICKETS T ON O.TICKET_ID = T.TICKET_ID ' +
 				'WHERE BUYER_ID = ? ' +
 				'ORDER BY DATE_ORDERED DESC LIMIT ? OFFSET ? ';
@@ -33,7 +33,7 @@ router.route('/')
 		const selectOrdersParams = [sellerId, limit, offset];
 
 		const selectOrdersCount = 'SELECT COUNT(*) AS COUNT FROM ORDERS O ' +
-			'WHERE BUYER_ID = ? '
+			'WHERE BUYER_ID = ? ';
 		const selectOrdersCountParams = [sellerId];
 
 		ibmdb.open().then(conn => {

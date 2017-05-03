@@ -5,9 +5,10 @@ import config from '../config';
 import utils from '../utils/fetch';
 import 'whatwg-fetch';
 import auth from '../modules/Auth';
+import OrderRow from './OrderRow';
 
 
-class Selling extends Component {
+class Orders extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -23,7 +24,7 @@ class Selling extends Component {
 
 	loadData() {
 		this.setState({ ready: false });
-		fetch(config.apiUrl + '/selling?limit=20', {
+		fetch(config.apiUrl + '/orders?limit=20', {
             headers:{
 				'Content-Type':'application/json',
 				Authorization: 'Bearer ' + auth.getToken()
@@ -44,15 +45,15 @@ class Selling extends Component {
 	render() {
 		return (
 			<div className="uk-margin-top uk-margin-large-bottom">
-				<h3 className="uk-animation-fade uk-animation-fast uk-heading-line"><span>Selling</span></h3>
+				<h3 className="uk-animation-fade uk-animation-fast uk-heading-line"><span>Orders</span></h3>
 				{!this.state.ready ?
 					<Spinner />
 					:
-					<TicketsTable data={this.state.data} count={this.state.count} />
+					<TicketsTable data={this.state.data} count={this.state.count} customRow={<OrderRow />} />
 				}
 			</div>
 		);
 	}
 }
 
-export default Selling;
+export default Orders;

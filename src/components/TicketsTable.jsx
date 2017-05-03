@@ -24,6 +24,11 @@ class TicketsTable extends Component {
 	}
 
 	renderRow(data) {
+		if (this.props.customRow) {
+			const customRow = this.props.customRow;
+			return React.cloneElement(customRow, {data: data});
+		}
+
 		return (
 			<tr key={data.TICKET_ID}>
 				<td>
@@ -57,6 +62,7 @@ class TicketsTable extends Component {
 }
 
 TicketsTable.propTypes = {
+	customRow: PropTypes.object,
 	count: PropTypes.number.isRequired,
 	data: PropTypes.arrayOf(
 		PropTypes.shape({
