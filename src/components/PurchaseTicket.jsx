@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Auth from '../modules/Auth';
+import SmallSpinner from './SmallSpinner';
 import Spinner from './Spinner';
 import AddressForm from './AddressForm';
 import config from '../config';
@@ -72,6 +73,10 @@ class PurchaseTicket extends Component {
 	}
 
 	purchaseTicket(e) {
+		this.setState({
+			ready: false
+		});
+
 		e.preventDefault();
 		const t = e.target;
 
@@ -101,7 +106,7 @@ class PurchaseTicket extends Component {
 		.then(fetchUtils.checkStatus)
 		.then(fetchUtils.parseJSON)
 		.then(() => {
-			this.props.history.push('/');
+			this.props.history.push('/orders');
 		})
 		.catch(err => {
 			console.log(err);
@@ -188,7 +193,11 @@ class PurchaseTicket extends Component {
 				</div>
 				<div className="uk-width-1-1 uk-padding-small uk-padding-remove-top">
 					<a className="uk-button uk-button-primary uk-align-left" onClick={this.editBilling}>Edit Billing</a>
-					<button className="uk-button uk-button-primary uk-align-right">Place Order</button>
+					{this.state.ready ?
+						<button className="uk-button uk-button-primary uk-align-right">Place Order</button>
+						:
+						<SmallSpinner />
+					}
 				</div>
 			</form>
 		);
