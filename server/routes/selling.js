@@ -4,11 +4,11 @@ const ibmdb = require('../modules/ibmdb');
 const jwt = require('jsonwebtoken');
 const jwtConfig = require('../config/jwt-config');
 
+
 router.route('/')
 	.get((req, res, next) => {
 		const page = parseInt(req.query.page) || 1,
 			order = req.query.order,
-			q = req.query.q,
 			category = req.query.category;
 		let limit = parseInt(req.query.limit) || 30;
 
@@ -24,7 +24,7 @@ router.route('/')
 			return res.status(401).end();
 		}
 
-		let selectTickets = 'SELECT T.TICKET_ID, T.TITLE, T.DESCRIPTION, T.PRICE, T.CREATED_AT, C.NAME AS CATEGORY '  +
+		let selectTickets = 'SELECT T.TICKET_ID, T.SELLER_ID, T.TITLE, T.DESCRIPTION, T.PRICE, T.CREATED_AT, C.NAME AS CATEGORY '  +
 				'FROM TICKETS T INNER JOIN CATEGORIES C ON T.CATEGORY_ID = C.CATEGORY_ID '+ 
                 'WHERE SELLER_ID = ? ';
 		const selectTicketsParams = [sellerId];
@@ -33,14 +33,6 @@ router.route('/')
 			'INNER JOIN CATEGORIES C ON T.CATEGORY_ID = C.CATEGORY_ID ' +
 			'WHERE SELLER_ID = ? ';
 		const selectTicketsCountParams = [sellerId];
-
-		if (q) {
-			const containsClause = 'AND (CONTAINS(T.TITLE, ?) = 1 OR CONTAINS(T.DESCRIPTION, ?) = 1) ';
-			selectTickets += containsClause;
-			selectTicketsCount += containsClause;
-			selectTicketsParams.push(q, q);
-			selectTicketsCountParams.push(q, q);
-		} 
 
 		if (category) {
 			selectTickets += 'AND C.NAME = ? ';
@@ -64,8 +56,8 @@ router.route('/')
 				const tickets = values[0],
 					count = values[1][0].COUNT;
 
-				const links = generateLinks(count, limit, page, q, order);
-				res.links(links);
+//				const links = generateLinks(count, limit, page, q, order);
+//				res.links(links);
 
 				res.send({
 					tickets,
@@ -84,36 +76,6 @@ router.route('/')
 			});
 		});
 	});
-
-function generateLinks(count, limit, page, q, order) {
-	const lastPageNum = Math.ceil(count / limit);
-
-	let nextPage = (lastPageNum > 0 && page !== lastPageNum) ? '/tickets?page=' + (page + 1) + '&limit=' + limit : '',
-		prevPage = page === 1 ? '' : '/tickets?page=' + (page - 1) + '&limit=' + limit,
-		firstPage = '/tickets?page=1&limit=' + limit,
-		lastPage = '/tickets?page=' + lastPageNum + '&limit=' + limit;
-
-	if (q) {
-		if (nextPage) nextPage += '&q=' + q;
-		if (prevPage) prevPage += '&q=' + q;
-		firstPage += '&q=' + q;
-		lastPage += '&q=' + q;
-	}
-
-	if (order) {
-		if (nextPage) nextPage += '&order=' + order;
-		if (prevPage) prevPage += '&order=' + order;	
-		firstPage += '&order=' + order;
-		lastPage += '&order=' + order;
-	}
-
-	return {
-		next: nextPage,
-		previous: prevPage,
-		first: firstPage,
-		last: lastPage
-	};
-}
 
 router.route('/:id')
 	.get((req, res, next) => {

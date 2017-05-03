@@ -97,7 +97,7 @@ router.route('/:id/purchase')
 					const sellerAddress = data[0];
 
 					const sellerId = sellerAddress.SELLER_ID;
-					if (sellerId === buyerId) throw Error('Purchasing own ticket.')
+					if (sellerId === buyerId) throw Error('Purchasing own ticket.');
 
 					return getShippingInfo(sellerAddress, buyerAddress);
 				})

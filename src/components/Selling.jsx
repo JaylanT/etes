@@ -22,7 +22,7 @@ class Selling extends Component {
 
 	loadData() {
 		this.setState({ ready: false });
-		fetch(config.apiUrl + '/selllist?limit=20', {
+		fetch(config.apiUrl + '/selling?limit=20', {
             headers:{
 				'Content-Type':'application/json',
 				Authorization: 'Bearer ' + auth.getToken()
@@ -34,7 +34,7 @@ class Selling extends Component {
 				this.setState({
 					ready: true,
 					data: data.tickets,
-					count: data.count > 20 ? 20 : data.count
+					count: data.count
 				});
 			})
 			.catch(err => console.log(err));
