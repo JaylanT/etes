@@ -38,7 +38,10 @@ class TicketsTable extends Component {
 					{Auth.isUserAuthenticated() && data.SELLER_ID !== this.getUserId() &&
 						<Link to={`/tickets/${data.TICKET_ID}/purchase`} className="uk-button uk-button-default">Buy</Link>
 					}
-			</td>
+					{Auth.isUserAuthenticated() && data.SELLER_ID === this.getUserId() && data.SOLD === 1 &&
+						<b>SOLD</b>
+					}
+				</td>
 			</tr>
 		);
 	}
