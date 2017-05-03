@@ -25,11 +25,10 @@ router.route('/')
 			return res.status(401).end();
 		}
 
-		const orderIdentifier = getOrderIdentifier(order);
-		const selectOrders = 'SELECT O.TICKET_ID, T.TITLE, T.DESCRIPTION, T.PRICE, T.CREATED_AT ' +
+		const selectOrders = 'SELECT O.TICKET_ID, O.DATE_ORDERED, T.TITLE, T.DESCRIPTION, T.PRICE, T.CREATED_AT ' +
 				'FROM ORDERS O INNER JOIN TICKETS T ON O.TICKET_ID = T.TICKET_ID ' +
-				'WHERE BUYER_ID = ?'
-				'ORDER BY ' + orderIdentifier + ' LIMIT ? OFFSET ?';
+				'WHERE BUYER_ID = ? ' +
+				'ORDER BY DATE_ORDERED DESC LIMIT ? OFFSET ? ';
 		const offset = (page - 1) * limit;
 		const selectOrdersParams = [sellerId, limit, offset];
 
@@ -67,27 +66,5 @@ router.route('/')
 			});
 		});
 	});
-
-function getOrderIdentifier(order) {
-	let identifier = '';
-
-	switch(order) {
-		case 'newest':
-			identifier = 'CREATED_AT DESC';
-			break;
-		case 'oldest':
-			identifier = 'CREATED_AT';
-			break;
-		case 'price_highest':
-			identifier = 'PRICE DESC';
-			break;
-		case 'price_lowest':
-			identifier = 'PRICE';
-			break;
-		default:
-			identifier = 'CREATED_AT DESC';
-	}
-	return identifier;
-}
 
 module.exports = router;
