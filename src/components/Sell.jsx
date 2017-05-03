@@ -74,7 +74,7 @@ class Sell extends Component {
 		.then(fetchUtils.checkStatus)
 		.then(fetchUtils.parseJSON)
 		.then(() => {
-			this.props.history.push('/');
+			this.props.history.push('/selling');
 		})
 		.catch(err => {
 			this.setState({

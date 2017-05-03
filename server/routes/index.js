@@ -10,6 +10,8 @@ router.use('/tickets', require('./tickets'));
 
 router.use('/tickets', authCheckMiddleware);
 router.use('/tickets', require('./tickets-auth'));
+router.use('/selling', authCheckMiddleware);
+router.use('/selling', require('./selling'));
 
 router.use('/orders', authCheckMiddleware);
 router.use('/orders', require('./orders'));
