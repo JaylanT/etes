@@ -19,7 +19,7 @@ class OrderRow extends Component {
 					</dl>
 				</td>
 				<td className="uk-width-small">${data.PRICE}</td>
-				<td className="uk-width-small">{this.getFormattedDate(data.CREATED_AT)}</td>
+				<td className="uk-width-small">{this.getFormattedDate(data.DATE_ORDERED)}</td>
 				<td className="uk-width-small">{data.SHIP_TIME}</td>
 			</tr>
 		);
