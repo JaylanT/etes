@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import TicketsTable from './TicketsTable';
+import ListingRow from './ListingRow';
 import Paginator from './Paginator';
 import Spinner from './Spinner';
 import config from '../config';
@@ -66,7 +67,7 @@ class Tickets extends Component {
 					<Spinner />
 					:
 					<div>
-						<TicketsTable data={this.state.data} count={this.state.count} />
+						<TicketsTable data={this.state.data} count={this.state.count} row={ListingRow} />
 						<Paginator prevPage={this.state.prevPage} nextPage={this.state.nextPage} />				
 					</div>
 				}

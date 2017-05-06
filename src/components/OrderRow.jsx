@@ -1,17 +1,12 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
+import TicketsRow from './TicketsRow';
 
 
-class OrderRow extends Component {
-	getFormattedDate(date) {
-		const d = new Date(date.split(' ')[0]);
-		return d.toLocaleString('en-us', { year: 'numeric', month: 'long', day: 'numeric' });
-	}
-
+class OrderRow extends TicketsRow {
 	render() {
 		const data = this.props.data;
 		return (
-			<tr key={data.TICKET_ID}>
+			<tr>
 				<td>
 					<dl className="uk-description-list">
 						<dt>{data.TITLE}</dt>
@@ -25,9 +20,5 @@ class OrderRow extends Component {
 		);
 	}
 }
-
-OrderRow.propTypes = {
-	data: PropTypes.object
-};
 
 export default OrderRow;

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import TicketsTable from './TicketsTable';
+import ListingRow from './ListingRow';
 import Spinner from './Spinner';
 import config from '../config';
 import utils from '../utils/fetch';
@@ -42,7 +43,7 @@ class Home extends Component {
 				{!this.state.ready ?
 					<Spinner />
 					:
-					<TicketsTable data={this.state.data} count={this.state.count} />
+					<TicketsTable data={this.state.data} count={this.state.count} row={ListingRow} />
 				}
 			</div>
 		);

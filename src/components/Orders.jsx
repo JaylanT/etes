@@ -49,7 +49,7 @@ class Orders extends Component {
 				{!this.state.ready ?
 					<Spinner />
 					:
-					<TicketsTable data={this.state.data} count={this.state.count} customRow={<OrderRow />} />
+					<TicketsTable data={this.state.data} count={this.state.count} row={OrderRow} />
 				}
 			</div>
 		);
