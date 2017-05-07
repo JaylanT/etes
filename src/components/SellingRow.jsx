@@ -1,13 +1,12 @@
 import React from 'react';
 import TicketsRow from './TicketsRow';
-import Auth from '../modules/Auth';
 
 
 class SellingRow extends TicketsRow {
 	render() {
 		const data = this.props.data;
 		return (
-			<tr key={data.TICKET_ID}>
+			<tr>
 				<td>
 					<dl className="uk-description-list">
 						<dt>{data.TITLE}</dt>
@@ -17,7 +16,7 @@ class SellingRow extends TicketsRow {
 				<td className="uk-width-small">${data.PRICE}</td>
 				<td className="uk-width-small">{this.getFormattedDate(data.CREATED_AT)}</td>
 				<td className="uk-width-small">
-					{Auth.isUserAuthenticated() && data.SELLER_ID === this.getUserId() && data.SOLD === 1 &&
+					{data.SOLD === 1 &&
 						<b>SOLD</b>
 					}
 				</td>

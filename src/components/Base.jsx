@@ -10,6 +10,7 @@ import NoMatch from './NoMatch';
 import Sell from './Sell';
 import Selling from './Selling';
 import Orders from './Orders';
+import OrderDetails from './OrderDetails';
 import PurchaseTicket from './PurchaseTicket';
 import { Route, Switch } from 'react-router-dom';
 import './css/Base.css';
@@ -35,6 +36,7 @@ class Base extends Component {
 						<Route path="/login" component={Login} />
 						<Route path="/logout" component={Logout} />
 						<Route path="/selling" component={Selling} />
+						<Route path="/orders/:id" component={OrderDetails} />
 						<Route path="/orders" component={Orders} />
 						<Route component={NoMatch} />
 					</Switch>

@@ -25,7 +25,7 @@ router.route('/')
 			return res.status(401).end();
 		}
 
-		const selectOrders = 'SELECT O.TICKET_ID, O.DATE_ORDERED, O.SHIP_TIME, O.SHIP_DISTANCE, T.TITLE, T.DESCRIPTION, T.PRICE, T.CREATED_AT ' +
+		const selectOrders = 'SELECT O.TICKET_ID, O.ORDER_ID, O.DATE_ORDERED, O.SHIP_TIME, O.SHIP_DISTANCE, T.TITLE, T.DESCRIPTION, T.PRICE, T.CREATED_AT ' +
 				'FROM ORDERS O INNER JOIN TICKETS T ON O.TICKET_ID = T.TICKET_ID ' +
 				'WHERE BUYER_ID = ? ' +
 				'ORDER BY DATE_ORDERED DESC LIMIT ? OFFSET ? ';
@@ -65,6 +65,48 @@ router.route('/')
 				message: err.message || 'An unknown erorr has occurred.'
 			});
 		});
+	});
+
+router.route('/:id')
+	.get((req, res, next) => {
+		const token = req.headers.authorization.split(' ')[1];
+		let userId;
+		try {
+			const decoded = jwt.verify(token, jwtConfig.secret);
+			userId = decoded.sub;
+		} catch(err) {
+			return res.status(401).end();
+		}
+
+		const orderId = req.params.id;
+		const selectOrder = 'SELECT O.TICKET_ID, O.ORDER_ID, O.DATE_ORDERED, O.SHIP_TIME, O.SHIP_DISTANCE, T.TITLE, T.DESCRIPTION, T.PRICE, T.CREATED_AT, ' +
+			'O.SHIP_ADDRESS_LINE_1, O.SHIP_CITY, O.SHIP_STATE, O.SHIP_ZIP, ' +
+			'T.SELLER_ADDRESS_LINE_1, T.SELLER_CITY, T.SELLER_STATE, T.SELLER_ZIP ' +
+			'FROM ORDERS O INNER JOIN TICKETS T ON O.TICKET_ID = T.TICKET_ID ' +
+			'WHERE BUYER_ID = ? AND ORDER_ID = ? ';
+
+		ibmdb.open().then(conn => {
+			return ibmdb.prepareAndExecute(conn, selectOrder, [userId, orderId])
+				.catch(err => {
+					conn.closeSync();
+					throw Error(err.message);
+				})
+				.then(data => {
+					conn.close();
+					if (data.length === 0) {
+						res.status(404).send({
+							status: 404,
+							message: 'Order not found.'
+						});
+					} else {
+						res.send(data[0]);
+					}
+				});
+		})
+		.catch(err => res.status(400).send({
+			status: 400,
+			message: err.message || 'An unknown error has occurred.'
+		}));
 	});
 
 module.exports = router;
