@@ -1,9 +1,10 @@
 /* global google */
-import { default as React, Component } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withGoogleMap, GoogleMap, DirectionsRenderer } from 'react-google-maps';
 
-const DirectionsExampleGoogleMap = withGoogleMap(props => (
+
+const DirectionsGoogleMap = withGoogleMap(props => (
 	<GoogleMap
 		defaultZoom={7}
 		defaultCenter={props.center}
@@ -12,13 +13,11 @@ const DirectionsExampleGoogleMap = withGoogleMap(props => (
 	</GoogleMap>
 ));
 
-class DirectionsExample extends Component {
+class MapDirections extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			origin: props.origin,
-			destination: props.destination,
-			directions: null,
+			directions: null
 		};
 	}
 
@@ -26,8 +25,8 @@ class DirectionsExample extends Component {
 		const DirectionsService = new google.maps.DirectionsService();
 
 		DirectionsService.route({
-			origin: this.state.origin,
-			destination: this.state.destination,
+			origin: this.props.origin,
+			destination: this.props.destination,
 			travelMode: google.maps.TravelMode.DRIVING,
 		}, (result, status) => {
 			if (status === google.maps.DirectionsStatus.OK) {
@@ -42,23 +41,22 @@ class DirectionsExample extends Component {
 
 	render() {
 		return (
-			<DirectionsExampleGoogleMap
+			<DirectionsGoogleMap
 				containerElement={
 					<div style={{ height: `500px` }} />
 				}
 				mapElement={
 					<div style={{ height: `500px` }} />
 				}
-				center={this.state.origin}
 				directions={this.state.directions}
 			/>
 		);
 	}
 }
 
-DirectionsExample.propTypes = {
+MapDirections.propTypes = {
 	origin: PropTypes.string.isRequired,
 	destination: PropTypes.string.isRequired
 };
 
-export default DirectionsExample;
+export default MapDirections;
