@@ -5,11 +5,10 @@ import { withGoogleMap, GoogleMap, DirectionsRenderer } from 'react-google-maps'
 
 
 const DirectionsGoogleMap = withGoogleMap(props => (
-	<GoogleMap
-		defaultZoom={7}
-		defaultCenter={props.center}
-	>
-		{props.directions && <DirectionsRenderer directions={props.directions} />}
+	<GoogleMap defaultZoom={7}>
+		{props.directions &&
+			<DirectionsRenderer directions={props.directions} />
+		}
 	</GoogleMap>
 ));
 
@@ -34,7 +33,7 @@ class MapDirections extends Component {
 					directions: result,
 				});
 			} else {
-				console.error(`error fetching directions ${result}`);
+				console.error(`Error fetching directions ${result}`);
 			}
 		});
 	}
@@ -43,10 +42,10 @@ class MapDirections extends Component {
 		return (
 			<DirectionsGoogleMap
 				containerElement={
-					<div style={{ height: `500px` }} />
+					<div style={{ height: `450px` }} />
 				}
 				mapElement={
-					<div style={{ height: `500px` }} />
+					<div style={{ height: `450px` }} />
 				}
 				directions={this.state.directions}
 			/>
