@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import MapDirections from './MapDirections';
 import Spinner from './Spinner';
 import config from '../config';
 import utils from '../utils/fetch';
@@ -34,10 +35,13 @@ class OrderDetails extends Component {
 			.then(utils.parseJSON)
 			.then(data => {
 				console.log(data);
+				const origin = `${data.SELLER_ADDRESS_LINE_1}, ${data.SELLER_CITY} ${data.SELLER_STATE}`;
+				const destination = `${data.SHIP_ADDRESS_LINE_1}, ${data.SHIP_CITY} ${data.SHIP_STATE}`;
 				this.setState({
 					ready: true,
 					data: data.tickets,
-					count: data.count
+					origin,
+					destination
 				});
 			})
 			.catch(err => console.log(err));
@@ -50,8 +54,12 @@ class OrderDetails extends Component {
 				{!this.state.ready ?
 					<Spinner />
 					:
-					<div>
-
+					<div className="uk-grid-small">
+						<div className="uk-width-1-2@m">
+							<MapDirections origin={this.state.origin} destination={this.state.destination} />
+						</div>
+						<div className="uk-width-1-2@m">
+						</div>
 					</div>
 				}
 			</div>
