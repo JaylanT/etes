@@ -11,10 +11,9 @@ class OrderRow extends TicketsRow {
 				<td>
 					<dl className="uk-description-list">
 						<dt>{data.TITLE}</dt>
-						<dd className="uk-visible@m">{data.DESCRIPTION}</dd>
 					</dl>
 				</td>
-				<td className="uk-width-small">${data.PRICE}</td>
+				<td className="uk-width-small">${data.TOTAL_PRICE}</td>
 				<td className="uk-width-small">
 					<small>Order Date:</small><br/>
 					{this.getFormattedDate(data.DATE_ORDERED)}

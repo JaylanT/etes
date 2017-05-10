@@ -63,7 +63,7 @@ class OrderDetails extends Component {
 							<div className="uk-grid-small" data-uk-grid>
 								<div className="uk-width-1-3@m">
 									<h4>Order Total</h4>
-									<strong>${data.PRICE}</strong>
+									<strong>${data.TOTAL_PRICE}</strong>
 								</div>
 								<div className="uk-width-1-2@m">
 									<h4>Placed On</h4>

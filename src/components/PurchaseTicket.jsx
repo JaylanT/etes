@@ -124,10 +124,36 @@ class PurchaseTicket extends Component {
 	}
 
 	renderBillingForm() {
+		const price = this.state.data.PRICE;
+		const serviceCharge = price * 0.05;
+		const totalPrice = serviceCharge + parseFloat(price);
 		return (
 			<div>
 				<form className="uk-grid-small uk-form-stacked uk-animation-slide-left-small" onSubmit={this.submitBilling} data-uk-grid>
 					<div className="uk-width-1-2@m uk-padding-small">
+						<h4>Total Price</h4>
+						<div className="uk-grid-small" data-uk-grid>
+							<div className="uk-width-1-4@m uk-width-1-2">
+								Subtotal
+							</div>
+							<div className="uk-width-1-4@m uk-width-1-2 uk-text-right">
+								${price}
+							</div>
+							<div className="uk-width-2-4@m"></div>
+							<div className="uk-width-1-4@m uk-width-1-2">
+								5% service charge
+							</div>
+							<div className="uk-width-1-4@m uk-width-1-2 uk-text-right">
+								${serviceCharge}
+							</div>
+							<div className="uk-width-2-4@m"></div>
+							<div className="uk-width-1-4@m uk-width-1-2">
+								<strong>Order total</strong>
+							</div>
+							<div className="uk-width-1-4@m uk-width-1-2 uk-text-right">
+								<strong>${totalPrice}</strong>
+							</div>
+						</div>
 						<h4>Payment Information</h4>
 						<div className="uk-grid-small" data-uk-grid>
 							<div className="uk-width-1-1">
@@ -174,6 +200,8 @@ class PurchaseTicket extends Component {
 		return (
 			<form className="uk-grid-small uk-form-stacked uk-animation-slide-left-small" onSubmit={this.purchaseTicket} data-uk-grid>
 				<div className="uk-width-1-2@m">
+					<h4>Order Total</h4>
+					<strong>${this.state.data.PRICE * 0.05 + parseFloat(this.state.data.PRICE)}</strong>
 					<h4>Billing Information</h4>
 					<b>Card Number</b>
 					<p>{this.state.cardNumber}</p>
