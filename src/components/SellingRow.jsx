@@ -14,6 +14,7 @@ class SellingRow extends TicketsRow {
 					</dl>
 				</td>
 				<td className="uk-width-small">${data.PRICE}</td>
+				<td className="uk-width-small">{data.CATEGORY}</td>
 				<td className="uk-width-small">{this.getFormattedDate(data.CREATED_AT)}</td>
 			</tr>
 		);
