@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const Promise = require('bluebird');
 const ibmdb = require('../modules/ibmdb');
+const pagination = require('../modules/pagination');
 
 
 router.route('/')
@@ -54,7 +55,7 @@ router.route('/')
 				const tickets = values[0],
 					count = values[1][0].COUNT;
 
-				const links = generateLinks(count, limit, page, q, order);
+				const links = pagination('tickets', count, limit, page, q, order);
 				res.links(links);
 
 				res.send({
@@ -74,36 +75,6 @@ router.route('/')
 			});
 		});
 	});
-
-function generateLinks(count, limit, page, q, order) {
-	const lastPageNum = Math.ceil(count / limit);
-
-	let nextPage = (lastPageNum > 0 && page !== lastPageNum) ? '/tickets?page=' + (page + 1) + '&limit=' + limit : '',
-		prevPage = page === 1 ? '' : '/tickets?page=' + (page - 1) + '&limit=' + limit,
-		firstPage = '/tickets?page=1&limit=' + limit,
-		lastPage = '/tickets?page=' + lastPageNum + '&limit=' + limit;
-
-	if (q) {
-		if (nextPage) nextPage += '&q=' + q;
-		if (prevPage) prevPage += '&q=' + q;
-		firstPage += '&q=' + q;
-		lastPage += '&q=' + q;
-	}
-
-	if (order) {
-		if (nextPage) nextPage += '&order=' + order;
-		if (prevPage) prevPage += '&order=' + order;	
-		firstPage += '&order=' + order;
-		lastPage += '&order=' + order;
-	}
-
-	return {
-		next: nextPage,
-		previous: prevPage,
-		first: firstPage,
-		last: lastPage
-	};
-}
 
 router.route('/:id')
 	.get((req, res, next) => {

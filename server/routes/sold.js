@@ -27,12 +27,12 @@ router.route('/')
 
 		let selectTickets = 'SELECT T.TICKET_ID, T.SELLER_ID, T.SOLD, T.TITLE, T.DESCRIPTION, T.PRICE, T.CREATED_AT, C.NAME AS CATEGORY '  +
 			'FROM TICKETS T INNER JOIN CATEGORIES C ON T.CATEGORY_ID = C.CATEGORY_ID '+ 
-			'WHERE SELLER_ID = ? AND SOLD = 0 ';
+			'WHERE SELLER_ID = ? AND SOLD = 1 ';
 		const selectTicketsParams = [sellerId];
 
 		let selectTicketsCount = 'SELECT COUNT(*) AS COUNT FROM TICKETS T ' +
 			'INNER JOIN CATEGORIES C ON T.CATEGORY_ID = C.CATEGORY_ID ' +
-			'WHERE SELLER_ID = ? AND SOLD = 0 ';
+			'WHERE SELLER_ID = ? AND SOLD = 1 ';
 		const selectTicketsCountParams = [sellerId];
 
 		if (category) {

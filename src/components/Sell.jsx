@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Auth from '../modules/Auth';
+import auth from '../modules/Auth';
 import SmallSpinner from './SmallSpinner';
 import AddressForm from './AddressForm';
 import config from '../config';
@@ -20,7 +20,7 @@ class Sell extends Component {
 	}
 
 	componentWillMount() {
-		if(!Auth.isUserAuthenticated()) this.props.history.replace('/');
+		if(!auth.isUserAuthenticated()) this.props.history.replace('/');
 	}
 
 	createTicket(e) {
@@ -56,7 +56,7 @@ class Sell extends Component {
 			method:'POST',
 			headers:{
 				'Content-Type':'application/json',
-				Authorization: 'Bearer ' + Auth.getToken()
+				Authorization: 'Bearer ' + auth.getToken()
 			},
 			body: JSON.stringify({
 				title,

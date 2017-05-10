@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Auth from '../modules/Auth';
-import { Link } from 'react-router-dom';
 
 
 class TicketsTable extends Component {
@@ -10,40 +8,9 @@ class TicketsTable extends Component {
 		this.renderRow = this.renderRow.bind(this);
 	}
 
-	getFormattedDate(date) {
-		const d = new Date(date.split(' ')[0]);
-		return d.toLocaleString('en-us', { year: 'numeric', month: 'long', day: 'numeric' });
-	}
-
-	getUserId() {
-		const token = Auth.getToken(),
-			base64url = token.split('.')[1],
-			base64 = base64url.replace('-', '+').replace('_', '/'),
-			decoded = JSON.parse(window.atob(base64));
-		return decoded.sub;
-	}
-
 	renderRow(data) {
-		return (
-			<tr key={data.TICKET_ID}>
-				<td>
-					<dl className="uk-description-list">
-						<dt>{data.TITLE}</dt>
-						<dd className="uk-visible@m">{data.DESCRIPTION}</dd>
-					</dl>
-				</td>
-				<td className="uk-width-small">${data.PRICE}</td>
-				<td className="uk-width-small">{this.getFormattedDate(data.CREATED_AT)}</td>
-				<td className="uk-width-small">
-					{Auth.isUserAuthenticated() && data.SELLER_ID !== this.getUserId() &&
-						<Link to={`/tickets/${data.TICKET_ID}/purchase`} className="uk-button uk-button-default">Buy</Link>
-					}
-					{Auth.isUserAuthenticated() && data.SELLER_ID === this.getUserId() && data.SOLD === 1 &&
-						<b>SOLD</b>
-					}
-				</td>
-			</tr>
-		);
+		const Row = this.props.row;
+		return <Row data={data} key={data.TICKET_ID} />;
 	}
 
 	render() {
@@ -57,6 +24,7 @@ class TicketsTable extends Component {
 }
 
 TicketsTable.propTypes = {
+	row: PropTypes.func.isRequired,
 	count: PropTypes.number.isRequired,
 	data: PropTypes.arrayOf(
 		PropTypes.shape({
