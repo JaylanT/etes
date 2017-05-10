@@ -42,10 +42,10 @@ class MapDirections extends Component {
 		return (
 			<DirectionsGoogleMap
 				containerElement={
-					<div style={{ height: `450px` }} />
+					<div className="uk-box-shadow-small uk-height-large" />
 				}
 				mapElement={
-					<div style={{ height: `450px` }} />
+					<div className="uk-height-large" />
 				}
 				directions={this.state.directions}
 			/>

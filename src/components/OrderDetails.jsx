@@ -61,9 +61,9 @@ class OrderDetails extends Component {
 						<div className="uk-width-1-2@m uk-padding-small">
 							<h3>{data.TITLE}</h3>
 							<div className="uk-grid-small" data-uk-grid>
-								<div className="uk-width-1-2@m">
+								<div className="uk-width-1-3@m">
 									<h4>Order Total</h4>
-									<p>$1240</p>
+									<strong>${data.PRICE}</strong>
 								</div>
 								<div className="uk-width-1-2@m">
 									<h4>Placed On</h4>

@@ -38,6 +38,45 @@ class Navbar extends Component {
 		t.reset();
 	}
 
+	renderOffCanvasNav() {
+		return (
+			<div id="offcanvas" data-uk-offcanvas="overlay: true">
+				<div className="uk-offcanvas-bar uk-flex uk-flex-column">
+					<ul className="uk-nav uk-nav-primary uk-nav-center uk-margin-auto-vertical">
+						<li className="uk-parent">
+							<ul className="uk-nav-sub">
+								<li data-uk-toggle="target: #offcanvas"><Link to="/music">Music</Link></li>
+								<li data-uk-toggle="target: #offcanvas"><Link to="/sports">Sports</Link></li>
+								<li data-uk-toggle="target: #offcanvas"><Link to="/arts">Arts & Theater</Link></li>
+								<li data-uk-toggle="target: #offcanvas"><Link to="/family">Family</Link></li>
+								<li data-uk-toggle="target: #offcanvas"><Link to="/other">Other</Link></li>
+							</ul>
+						</li>
+						<li className="uk-nav-divider"></li>
+						{!Auth.isUserAuthenticated() &&
+								<li data-uk-toggle="target: #offcanvas"><Link to="/login">Login</Link></li>
+						}
+						{!Auth.isUserAuthenticated() && 
+								<li data-uk-toggle="target: #offcanvas"><Link to="/register">Register</Link></li>
+						}
+						{Auth.isUserAuthenticated() && 
+								<li data-uk-toggle="target: #offcanvas"><Link to="/sell">Sell</Link></li>
+						}
+						{Auth.isUserAuthenticated() && 
+								<li data-uk-toggle="target: #offcanvas"><Link to="/selling">Selling</Link></li>
+						}
+						{Auth.isUserAuthenticated() && 
+								<li data-uk-toggle="target: #offcanvas"><Link to="/orders">Orders</Link></li>
+						}
+						{Auth.isUserAuthenticated() && 
+								<li data-uk-toggle="target: #offcanvas"><Link to="/logout">Logout</Link></li>
+						}
+					</ul>
+				</div>
+			</div>
+		);
+	}
+
 	render() {
 		return (
 			<nav className="uk-navbar-container uk-navbar-fixed uk-light" data-uk-navbar>
@@ -46,41 +85,6 @@ class Navbar extends Component {
 						<a className="uk-navbar-toggle uk-hidden@m" data-uk-icon="icon: menu" data-uk-toggle="target: #offcanvas" href="#"></a>
 						<Link to="/" className="uk-navbar-item uk-logo">ETES</Link>
 					</ul>
-				</div>
-
-				<div id="offcanvas" data-uk-offcanvas="overlay: true">
-					<div className="uk-offcanvas-bar uk-flex uk-flex-column">
-						<ul className="uk-nav uk-nav-primary uk-nav-center uk-margin-auto-vertical">
-							<li className="uk-parent">
-								<ul className="uk-nav-sub">
-									<li data-uk-toggle="target: #offcanvas"><Link to="/music">Music</Link></li>
-									<li data-uk-toggle="target: #offcanvas"><Link to="/sports">Sports</Link></li>
-									<li data-uk-toggle="target: #offcanvas"><Link to="/arts">Arts & Theater</Link></li>
-									<li data-uk-toggle="target: #offcanvas"><Link to="/family">Family</Link></li>
-									<li data-uk-toggle="target: #offcanvas"><Link to="/other">Other</Link></li>
-								</ul>
-							</li>
-							<li className="uk-nav-divider"></li>
-							{!Auth.isUserAuthenticated() &&
-									<li data-uk-toggle="target: #offcanvas"><Link to="/login">Login</Link></li>
-							}
-							{!Auth.isUserAuthenticated() && 
-									<li data-uk-toggle="target: #offcanvas"><Link to="/register">Register</Link></li>
-							}
-							{Auth.isUserAuthenticated() && 
-									<li data-uk-toggle="target: #offcanvas"><Link to="/sell">Sell</Link></li>
-							}
-							{Auth.isUserAuthenticated() && 
-									<li data-uk-toggle="target: #offcanvas"><Link to="/selling">Selling</Link></li>
-							}
-							{Auth.isUserAuthenticated() && 
-									<li data-uk-toggle="target: #offcanvas"><Link to="/orders">Orders</Link></li>
-							}
-							{Auth.isUserAuthenticated() && 
-									<li data-uk-toggle="target: #offcanvas"><Link to="/logout">Logout</Link></li>
-							}
-						</ul>
-					</div>
 				</div>
 
 				<div className="uk-navbar-center uk-visible@m">
@@ -140,6 +144,8 @@ class Navbar extends Component {
 							</ul>
 					}
 				</div>
+
+				{this.renderOffCanvasNav()}
 			</nav>
 		);
 	}

@@ -79,7 +79,7 @@ router.route('/:id/purchase')
 
 		// find ticket and get address that user intends to purchase and make sure it's not sold
 		const findTicket = 'SELECT SELLER_NAME as "name", SELLER_ADDRESS_LINE_1 as "addressLine1", ' +
-			'SELLER_ADDRESS_LINE_2 as "addressLine2", SELLER_CITY as "city", SELLER_STATE as "state", ' +
+			'SELLER_ADDRESS_LINE_2 as "addressLine2", SELLER_CITY as "city", SELLER_STATE as "state", PRICE ' +
 			'SELLER_ZIP as "zip", SELLER_ID FROM TICKETS WHERE TICKET_ID = ? AND SOLD = 0';
 
 		const insertOrder = 'INSERT INTO ORDERS (TICKET_ID, BUYER_ID, DATE_ORDERED, ' +
