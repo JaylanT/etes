@@ -3,6 +3,7 @@ const Promise = require('bluebird');
 const ibmdb = require('../modules/ibmdb');
 const jwt = require('jsonwebtoken');
 const jwtConfig = require('../config/jwt-config');
+const pagination = require('../modules/pagination');
 
 
 router.route('/')
@@ -56,8 +57,8 @@ router.route('/')
 				const tickets = values[0],
 					count = values[1][0].COUNT;
 
-//				const links = generateLinks(count, limit, page, q, order);
-//				res.links(links);
+				const links = pagination('selling', count, limit, page, null, order);
+				res.links(links);
 
 				res.send({
 					tickets,
