@@ -90,6 +90,9 @@ router.route('/:id/purchase')
 		// set ticket as sold
 		const updateTicket = 'UPDATE TICKETS SET SOLD = 1 WHERE TICKET_ID = ? AND SOLD = 0';
 
+		const findOrder = 'SELECT ORDER_ID FROM ORDERS WHERE TICKET_ID = ?';
+		const findOrderParams = [ticketId];
+
 		ibmdb.open().then(conn => {
 			return ibmdb.prepareAndExecute(conn, findTicket, [ticketId])
 				.then(data => {
@@ -124,9 +127,10 @@ router.route('/:id/purchase')
 						})
 						.then(() => conn.commitTransactionAsync());
 				})
-				.then(() => {
+				.then(() => ibmdb.prepareAndExecute(conn, findOrder, findOrderParams))
+				.then(data => {
 					conn.close();
-					res.send({ message: 'Ticket purchased.' });
+					res.send({ orderNumber: data[0].ORDER_ID });
 				})
 				.catch(err => {
 					conn.closeSync();

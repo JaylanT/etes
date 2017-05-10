@@ -31,7 +31,6 @@ class OrderDetails extends Component {
 			.then(utils.checkStatus)
 			.then(utils.parseJSON)
 			.then(data => {
-				console.log(data);
 				const origin = `${data.SELLER_ADDRESS_LINE_1}, ${data.SELLER_CITY} ${data.SELLER_STATE}`;
 				const destination = `${data.SHIP_ADDRESS_LINE_1}, ${data.SHIP_CITY} ${data.SHIP_STATE}`;
 				this.setState({

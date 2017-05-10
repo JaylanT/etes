@@ -105,8 +105,8 @@ class PurchaseTicket extends Component {
 		})
 		.then(fetchUtils.checkStatus)
 		.then(fetchUtils.parseJSON)
-		.then(() => {
-			this.props.history.push('/orders');
+		.then(data => {
+			this.props.history.push(`/orders/${data.orderNumber}`);
 		})
 		.catch(err => {
 			console.log(err);
