@@ -15,11 +15,6 @@ class SellingRow extends TicketsRow {
 				</td>
 				<td className="uk-width-small">${data.PRICE}</td>
 				<td className="uk-width-small">{this.getFormattedDate(data.CREATED_AT)}</td>
-				<td className="uk-width-small">
-					{data.SOLD === 1 &&
-						<b>SOLD</b>
-					}
-				</td>
 			</tr>
 		);
 	}

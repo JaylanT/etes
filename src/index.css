@@ -12,3 +12,6 @@ body {
 	background-color: #E91C34;
 }
 
+.uk-tab>.uk-active>a {
+	border-color: #EB3349;
+}

@@ -21,6 +21,9 @@ class Selling extends Component {
 			count: 0,
 			ready: false
 		};
+		this.showActive = this.showActive.bind(this);
+		this.showSold = this.showSold.bind(this);
+		this.activeTab = this.activeTab.bind(this);
 	}
 
 	componentWillMount() {
@@ -38,7 +41,9 @@ class Selling extends Component {
 
 	loadData() {
 		this.setState({ ready: false });
-		fetch(config.apiUrl + `/selling?limit=10&page=${this.state.page}`, {
+		const status = qs.parse(this.props.location.search.substring(1)).status;
+		const url = `${config.apiUrl}/${status === 'sold' ? 'sold' : 'selling'}?limit=10&page=${this.state.page}`;
+		fetch(url, {
 			headers: {
 				'Content-Type':'application/json',
 				Authorization: 'Bearer ' + auth.getToken()
@@ -51,8 +56,8 @@ class Selling extends Component {
 				const nextPage = parsed.next.page,
 						prevPage = parsed.previous.page;
 				this.setState({
-					nextPage: nextPage ? '?page=' + nextPage : '',
-					prevPage: prevPage ? '?page=' + prevPage : ''
+					nextPage: nextPage ? `?status=${status}&page=${nextPage}` : '',
+					prevPage: prevPage ? `?status=${status}&page=${prevPage}` : ''
 				});
 				return res;
 			})
@@ -67,10 +72,27 @@ class Selling extends Component {
 			.catch(err => console.log(err));
 	}
 
+	showActive() {
+		this.props.history.push('?status=active');
+	}
+
+	showSold() {
+		this.props.history.push('/selling?status=sold');
+	}
+
+	activeTab(tab) {
+		const status = qs.parse(this.props.location.search.substring(1)).status;
+		return status === tab ? 'uk-active' : '';	
+	}
+
 	render() {
 		return (
 			<div className="uk-margin-top uk-margin-large-bottom">
 				<h3 className="uk-animation-fade uk-animation-fast uk-heading-line"><span>Selling</span></h3>
+				<ul data-uk-tab>
+					<li className={this.activeTab('active')}><a onClick={this.showActive}>Active</a></li>
+					<li className={this.activeTab('sold')}><a onClick={this.showSold}>Sold</a></li>
+				</ul>
 				{!this.state.ready ?
 					<Spinner />
 					:

@@ -12,6 +12,8 @@ router.use('/tickets', authCheckMiddleware);
 router.use('/tickets', require('./tickets-auth'));
 router.use('/selling', authCheckMiddleware);
 router.use('/selling', require('./selling'));
+router.use('/sold', authCheckMiddleware);
+router.use('/sold', require('./sold'));
 
 router.use('/orders', authCheckMiddleware);
 router.use('/orders', require('./orders'));
