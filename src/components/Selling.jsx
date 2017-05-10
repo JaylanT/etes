@@ -90,8 +90,8 @@ class Selling extends Component {
 			<div className="uk-margin-top uk-margin-large-bottom">
 				<h3 className="uk-animation-fade uk-animation-fast uk-heading-line"><span>Selling</span></h3>
 				<ul data-uk-tab>
-					<li className={this.activeTab('active')}><a onClick={this.showActive}>Active</a></li>
-					<li className={this.activeTab('sold')}><a onClick={this.showSold}>Sold</a></li>
+					<li className={this.activeTab('active')} onClick={this.showActive}><a>Active</a></li>
+					<li className={this.activeTab('sold')} onClick={this.showSold}><a>Sold</a></li>
 				</ul>
 				{!this.state.ready ?
 					<Spinner />

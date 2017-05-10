@@ -17,9 +17,12 @@ class ListingRow extends TicketsRow {
 				</td>
 				<td className="uk-width-small">${data.PRICE}</td>
 				<td className="uk-width-small">{this.getFormattedDate(data.CREATED_AT)}</td>
-				<td className="uk-width-small">
-					{Auth.isUserAuthenticated() && data.SELLER_ID !== this.getUserId() &&
+				<td className="uk-width-small uk-text-center">
+					{Auth.isUserAuthenticated() && data.SELLER_ID !== this.getUserId()
+						?
 						<Link to={`/tickets/${data.TICKET_ID}/purchase`} className="uk-button uk-button-default">Buy</Link>
+						:
+						<span data-uk-icon="icon: user"></span>
 					}
 				</td>
 			</tr>
