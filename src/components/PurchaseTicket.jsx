@@ -124,34 +124,34 @@ class PurchaseTicket extends Component {
 	}
 
 	renderBillingForm() {
-		const price = this.state.data.PRICE;
+		const price = parseFloat(this.state.data.PRICE);
 		const serviceCharge = price * 0.05;
-		const totalPrice = serviceCharge + parseFloat(price);
+		const totalPrice = serviceCharge + price;
 		return (
 			<div>
 				<form className="uk-grid-small uk-form-stacked uk-animation-slide-left-small" onSubmit={this.submitBilling} data-uk-grid>
 					<div className="uk-width-1-2@m uk-padding-small">
 						<h4>Total Price</h4>
 						<div className="uk-grid-small" data-uk-grid>
-							<div className="uk-width-1-4@m uk-width-1-2">
+							<div className="uk-width-2-6@m uk-width-1-2">
 								Subtotal
 							</div>
-							<div className="uk-width-1-4@m uk-width-1-2 uk-text-right">
-								${price}
+							<div className="uk-width-1-6@m uk-width-1-2 uk-text-right">
+								${price.toFixed(2)}
 							</div>
-							<div className="uk-width-2-4@m"></div>
-							<div className="uk-width-1-4@m uk-width-1-2">
+							<div className="uk-width-3-6@m"></div>
+							<div className="uk-width-2-6@m uk-width-1-2">
 								5% service charge
 							</div>
-							<div className="uk-width-1-4@m uk-width-1-2 uk-text-right">
-								${serviceCharge}
+							<div className="uk-width-1-6@m uk-width-1-2 uk-text-right">
+								${serviceCharge.toFixed(2)}
 							</div>
-							<div className="uk-width-2-4@m"></div>
-							<div className="uk-width-1-4@m uk-width-1-2">
+							<div className="uk-width-3-6@m"></div>
+							<div className="uk-width-2-6@m uk-width-1-2">
 								<strong>Order total</strong>
 							</div>
-							<div className="uk-width-1-4@m uk-width-1-2 uk-text-right">
-								<strong>${totalPrice}</strong>
+							<div className="uk-width-1-6@m uk-width-1-2 uk-text-right">
+								<strong>${totalPrice.toFixed(2)}</strong>
 							</div>
 						</div>
 						<h4>Payment Information</h4>
@@ -165,7 +165,7 @@ class PurchaseTicket extends Component {
 							</div>
 							<div className="uk-width-1-2@m">
 								<label className="uk-form-label" htmlFor="card-number-input">Card Number</label>
-								<input id="card-number-input" className="uk-input" type="number" name="cardNumber" defaultValue={this.state.cardNumber} required/>
+								<input id="card-number-input" className="uk-input" type="text" pattern="[0-9]{13,19}" name="cardNumber" defaultValue={this.state.cardNumber} required/>
 							</div>
 							<div className="uk-width-1-4@m uk-width-1-5@l uk-width-1-6@xl">
 								<label className="uk-form-label" htmlFor="card-date-input">Expiration Date</label>
@@ -173,7 +173,7 @@ class PurchaseTicket extends Component {
 							</div>
 							<div className="uk-width-1-4@m uk-width-1-5@l uk-width-1-6@xl">
 								<label className="uk-form-label" htmlFor="card-security-input">Security Code</label>
-								<input id="card-security-input" className="uk-input" type="number" name="cardSecurity" defaultValue={this.state.cardSecurity} required/>
+								<input id="card-security-input" className="uk-input" type="text" pattern="[0-9]{3}" name="cardSecurity" defaultValue={this.state.cardSecurity} required/>
 							</div>
 						</div>
 					</div>

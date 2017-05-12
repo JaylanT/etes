@@ -133,7 +133,7 @@ class Navbar extends Component {
 								<li className={this.highlightIfActive('sell')}><Link to="/sell">Sell</Link></li>
 								<li>
 									<a href="#">{this.getUsername()}</a>
-									<div className="uk-navbar-dropdown">
+									<div className="uk-navbar-dropdown" data-delay-hide="300">
 										<ul className="uk-nav uk-navbar-dropdown-nav">
 											<li><Link to="/selling">Selling</Link></li>
 											<li><Link to="/orders">Orders</Link></li>
