@@ -8,7 +8,8 @@ import Auth from '../modules/Auth';
 class ListingRow extends TicketsRow {
 	render() {
 		const data = this.props.data;
-		const date = new Date(parseInt(data.DATE, 10) * 1000);
+		const dt = new Date();
+		const date = new Date((parseInt(data.DATE, 10) + dt.getTimezoneOffset() * 60) * 1000);
 		return (
 			<tr>
 				<td>
