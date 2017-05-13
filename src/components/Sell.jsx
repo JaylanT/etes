@@ -110,7 +110,7 @@ class Sell extends Component {
 								<input id="title-input" className="uk-input" type="text" name="title" required/>
 							</div>
 							<div className="uk-width-1-2@m">
-								<label className="uk-form-lable" htmlFor="date-input">Date</label>
+								<label className="uk-form-label" htmlFor="date-input">Date</label>
 								<input id="date-input" className="uk-input" type="date" name="date" min={this.getMinDate()} required/>
 							</div>
 							<div className="uk-width-1-1">
