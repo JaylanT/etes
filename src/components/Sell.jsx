@@ -1,3 +1,4 @@
+/* global UIkit */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import auth from '../modules/Auth';
@@ -79,11 +80,19 @@ class Sell extends Component {
 			this.props.history.push('/selling');
 		})
 		.catch(err => {
+			UIkit.notification(err.message);
+			console.log(err.message);
 			this.setState({
-				error: err.message,
 				ready: true
 			});
 		});
+	}
+
+	getMinDate() {
+		const date = new Date();
+		date.setDate(date.getDate() + 2);
+		const month = date.getMonth() + 1;
+		return `${date.getFullYear()}-${month < 10 ? 0 : ''}${month}-${date.getDate()}`;
 	}
 
 	render() {
@@ -102,7 +111,7 @@ class Sell extends Component {
 							</div>
 							<div className="uk-width-1-2@m">
 								<label className="uk-form-lable" htmlFor="date-input">Date</label>
-								<input id="date-input" className="uk-input" type="date" name="date" required/>
+								<input id="date-input" className="uk-input" type="date" name="date" min={this.getMinDate()} required/>
 							</div>
 							<div className="uk-width-1-1">
 								<label className="uk-form-label" htmlFor="description-input">Description</label>

@@ -182,7 +182,7 @@ function validateTicket(payload) {
 	}
 	if (!payload || isNaN(payload.date) || payload.date <= Date.now() / 1000) {
 		isFormValid = false;
-		errors.date = 'Please provide a valid event date.';
+		errors.date = 'Please provide a date at least two days from now.';
 	}
 
 	const message = isFormValid ? '' : 'Form validation failed.';
