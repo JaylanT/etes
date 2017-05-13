@@ -124,33 +124,33 @@ class PurchaseTicket extends Component {
 	}
 
 	renderBillingForm() {
-		const price = parseFloat(this.state.data.PRICE);
-		const serviceCharge = price * 0.05;
-		const totalPrice = serviceCharge + price;
+		const price = parseFloat(this.state.data.PRICE),
+			serviceCharge = price * 0.05,
+			totalPrice = serviceCharge + price;
 		return (
 			<div>
 				<form className="uk-grid-small uk-form-stacked uk-animation-slide-left-small" onSubmit={this.submitBilling} data-uk-grid>
 					<div className="uk-width-1-2@m uk-padding-small">
 						<h4>Total Price</h4>
 						<div className="uk-grid-small" data-uk-grid>
-							<div className="uk-width-2-6@m uk-width-1-2">
+							<div className="uk-width-1-4@xl uk-width-2-6@m uk-width-1-2">
 								Subtotal
 							</div>
-							<div className="uk-width-1-6@m uk-width-1-2 uk-text-right">
+							<div className="uk-width-1-4@xl uk-width-1-6@m uk-width-1-2 uk-text-right">
 								${price.toFixed(2)}
 							</div>
-							<div className="uk-width-3-6@m"></div>
-							<div className="uk-width-2-6@m uk-width-1-2">
+							<div className="uk-width-2-4@xl uk-width-3-6@m"></div>
+							<div className="uk-width-1-4@xl uk-width-2-6@m uk-width-1-2">
 								5% service charge
 							</div>
-							<div className="uk-width-1-6@m uk-width-1-2 uk-text-right">
+							<div className="uk-width-1-4@xl uk-width-1-6@m uk-width-1-2 uk-text-right">
 								${serviceCharge.toFixed(2)}
 							</div>
-							<div className="uk-width-3-6@m"></div>
-							<div className="uk-width-2-6@m uk-width-1-2">
+							<div className="uk-width-2-4@xl uk-width-3-6@m"></div>
+							<div className="uk-width-1-4@xl uk-width-2-6@m uk-width-1-2">
 								<strong>Order total</strong>
 							</div>
-							<div className="uk-width-1-6@m uk-width-1-2 uk-text-right">
+							<div className="uk-width-1-4@xl uk-width-1-6@m uk-width-1-2 uk-text-right">
 								<strong>${totalPrice.toFixed(2)}</strong>
 							</div>
 						</div>
@@ -238,7 +238,9 @@ class PurchaseTicket extends Component {
 					<Spinner />
 					:
 					<div className="uk-margin">
-						<h3 className="uk-heading-line uk-animation-fade uk-animation-fast"><span>Purchase <span>'{this.state.data.TITLE}'</span> ticket</span></h3>
+						<h3 className="uk-heading-line uk-animation-fade uk-animation-fast">
+							<span>Purchase '{this.state.data.TITLE}' ticket</span>
+						</h3>
 						{this.state.isEditingBilling ?
 							this.renderBillingForm()
 							:

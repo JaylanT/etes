@@ -83,8 +83,8 @@ router.route('/:id/purchase')
 			'SELLER_ZIP as "zip", SELLER_ID, PRICE FROM TICKETS WHERE TICKET_ID = ? AND SOLD = 0';
 
 		const insertOrder = 'INSERT INTO ORDERS (TICKET_ID, BUYER_ID, DATE_ORDERED, ' +
-			'SHIP_NAME, SHIP_ADDRESS_LINE_1, SHIP_ADDRESS_LINE_2, SHIP_CITY, SHIP_STATE, SHIP_ZIP, TOTAL_PRICE, SHIP_DISTANCE, SHIP_TIME) ' +
-			'VALUES (?, ?, CURRENT TIMESTAMP, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+			'SHIP_NAME, SHIP_ADDRESS_LINE_1, SHIP_ADDRESS_LINE_2, SHIP_CITY, SHIP_STATE, SHIP_ZIP, TOTAL_PRICE, DELIVERY_ETA) ' +
+			'VALUES (?, ?, CURRENT TIMESTAMP, ?, ?, ?, ?, ?, ?, ?, ?)';
 		const insertOrderParams = [ticketId, buyerId, data.name, data.addressLine1, data.addressLine2, data.city, data.state, data.zip];
 
 		// set ticket as sold
@@ -108,15 +108,18 @@ router.route('/:id/purchase')
 					return getShippingInfo(ticketData, buyerAddress);
 				})
 				.then(shippingInfo => {
-					if (shippingInfo.status !== 'OK') {
-						throw Error('Failed to calculate shipping information.');
-					}
+					if (shippingInfo.status !== 'OK') throw Error('Failed to calculate shipping information.');
+					
 					// use transaction to make sure order is inserted and ticket is set as sold
 					return conn.beginTransactionAsync()
 						.then(() => ibmdb.prepareAndExecuteNonQuery(conn, updateTicket, [ticketId]))
 						.then(ret => {
 							if (ret !== 1) throw Error('Purchase failed.');
-							return ibmdb.prepareAndExecuteNonQuery(conn, insertOrder, [...insertOrderParams, shippingInfo.distance.text, shippingInfo.duration.text]);
+
+							const eta = shippingInfo.duration.value * 1000 + 60 * 60 * 1000 + Date.now();
+							insertOrderParams.push(eta);
+
+							return ibmdb.prepareAndExecuteNonQuery(conn, insertOrder, insertOrderParams);
 						})
 						.then(ret => {
 							if (ret !== 1) throw Error('Purchase failed.');

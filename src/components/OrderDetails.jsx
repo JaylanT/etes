@@ -5,6 +5,7 @@ import Spinner from './Spinner';
 import config from '../config';
 import utils from '../utils/fetch';
 import auth from '../modules/Auth';
+import dateFormat from 'dateformat';
 import 'whatwg-fetch';
 
 
@@ -50,6 +51,7 @@ class OrderDetails extends Component {
 
 	render() {
 		const data = this.state.data;
+		const eta = new Date(parseInt(data.DELIVERY_ETA, 10));
 		return (
 			<div className="uk-margin-top uk-margin-large-bottom">
 				<h3 className="uk-animation-fade uk-animation-fast uk-heading-line"><span>Order Details</span></h3>
@@ -78,8 +80,8 @@ class OrderDetails extends Component {
 								}
 								{data.SHIP_CITY}, {data.SHIP_STATE} {data.SHIP_ZIP}
 							</p>
-							<h4>Delivery ETA</h4>
-							<strong>{data.SHIP_TIME}</strong>
+							<h4>ETA</h4>
+							<strong>{dateFormat(eta, 'mmm d, h:MM TT')}</strong>
 						</div>
 						<div className="uk-width-1-2@m uk-padding-small">
 							<MapDirections origin={this.state.origin} destination={this.state.destination} />
