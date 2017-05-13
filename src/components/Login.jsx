@@ -6,9 +6,9 @@ import SmallSpinner from './SmallSpinner';
 import config from '../config';
 import fetchUtils from '../utils/fetch';
 import textUtils from '../utils/text';
+import qs from 'qs';
 import 'whatwg-fetch';
 import './css/Login.css';
-//const UIkit = window.UIkit;
 
 
 class Login extends Component {
@@ -61,7 +61,13 @@ class Login extends Component {
 			this.setState({ ready: true });
 			const token = data.token;
 			Auth.authenticateUser(token);
-			this.props.history.push('/');
+
+			const redirect = qs.parse(this.props.location.search.substring(1)).redirect;
+			if (redirect) {
+				this.props.history.push(redirect);
+			} else {
+				this.props.history.push('/');
+			}
 		})
 		.catch(err => {
 			this.setState({
@@ -107,7 +113,8 @@ class Login extends Component {
 }
 
 Login.propTypes = {
-	history: PropTypes.object.isRequired
+	history: PropTypes.object.isRequired,
+	location: PropTypes.object.isRequired
 };
 
 export default Login;

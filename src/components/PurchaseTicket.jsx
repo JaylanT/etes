@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Auth from '../modules/Auth';
+import auth from '../modules/Auth';
 import SmallSpinner from './SmallSpinner';
 import Spinner from './Spinner';
 import AddressForm from './AddressForm';
@@ -20,6 +20,13 @@ class PurchaseTicket extends Component {
 		this.submitBilling = this.submitBilling.bind(this);
 		this.editBilling = this.editBilling.bind(this);
 		this.purchaseTicket = this.purchaseTicket.bind(this);
+	}
+
+	componentWillMount() {
+		if(!auth.isUserAuthenticated()) {
+			const uri = encodeURIComponent(`/tickets/${this.props.match.params.id}/purchase`);
+			this.props.history.replace(`/login?redirect=${uri}`);
+		}
 	}
 
 	componentDidMount() {
@@ -92,7 +99,7 @@ class PurchaseTicket extends Component {
 			method:'POST',
 			headers: {
 				'Content-Type':'application/json',
-				Authorization: 'Bearer ' + Auth.getToken()
+				Authorization: 'Bearer ' + auth.getToken()
 			},
 			body: JSON.stringify({
 				name: shippingName,
