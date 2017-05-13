@@ -15,7 +15,7 @@ router.route('/')
 		// limit max of 100
 		if (limit > 100) limit = 100;
 
-		const now = Date.now() / 1000;
+		const now = parseInt(Date.now() / 1000, 10);
 
 		let selectTickets = 'SELECT T.TICKET_ID, T.TITLE, T.DESCRIPTION, T.PRICE, T.DATE, C.NAME AS CATEGORY, T.SELLER_ID ' +
 				'FROM TICKETS T INNER JOIN CATEGORIES C ON T.CATEGORY_ID = C.CATEGORY_ID ' +

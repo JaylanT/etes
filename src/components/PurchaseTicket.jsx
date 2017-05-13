@@ -201,7 +201,7 @@ class PurchaseTicket extends Component {
 			<form className="uk-grid-small uk-form-stacked uk-animation-slide-left-small" onSubmit={this.purchaseTicket} data-uk-grid>
 				<div className="uk-width-1-2@m">
 					<h4>Order Total</h4>
-					<strong>${this.state.data.PRICE * 0.05 + parseFloat(this.state.data.PRICE)}</strong>
+					<strong>${(this.state.data.PRICE * 0.05 + parseFloat(this.state.data.PRICE)).toFixed(2)}</strong>
 					<h4>Billing Information</h4>
 					<b>Card Number</b>
 					<p>{this.state.cardNumber}</p>
