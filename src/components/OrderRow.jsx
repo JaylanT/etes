@@ -7,7 +7,7 @@ import dateFormat from 'dateformat';
 class OrderRow extends TicketsRow {
 	render() {
 		const data = this.props.data;
-		const eta = new Date(parseInt(data.DELIVERY_ETA, 10));
+		const eta = new Date(parseInt(data.DELIVERY_ETA, 10) * 1000);
 		return (
 			<tr>
 				<td className="uk-width-medium">

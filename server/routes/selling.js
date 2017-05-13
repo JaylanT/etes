@@ -25,7 +25,7 @@ router.route('/')
 			return res.status(401).end();
 		}
 
-		let selectTickets = 'SELECT T.TICKET_ID, T.SELLER_ID, T.SOLD, T.TITLE, T.DESCRIPTION, T.PRICE, T.CREATED_AT, C.NAME AS CATEGORY '  +
+		let selectTickets = 'SELECT T.TICKET_ID, T.SELLER_ID, T.SOLD, T.TITLE, T.DESCRIPTION, T.PRICE, T.CREATED_AT, T.DATE, C.NAME AS CATEGORY '  +
 			'FROM TICKETS T INNER JOIN CATEGORIES C ON T.CATEGORY_ID = C.CATEGORY_ID '+ 
 			'WHERE SELLER_ID = ? AND SOLD = 0 ';
 		const selectTicketsParams = [sellerId];

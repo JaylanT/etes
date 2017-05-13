@@ -26,12 +26,12 @@ router.route('/')
 			return res.status(401).end();
 		}
 
-		const sql = 'INSERT INTO TICKETS (SELLER_ID, TITLE, DESCRIPTION, PRICE, CATEGORY_ID, CREATED_AT, ' +
+		const sql = 'INSERT INTO TICKETS (SELLER_ID, TITLE, DESCRIPTION, PRICE, CATEGORY_ID, DATE, CREATED_AT, ' +
 						'SELLER_NAME, SELLER_ADDRESS_LINE_1, SELLER_ADDRESS_LINE_2, SELLER_CITY, SELLER_STATE, SELLER_ZIP) ' +
-						'VALUES (?, ?, ?, ?, (SELECT CATEGORY_ID FROM CATEGORIES WHERE NAME = ?), CURRENT TIMESTAMP, ?, ?, ?, ?, ?, ?)';
+						'VALUES (?, ?, ?, ?, (SELECT CATEGORY_ID FROM CATEGORIES WHERE NAME = ?), ?, CURRENT TIMESTAMP, ?, ?, ?, ?, ?, ?)';
 		const params = [sellerId, data.title, data.description, data.price, data.category,
-							data.sellerName, data.sellerAddressLine1, data.sellerAddressLine2,
-							data.sellerCity, data.sellerState, data.sellerZip];
+							data.date, data.sellerName, data.sellerAddressLine1,
+							data.sellerAddressLine2, data.sellerCity, data.sellerState, data.sellerZip];
 
 		ibmdb.open().then(conn => {
 			return ibmdb.prepareAndExecuteNonQuery(conn, sql, params)
@@ -116,7 +116,7 @@ router.route('/:id/purchase')
 						.then(ret => {
 							if (ret !== 1) throw Error('Purchase failed.');
 
-							const eta = shippingInfo.duration.value * 1000 + 60 * 60 * 1000 + Date.now();
+							const eta = shippingInfo.duration.value + 60 * 60 + Date.now() / 1000;
 							insertOrderParams.push(eta);
 
 							return ibmdb.prepareAndExecuteNonQuery(conn, insertOrder, insertOrderParams);
@@ -179,6 +179,10 @@ function validateTicket(payload) {
 	if (!payload || typeof payload.category !== 'string' || categories.indexOf(payload.category) < 0) {
 		isFormValid = false;
 		errors.category = 'Please select a category.';
+	}
+	if (!payload || isNaN(payload.date) || payload.date <= Date.now() / 1000) {
+		isFormValid = false;
+		errors.date = 'Please provide a valid event date.';
 	}
 
 	const message = isFormValid ? '' : 'Form validation failed.';

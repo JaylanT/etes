@@ -35,6 +35,7 @@ class Sell extends Component {
 			description = t.description.value.trim(),
 			price = t.price.value,
 			category = t.category.value,
+			date = t.date.value,
 			sellerName = t.name.value,
 			sellerAddressLine1 = t.addressLine1.value,
 			sellerAddressLine2 = t.addressLine2.value,
@@ -43,14 +44,14 @@ class Sell extends Component {
 			sellerZip = t.zip.value;
 
 		// need to do further validation
-		if (!title || !description || !price || !category
+		if (!title || !description || !price || !category || ! date
 			|| !sellerName || !sellerAddressLine1 || !sellerCity
 			|| !sellerState || !sellerZip) {
-			this.setState({
-				ready: true
-			});
+			this.setState({ ready: true });
 			return;
 		}
+
+		const epoch = new Date(date).getTime() / 1000;
 
 		fetch(config.apiUrl + '/tickets', {
 			method:'POST',
@@ -63,6 +64,7 @@ class Sell extends Component {
 				description,
 				price,
 				category,
+				date: epoch,
 				sellerName,
 				sellerAddressLine1,
 				sellerAddressLine2,
@@ -94,9 +96,13 @@ class Sell extends Component {
 					<div className="uk-width-1-2@m uk-padding-small">
 						<h4>Ticket Details</h4>
 						<div className="uk-grid-small" data-uk-grid>
-							<div className="uk-width-1-1">
+							<div className="uk-width-1-2@m">
 								<label className="uk-form-label" htmlFor="title-input">Title</label>
 								<input id="title-input" className="uk-input" type="text" name="title" required/>
+							</div>
+							<div className="uk-width-1-2@m">
+								<label className="uk-form-lable" htmlFor="date-input">Date</label>
+								<input id="date-input" className="uk-input" type="date" name="date" required/>
 							</div>
 							<div className="uk-width-1-1">
 								<label className="uk-form-label" htmlFor="description-input">Description</label>

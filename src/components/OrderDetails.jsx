@@ -51,7 +51,7 @@ class OrderDetails extends Component {
 
 	render() {
 		const data = this.state.data;
-		const eta = new Date(parseInt(data.DELIVERY_ETA, 10));
+		const eta = new Date(parseInt(data.DELIVERY_ETA, 10) * 1000);
 		return (
 			<div className="uk-margin-top uk-margin-large-bottom">
 				<h3 className="uk-animation-fade uk-animation-fast uk-heading-line"><span>Order Details</span></h3>
