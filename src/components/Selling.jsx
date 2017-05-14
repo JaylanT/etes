@@ -98,7 +98,7 @@ class Selling extends Component {
 					<Spinner />
 					:
 					<div>
-						{this.state.revenue &&
+						{this.state.revenue >= 0 &&
 								<h4 className="uk-animation-slide-left-small uk-text-right">Total revenue: ${this.state.revenue.toFixed(2)}</h4>}
 						<TicketsTable data={this.state.data} count={this.state.count} row={SellingRow} />
 						<Paginator prevPage={this.state.prevPage} nextPage={this.state.nextPage} />				
