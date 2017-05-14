@@ -6,10 +6,11 @@ import SellingRow from './SellingRow';
 import Spinner from './Spinner';
 import config from '../config';
 import utils from '../utils/fetch';
-import 'whatwg-fetch';
 import auth from '../modules/Auth';
 import parse from 'parse-link-header';
 import qs from 'qs';
+import 'whatwg-fetch';
+import './css/Selling.css';
 
 
 class Selling extends Component {
@@ -23,6 +24,7 @@ class Selling extends Component {
 		};
 		this.showActive = this.showActive.bind(this);
 		this.showSold = this.showSold.bind(this);
+		this.showUnsold = this.showUnsold.bind(this);
 		this.activeTab = this.activeTab.bind(this);
 	}
 
@@ -42,7 +44,7 @@ class Selling extends Component {
 	loadData() {
 		this.setState({ ready: false });
 		const status = qs.parse(this.props.location.search.substring(1)).status;
-		const url = `${config.apiUrl}/${status === 'sold' ? 'sold' : 'selling'}?limit=10&page=${this.state.page}`;
+		const url = `${config.apiUrl}/${status ? status : 'selling'}?limit=10&page=${this.state.page}`;
 		fetch(url, {
 			headers: {
 				'Content-Type':'application/json',
@@ -74,11 +76,15 @@ class Selling extends Component {
 	}
 
 	showActive() {
-		this.props.history.push('?status=active');
+		this.props.history.push('/selling?status=selling');
 	}
 
 	showSold() {
 		this.props.history.push('/selling?status=sold');
+	}
+
+	showUnsold() {
+		this.props.history.push('/selling?status=unsold');
 	}
 
 	activeTab(tab) {
@@ -93,13 +99,14 @@ class Selling extends Component {
 				<ul data-uk-tab>
 					<li className={this.activeTab('active')} onClick={this.showActive}><a>Active</a></li>
 					<li className={this.activeTab('sold')} onClick={this.showSold}><a>Sold</a></li>
+					<li className={this.activeTab('unsold')} onClick={this.showUnsold}><a>Unsold</a></li>
 				</ul>
 				{!this.state.ready ?
 					<Spinner />
 					:
 					<div>
 						{this.state.revenue >= 0 &&
-								<h4 className="uk-animation-slide-left-small uk-text-right">Total revenue: ${this.state.revenue.toFixed(2)}</h4>}
+								<p id="total-revenue" className="uk-animation-slide-left-small uk-text-right">Total revenue: ${this.state.revenue.toFixed(2)}</p>}
 						<TicketsTable data={this.state.data} count={this.state.count} row={SellingRow} />
 						<Paginator prevPage={this.state.prevPage} nextPage={this.state.nextPage} />				
 					</div>

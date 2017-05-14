@@ -9,8 +9,7 @@ const pagination = require('../modules/pagination');
 router.route('/')
 	.get((req, res, next) => {
 		const page = parseInt(req.query.page) || 1,
-			order = req.query.order,
-			category = req.query.category;
+			order = req.query.order;
 		let limit = parseInt(req.query.limit) || 30;
 
 		// limit max of 100
@@ -29,22 +28,15 @@ router.route('/')
 		date.setHours(0, 0, 0, 0);
 		const now = parseInt(date.getTime() / 1000, 10);
 
-		let selectTickets = 'SELECT T.TICKET_ID, T.SELLER_ID, T.SOLD, T.TITLE, T.DESCRIPTION, T.PRICE, T.CREATED_AT, T.DATE, C.NAME AS CATEGORY '  +
+		let selectTickets = 'SELECT T.TICKET_ID, T.SELLER_ID, T.SOLD, T.TITLE, T.DESCRIPTION, T.PRICE, T.DATE, T.CREATED_AT, C.NAME AS CATEGORY '  +
 			'FROM TICKETS T INNER JOIN CATEGORIES C ON T.CATEGORY_ID = C.CATEGORY_ID '+ 
-			'WHERE SELLER_ID = ? AND SOLD = 0 AND T.DATE >= ? ';
+			'WHERE SELLER_ID = ? AND SOLD = 0 AND T.DATE < ? ';
 		const selectTicketsParams = [sellerId, now];
 
 		let selectTicketsCount = 'SELECT COUNT(*) AS COUNT FROM TICKETS T ' +
 			'INNER JOIN CATEGORIES C ON T.CATEGORY_ID = C.CATEGORY_ID ' +
-			'WHERE SELLER_ID = ? AND SOLD = 0 AND T.DATE >= ? ';
+			'WHERE SELLER_ID = ? AND SOLD = 0 AND T.DATE < ? ';
 		const selectTicketsCountParams = [sellerId, now];
-
-		if (category) {
-			selectTickets += 'AND C.NAME = ? ';
-			selectTicketsCount += 'AND C.NAME = ? ';
-			selectTicketsParams.push(category);
-			selectTicketsCountParams.push(category);
-		}
 
 		const offset = (page - 1) * limit;
 		selectTicketsParams.push(limit, offset);
