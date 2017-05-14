@@ -68,6 +68,7 @@ router.route('/:id/purchase')
 		} catch(err) {
 			return res.status(401).end();
 		}
+
 		const buyerAddress = {
 			name: data.name,
 			addressLine1: data.addressLine1,

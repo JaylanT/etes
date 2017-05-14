@@ -15,16 +15,18 @@ router.route('/')
 		// limit max of 100
 		if (limit > 100) limit = 100;
 
-		const now = parseInt(Date.now() / 1000, 10);
+		const date = new Date();
+		date.setHours(0, 0, 0, 0);
+		const now = parseInt(date.getTime() / 1000, 10);
 
 		let selectTickets = 'SELECT T.TICKET_ID, T.TITLE, T.DESCRIPTION, T.PRICE, T.DATE, C.NAME AS CATEGORY, T.SELLER_ID ' +
 				'FROM TICKETS T INNER JOIN CATEGORIES C ON T.CATEGORY_ID = C.CATEGORY_ID ' +
-				'WHERE T.SOLD = 0 AND T.DATE > ? ';
+				'WHERE T.SOLD = 0 AND T.DATE >= ? ';
 		const selectTicketsParams = [now];
 
 		let selectTicketsCount = 'SELECT COUNT(*) AS COUNT FROM TICKETS T ' +
 			'INNER JOIN CATEGORIES C ON T.CATEGORY_ID = C.CATEGORY_ID ' +
-			'WHERE T.SOLD = 0 AND T.DATE > ? ';
+			'WHERE T.SOLD = 0 AND T.DATE >= ? ';
 		const selectTicketsCountParams = [now];
 
 		if (q) {
