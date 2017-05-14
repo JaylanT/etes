@@ -9,8 +9,7 @@ const pagination = require('../modules/pagination');
 router.route('/')
 	.get((req, res, next) => {
 		const page = parseInt(req.query.page) || 1,
-			order = req.query.order,
-			category = req.query.category;
+			order = req.query.order;
 		let limit = parseInt(req.query.limit) || 30;
 
 		// limit max of 100
@@ -35,12 +34,9 @@ router.route('/')
 			'WHERE SELLER_ID = ? AND SOLD = 1 ';
 		const selectTicketsCountParams = [sellerId];
 
-		if (category) {
-			selectTickets += 'AND C.NAME = ? ';
-			selectTicketsCount += 'AND C.NAME = ? ';
-			selectTicketsParams.push(category);
-			selectTicketsCountParams.push(category);
-		}
+		let selectTotalRevenue = 'SELECT SUM(PRICE) as TOTAL_REVENUE ' +
+			'FROM TICKETS T WHERE SELLER_ID = ? AND SOLD = 1';
+		const selectTotalRevenueParams = [sellerId];
 
 		const offset = (page - 1) * limit;
 		selectTicketsParams.push(limit, offset);
@@ -50,19 +46,22 @@ router.route('/')
 		ibmdb.open().then(conn => {
 			const ticketsQuery = ibmdb.prepareAndExecute(conn, selectTickets, selectTicketsParams);
 			const countQuery = ibmdb.prepareAndExecute(conn, selectTicketsCount, selectTicketsCountParams);
+			const totalRevenueQuery = ibmdb.prepareAndExecute(conn, selectTotalRevenue, selectTotalRevenueParams);
 
-			return Promise.all([ticketsQuery, countQuery]).then(values => {
+			return Promise.all([ticketsQuery, countQuery, totalRevenueQuery]).then(values => {
 				conn.close();
 
 				const tickets = values[0],
-					count = values[1][0].COUNT;
+					count = values[1][0].COUNT,
+					revenue = values[2][0].TOTAL_REVENUE * 0.95;
 
 				const links = pagination('selling', count, limit, page, null, order);
 				res.links(links);
 
 				res.send({
 					tickets,
-					count
+					count,
+					revenue
 				});
 			})
 			.catch(err => {

@@ -66,7 +66,8 @@ class Selling extends Component {
 				this.setState({
 					ready: true,
 					data: data.tickets,
-					count: data.count
+					count: data.count,
+					revenue: data.revenue
 				});
 			})
 			.catch(err => console.log(err));
@@ -97,6 +98,8 @@ class Selling extends Component {
 					<Spinner />
 					:
 					<div>
+						{this.state.revenue &&
+								<h4 className="uk-animation-slide-left-small uk-text-right">Total revenue: ${this.state.revenue.toFixed(2)}</h4>}
 						<TicketsTable data={this.state.data} count={this.state.count} row={SellingRow} />
 						<Paginator prevPage={this.state.prevPage} nextPage={this.state.nextPage} />				
 					</div>
